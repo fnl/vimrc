@@ -1,1 +1,0 @@
-alias curl-json='curl -H"Content-Type: application/json;charset=utf-8"'
