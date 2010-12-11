@@ -50,7 +50,14 @@ set backup
 set backupdir=~/.vim/backup " backup files
 set directory=~/.vim/tmp " swap files
 
-" Mappings - S-Space does not work on Mac :(
-noremap <S-Space> <C-b>
-noremap <Space> <C-f>
+" Tell Rgrep not to use Xargs on Mac OS 'cause it sucks.
+let s:os = system("uname")
+if s:os =~ "Darwin"
+  let g:Grep_Xargs_Options='-0'
+endif 
 
+" Mappings - S-Space does not work on Mac :(
+noremap <Tab> <C-b>
+noremap <Space> <C-f>
+" Serch word under cursor in current dir
+noremap <C-F> :Rgrep<CR>
