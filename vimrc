@@ -4,12 +4,20 @@ set hidden " change buffers w/o saving
 set listchars=tab:→⋅,trail:⋅,eol:¬
 set scrolloff=3 " start scrolling a bit earlier
 set sidescrolloff=10 " Keep 5 lines at the size
+
 set showmatch " jump to matching parens when inserting
 set history=100 " a bit more history
 set visualbell " stop dinging!!!
 set shortmess=atI " short (a), truncate file (t), and no intro (I) messages
 " set matchtime=5 " 10ths/sec to jumpt to matching brackets
 " set number " shows line numbers
+
+" Allow <BkSpc> to delete line breaks, beyond the start of the current
+" insertion, and over indentations:
+set backspace=eol,start,indent
+
+" Set exec-bit on files that start with a she-bang line
+au BufWritePost * if getline(1) =~ "^#!" | silent !chmod +x <afile>
 
 " Un-nerf searches
 set incsearch " highlight search phrases
@@ -40,7 +48,7 @@ au FileType text set noautoindent
 set expandtab " no real tabs
 au FileType text set noexpandtab
 set smarttab " insert blanks using shiftwidth; off uses (soft)tabstop
-" set shiftwidth=2 " for smarttab
+set shiftwidth=2 " for smarttab
 set softtabstop=2 " number of spaces to use when editing tabs
 au FileType text set softtabstop=0
 " Update shiftwidth/softtabstop for some filetypes
@@ -71,11 +79,23 @@ endif
 nnoremap <Tab> <C-b>
 nnoremap <Space> <C-f>
 " serch word under cursor in current dir
-nnoremap <C-f> :Rgrep<CR>
-" delete all trailing whitespaces in the buffer
-nnoremap <silent> <BS> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+nnoremap <C-S-f> :Rgrep<CR>
+nnoremap <C-f> :Grep<CR>
+" delete all trailing whitespaces in the buffer when using BS in visual mode
+vnoremap <BS> :<BS><BS><BS><BS><BS>%s/\s\+$//ge<CR>
 " scroll viewport a bit fater
 nnoremap <C-e> 2<C-e>
 nnoremap <C-y> 2<C-y>
 " toggle showing list characters (tab, trail, eol)
-nmap <silent> <leader>s :set nolist!<CR>
+nmap <silent> <leader>l :set nolist!<CR>
+" have <Tab> (and <Shift>+<Tab>) change the level of
+" indentation:
+inoremap <Tab> <C-T>
+inoremap <S-Tab> <C-D>
+" emacs style autocomplete
+inoremap <C-/> <C-N>
+" switch to last buffer faster
+nnoremap tt :b#<CR>
+
+" Expansion - iabbrev
+iabbrev ifmain if __name__ == '__main__':
