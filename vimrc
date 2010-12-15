@@ -82,9 +82,6 @@ if s:os =~ "Darwin"
   let g:Grep_Xargs_Options='-0'
 endif
 
-" disable MiniBufferExplorer in vim
-let loaded_minibufexplorer=1
-
 " Mappings -- remember S-Space does not work on Mac :(
 let mapleader=","
 " better movement through files
@@ -107,6 +104,9 @@ inoremap <S-Tab> <C-D>
 inoremap <C-/> <C-N>
 " switch to last buffer faster
 nnoremap tt :b#<CR>
+" switch between adjacent buffers
+nnoremap tp :bp<CR>
+nnoremap tn :bn<CR>
 " use ; directly instead of <S-;> to run commands
 nnoremap ; :
 " Use Q for formatting the current paragraph (or selection)
