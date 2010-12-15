@@ -76,8 +76,8 @@ endif
 
 " Mappings -- remember S-Space does not work on Mac :(
 " better movement through files
-nnoremap <Tab> <C-b>
 nnoremap <Space> <C-f>
+nnoremap <S-Space> <C-b>
 " serch word under cursor in current dir
 nnoremap <C-S-f> :Rgrep<CR>
 nnoremap <C-f> :Grep<CR>
@@ -88,8 +88,7 @@ nnoremap <C-e> 2<C-e>
 nnoremap <C-y> 2<C-y>
 " toggle showing list characters (tab, trail, eol)
 nmap <silent> <leader>l :set nolist!<CR>
-" have <Tab> (and <Shift>+<Tab>) change the level of
-" indentation:
+" have <Tab> (and <Shift>+<Tab>) change the level of indentation:
 inoremap <Tab> <C-T>
 inoremap <S-Tab> <C-D>
 " emacs style autocomplete
