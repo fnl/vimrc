@@ -1,20 +1,27 @@
+" This must be first, because it changes other options as side effect
+set nocompatible
+
 " One-liners
 set cul " highlights current line
 set hidden " change buffers w/o saving
-set listchars=tab:→⋅,trail:⋅,eol:¬
+set listchars=tab:→⋅,trail:⋅,eol:¬,extends:∴,nbsp:∙
 set scrolloff=3 " start scrolling a bit earlier
 set sidescrolloff=10 " Keep 5 lines at the size
-
+set undolevels=1000 " tons of undos
 set showmatch " jump to matching parens when inserting
 set history=100 " a bit more history
 set visualbell " stop dinging!!!
 set shortmess=atI " short (a), truncate file (t), and no intro (I) messages
 " set matchtime=5 " 10ths/sec to jumpt to matching brackets
-" set number " shows line numbers
+" set number " shows line numbers - set in gvimrc
 
 " Allow <BkSpc> to delete line breaks, beyond the start of the current
 " insertion, and over indentations:
 set backspace=eol,start,indent
+
+" Let vim switch to paste mode, disabling all kinds of smartness and just
+" paste a whole buffer of text
+set pastetoggle=<F8>
 
 " Set exec-bit on files that start with a she-bang line
 au BufWritePost * if getline(1) =~ "^#!" | silent !chmod +x <afile>
@@ -35,15 +42,16 @@ syntax enable
 
 " Command line completion
 set wildmenu " turn on command line completion wild style
-set wildignore=*.dll,*.o,*.obj,*.pyc,*.jpg,*.gif,*.png
+set wildignore=*.dll,*.o,*.obj,*.pyc,*.jpg,*.gif,*.png,*.swp,*.bak,*.class
 set wildmode=list:longest " and show everything possible
 
 " Status line
 set statusline=%f%m%r%h%w\ (%{&ff}){%Y}\ %=[0x\%02.2B][%03l,%02v][%02p%%]
-set laststatus=2 " show the statusline always
+set laststatus=1 " show the statusline: 0=never,1=multiwin,2=always
 
 " Tab handling
 set autoindent " indent files
+set copyindent " copy the previous indetation on autoindenting
 au FileType text set noautoindent
 set expandtab " no real tabs
 au FileType text set noexpandtab
@@ -64,7 +72,7 @@ set foldminlines=2 " num lines to not fold
 set foldnestmax=3 " fold max depth (20 is max for indent)
 
 " Store backups into special dirs
-set backup
+set nobackup " by default, ignore backups - swaps are good enough
 set backupdir=~/.vim/backup " backup files
 set directory=~/.vim/tmp " swap files
 
@@ -75,6 +83,7 @@ if s:os =~ "Darwin"
 endif
 
 " Mappings -- remember S-Space does not work on Mac :(
+let mapleader=","
 " better movement through files
 nnoremap <Space> <C-f>
 nnoremap <S-Space> <C-b>
@@ -95,6 +104,28 @@ inoremap <S-Tab> <C-D>
 inoremap <C-/> <C-N>
 " switch to last buffer faster
 nnoremap tt :b#<CR>
+" switch between adjacent buffers
+nnoremap tp :bp<CR>
+nnoremap tn :bn<CR>
+" use ; directly instead of <S-;> to run commands
+nnoremap ; :
+" Use Q for formatting the current paragraph (or selection)
+vmap Q gq
+nmap Q gqap
+" Easy window navigation
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+" Disable arrow keys to force myself using the right keys
+map <up> <nop>
+map <down> <nop>
+map <left> <nop>
+map <right> <nop>
+" Clear serach highlights
+nmap <silent> <leader>/ :nohlsearch<CR>
+" Switch to sudo vim <file> **after** opening a file
+cmap w!! w !sudo tee % > /dev/null
 
 " Expansion - iabbrev
 iabbrev ifmain if __name__ == '__main__':
