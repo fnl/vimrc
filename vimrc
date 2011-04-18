@@ -24,7 +24,7 @@ set wildignore=*.dll,*.o,*.obj,*.pyc,*.jpg,*.gif,*.png
 set wildmode=list:longest " and show everything possible
 
 " Status line
-set statusline=%f%m%r%h%w\ (%{&ff}){%Y}\ %=[0x\%02.2B][%03l,%02v][%02p%%]
+set statusline=%n:%f%m%r%h%w\ (%{&ff}){%Y}\ %=[0x\%02.2B][%03l,%02v][%02p%%]
 set laststatus=2 " show the statusline always
 
 " Tab handling
@@ -41,9 +41,9 @@ au BufRead,BufNewFile *.py set softtabstop=4
 set foldenable
 set foldmarker={,} " when foldmethod marker is used
 set foldmethod=indent " fold based on... indent, marker, syntax
-set foldlevel=1 " default fold level (20 is max level for indent)
+set foldlevel=20 " default fold level (20 is max level for indent)
 set foldminlines=2 " num lines to not fold
-set foldnestmax=3 " fold max depth (20 is max for indent)
+set foldnestmax=5 " fold max depth (20 is max for indent)
 
 " Store backups into special dirs
 set backup
@@ -51,6 +51,6 @@ set backupdir=~/.vim/backup " backup files
 set directory=~/.vim/tmp " swap files
 
 " Mappings - S-Space does not work on Mac :(
-noremap <S-Space> <C-b>
+noremap <Tab> <C-b>
 noremap <Space> <C-f>
 
