@@ -57,8 +57,8 @@ set wildignore=*.dll,*.o,*.obj,*.pyc,*.pyo,*.jpg,*.gif,*.png,*.swp,*.bak,*.class
 set wildmode=list:longest " and show everything possible
 
 " Status line
-set statusline=%f%m%r%h%w\ (%{&ff}){%Y}\ %=[0x\%02.2B][%03l,%02v][%02p%%]
-set laststatus=2 " show the statusline: 0=never,1=multiwin,2=always
+set statusline=%n:%f%m%r%h%w\ (%{&ff}){%Y}\ %=[0x\%02.2B][%03l,%02v][%02p%%]
+set laststatus=2 " show the statusline always
 
 " Tab handling
 set autoindent " indent files
@@ -77,7 +77,7 @@ set foldmarker={,} " when foldmethod marker is used
 set foldmethod=indent " fold based on... indent, marker, syntax
 set foldlevel=5 " default fold level (20 is max level for indent)
 set foldminlines=2 " num lines to not fold
-set foldnestmax=3 " fold max depth (20 is max for indent)
+set foldnestmax=5 " fold max depth (20 is max for indent)
 
 " Store backups into special dirs
 set nobackup " by default, ignore backups - swaps are good enough
@@ -215,4 +215,3 @@ autocmd BufRead *.py iabbrev defnext def __next__(self,
 
 " SuperTab setup
 let g:SuperTabDefaultCompletionType = "context"
-
