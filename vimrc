@@ -40,6 +40,17 @@ filetype on
 filetype plugin indent on
 syntax enable
 
+" omni-completion on
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+autocmd FileType python3 set omnifunc=python3complete#Complete
+autocmd FileType ruby set omnifunc=rubycomplete#Complete
+autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+autocmd FileType c set omnifunc=ccomplete#Complete
+
+
 " Command line completion
 set wildmenu " turn on command line completion wild style
 set wildignore=*.dll,*.o,*.obj,*.pyc,*.pyo,*.jpg,*.gif,*.png,*.swp,*.bak,*.class
@@ -157,6 +168,9 @@ au BufRead,BufNewFile *.py set softtabstop=4
 autocmd BufRead *.py set makeprg=python3\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
 autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
 
+" pydoc.vim setup
+let g:pydoc_cmd = "pydoc3"
+
 " Python code checks and tests
 autocmd BufRead *.py nmap <S-t> :!py.test-3.1 -s --doctest-modules --nocapturelog %<CR>
 autocmd BufRead *.py nmap <F5> :!python3 %<CR>
@@ -198,4 +212,7 @@ autocmd BufRead *.py iabbrev defdel def __del__(self,
 autocmd BufRead *.py iabbrev defcall def __call__(self,
 autocmd BufRead *.py iabbrev defiter def __iter__(self,
 autocmd BufRead *.py iabbrev defnext def __next__(self,
+
+" SuperTab setup
+let g:SuperTabDefaultCompletionType = "context"
 
