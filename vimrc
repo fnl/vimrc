@@ -1,8 +1,8 @@
 " This must be first, because it changes other options as side effect
-set nocompatible " make vim not compatible with vi
+set nocompatible " disable vi compatiblity
+set hidden " change buffers w/o saving - essential
 
-" Basic settings
-set hidden " change buffers w/o saving
+" Some basic settings
 set listchars=tab:→⋅,trail:⋅,eol:¬,extends:∴,nbsp:∙ " invisibles definitions
 set scrolloff=3 " start scrolling a bit earlier
 set sidescrolloff=10 " Keep 5 lines at the size
@@ -13,16 +13,12 @@ set visualbell " stop dinging!!!
 set shortmess=atI " short (a), truncate file (t), and no intro (I) messages
 set matchtime=5 " 10ths/sec to jump to matching brackets
 set number " shows line numbers
-" set cul " highlight current line
 
 " Un-nerf searches
 set incsearch " highlight search phrases
 set hlsearch " keep the search highlighted when going through them
 set ignorecase " ignore case in seraches...
 set smartcase " ...but only if there is no capital letter present
-" Clear serach highlights
-nmap <Silent> <Leader>\ :nohlsearch<CR>
-" nmap <SPACE> <SPACE>:noh<CR>
 
 " Allow <BkSpc> to delete line breaks, beyond the start of the current
 " insertion, and over indentations:
@@ -62,9 +58,9 @@ set wildmode=list:longest " and show everything possible for completion
 " Status line as good as it gets...
 " %buffer_number:%file_name
 " flags: modified readonly help preview_window
-" (fileformat){filetype}[tagname]
+" (fileformat){filetype} tagname
 " [byteval_under_cursor][line_number,virtual_col_number][percentage_in_file]
-set statusline=%n:%f%m%r%h%w\ (%{&ff}){%Y}[%{Tlist_Get_Tagname_By_Line()}]\ %=[0x\%02.2B][%03l,%02v][%02p%%]
+set statusline=%n:%f%m%r%h%w\ (%{&ff}){%Y}\ %{Tlist_Get_Tagname_By_Line()}\ %=[0x\%02.2B][%03l,%02v][%02p%%]
 set laststatus=2 " show the statusline - always
 
 " Tab indention handling
@@ -91,6 +87,25 @@ set foldnestmax=5 " fold max depth (20 is max for indent)
 set nobackup " by default, ignore backups - swaps are good enough
 set backupdir=~/.vim/backup " backup files dir
 set directory=~/.vim/tmp " swap files dir
+
+" Higlight the cursorline after a jump, but deactivate on move
+function s:Cursor_Moved()
+  let cur_pos = winline()
+  if g:last_pos == 0
+    set cul
+    let g:last_pos = cur_pos
+    return
+  endif
+  let diff = g:last_pos - cur_pos
+  if diff > 1 || diff < -1
+    set cul
+  else
+    set nocul
+  endif
+  let g:last_pos = cur_pos
+endfunction
+autocmd CursorMoved,CursorMovedI * call s:Cursor_Moved()
+let g:last_pos = 0
 
 " Tell Rgrep not to use Xargs on Mac OS 'cause it sucks.
 let s:os = system("uname")
@@ -137,11 +152,11 @@ autocmd BufRead *.py nmap <Leader>t :!py.test-3 -s --doctest-modules --nocapture
 autocmd BufRead *.py nmap <Leader>r :!python3 %<CR>
 
 " Pytest.vim and py.test
-autocmd BufRead *.py nmap <Leader>F <Esc>:Pytest file<CR>
-autocmd BufRead *.py nmap <Leader>C <Esc>:Pytest class<CR>
-autocmd BufRead *.py nmap <Leader>M <Esc>:Pytest method<CR>
-autocmd BufRead *.py nmap <Leader>S <Esc>:Pytest session<CR>
-autocmd BufRead *.py nmap <Leader>N <Esc>:Pytest next<CR>
+autocmd BufRead *.py nmap <Leader>pf <Esc>:Pytest file<CR>
+autocmd BufRead *.py nmap <Leader>pc <Esc>:Pytest class<CR>
+autocmd BufRead *.py nmap <Leader>pm <Esc>:Pytest method<CR>
+autocmd BufRead *.py nmap <Leader>ps <Esc>:Pytest session<CR>
+autocmd BufRead *.py nmap <Leader>pn <Esc>:Pytest next<CR>
 
 " Only save Python file after successful syntax check
 au! BufWriteCmd *.py call CheckPythonSyntax()
@@ -181,17 +196,16 @@ cmap w!! w !sudo tee % > /dev/null
 " Key Mappings -- remember <S-Space> does not work on Mac :(
 " ------------
 " remember the mapping for highlight search disable was defined already
-" let mapleader="," change the leader
 
-" use ; directly instead of <S-;> to run commands
-" nmap ; :
+" quickly clear serach highlights
+nmap <silent> <Leader>\ :nohlsearch<CR>
 
-" make commands and moving through errors
+" quick make commands and moving through errors
 nnoremap <F7> :cprevious<CR>
 nnoremap <F8> :make<CR>
 nnoremap <F9> :cnext<CR>
 
-" delete all trailing whitespaces in the buffer when using BS in visual mode
+" delete all trailing whitespaces when using BS in visual mode
 vnoremap <BS> :<BS><BS><BS><BS><BS>%s/\s\+$//ge<CR>
 
 " scroll viewport a bit fater
@@ -199,16 +213,17 @@ nnoremap <C-e> 2<C-e>
 nnoremap <C-y> 2<C-y>
 
 " toggle showing list characters (tab, trail, eol)
-nnoremap <Leader>l :set nolist!<CR>
+nnoremap <silent> <Leader>l :set nolist!<CR>
 " toggle linenumbering
-nnoremap <Leader>n :set nonumber!<CR>
-" toggle the NERDTree plugin
-nnoremap <Leader>nt :NERDTreeToggle<CR>
-" toggle the TagList plugin
-nnoremap <Leader>tl :TlistToggle<CR>
+nnoremap <silent> <Leader>n :set nonumber!<CR>
 
-" faster switch to last buffer faster
-nmap tt :b#<CR>
+" toggle the NERDTree plugin ("[d]irectory")
+nnoremap <silent> <Leader>d :NERDTreeToggle<CR>
+" toggle the TagList plugin ("[o]utline")
+nnoremap <silent> <Leader>o :TlistToggle<CR>
+
+" faster switch to last buffer faster (like gt)
+nmap <silent> tt :b#<CR>
 
 " Easy window navigation
 nmap <C-h> <C-w>h
@@ -216,12 +231,9 @@ nmap <C-j> <C-w>j
 nmap <C-k> <C-w>k
 nmap <C-l> <C-w>l
 
-" Change navigating buffers and windows
-nmap <Silent> <Leader>tp :tabp<CR>
-nmap <Silent> <Leader>tn :tabn<CR>
-
 " Make window resizing easier
-nnoremap <silent> <Up> <C-W>-
-nnoremap <silent> <Down> <C-W>+
-nnoremap <silent> <Left> <C-W>>
-nnoremap <silent> <Right> <C-W><
+" (note: reversed setting more intuitive)
+nmap <silent> <Up> <C-W>-
+nmap <silent> <Down> <C-W>+
+nmap <silent> <Left> <C-W>>
+nmap <silent> <Right> <C-W><
