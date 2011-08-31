@@ -13,7 +13,7 @@ set history=100 " a bit more history
 set visualbell " stop dinging!!!
 set shortmess=atI " short (a), truncate file (t), and no intro (I) messages
 " set matchtime=5 " 10ths/sec to jumpt to matching brackets
-" set number " shows line numbers - set in gvimrc
+" set number " shows line number column - set in gvimrc
 
 " Allow <BkSpc> to delete line breaks, beyond the start of the current
 " insertion, and over indentations:
@@ -47,7 +47,7 @@ set wildmode=list:longest " and show everything possible
 
 " Status line
 set statusline=%f%m%r%h%w\ (%{&ff}){%Y}\ %=[0x\%02.2B][%03l,%02v][%02p%%]
-set laststatus=1 " show the statusline: 0=never,1=multiwin,2=always
+set laststatus=2 " show the statusline: 0=never,1=multiwin,2=always
 
 " Tab handling
 set autoindent " indent files
@@ -67,7 +67,7 @@ au BufRead,BufNewFile *.py set softtabstop=4
 set foldenable
 set foldmarker={,} " when foldmethod marker is used
 set foldmethod=indent " fold based on... indent, marker, syntax
-set foldlevel=1 " default fold level (20 is max level for indent)
+set foldlevel=5 " default fold level (20 is max level for indent)
 set foldminlines=2 " num lines to not fold
 set foldnestmax=3 " fold max depth (20 is max for indent)
 
@@ -82,11 +82,11 @@ if s:os =~ "Darwin"
   let g:Grep_Xargs_Options='-0'
 endif
 
-" Mappings -- remember S-Space does not work on Mac :(
+" Mappings -- remember X-Space does not work on Mac :(
 let mapleader=","
 " better movement through files
-nnoremap <Space> <C-f>
-nnoremap <S-Space> <C-b>
+" nnoremap <Space> <C-f>
+" nnoremap <S-Space> <C-b>
 " serch word under cursor in current dir
 nnoremap <C-S-f> :Rgrep<CR>
 nnoremap <C-f> :Grep<CR>
@@ -129,3 +129,8 @@ cmap w!! w !sudo tee % > /dev/null
 
 " Expansion - iabbrev
 iabbrev ifmain if __name__ == '__main__':
+
+" Plugin Pytest
+nmap <silent><Leader>f <Esc>:Pytest file<CR> 
+nmap <silent><Leader>c <Esc>:Pytest class<CR> 
+nmap <silent><Leader>m <Esc>:Pytest method<CR> 
