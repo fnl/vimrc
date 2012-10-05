@@ -3,16 +3,17 @@ set nocompatible " disable vi compatiblity
 set hidden " change buffers w/o saving - essential
 
 " Some basic settings
-set listchars=tab:→⋅,trail:⋅,eol:¬,extends:∴,nbsp:∙ " invisibles definitions
+set listchars=tab:→⋅,trail:⋅,eol:¬,extends:➧,nbsp:∙ " invisibles definitions
 set scrolloff=3 " start scrolling a bit earlier
-set sidescrolloff=10 " Keep 5 lines at the size
+set sidescrolloff=3 " scroll at n colums when at the side margin in nowrap mode
+set wrap " (do not) wrap lines
 set undolevels=1000 " tons of undos
 set showmatch " jump to matching parens when inserting
 set history=100 " a bit more history
 set visualbell " stop dinging!!!
 set shortmess=atI " short (a), truncate file (t), and no intro (I) messages
 set matchtime=5 " 10ths/sec to jump to matching brackets
-set number " shows line numbers
+" set number " shows line numbers
 
 " Un-nerf searches
 set incsearch " highlight search phrases
@@ -26,7 +27,7 @@ set backspace=eol,start,indent
 
 " Let vim switch to paste mode, disabling all kinds of smartness and just
 " paste a whole buffer of text instead of regular insert behaviour
-set pastetoggle=<F5>
+set pastetoggle=± "<F5>
 
 " Set exec-bit on files that start with a she-bang line
 au BufWritePost * if getline(1) =~ "^#!" | silent !chmod +x <afile>
@@ -117,7 +118,8 @@ endif
 let g:SuperTabDefaultCompletionType="context"
 
 " TagList setup
-let TlistHighlightTag=3 " hilight tag in list after 3 seconds (default: 4)
+" hilight tag in list after n seconds (default: 4)
+let TlistHighlightTag=2
 " focus taglist on toggle
 let Tlist_GainFocus_On_ToggleOpen=1
 " show only the tags for one file (navigate files via NERDTree)
@@ -125,9 +127,19 @@ let Tlist_Show_One_File=1
 " update the taglist on file modifications
 let Tlist_Auto_Update=1
 " display the taglist to the right
-let Tlist_Use_Right_Window=1
+"let Tlist_Use_Right_Window=1
 " hide the fold columns
 let Tlist_Enable_Fold_Column=0
+" do not change the terminal window width
+let Tlist_Inc_Winwidth=0
+" close the taglist after selecting
+let Tlist_Close_On_Select=1
+" close vim if taglist is the only window and buffer
+let Tlist_Exit_OnlyWindow=1
+let Tlist_WinWidth="auto"
+
+" NERDtree setup
+let NERDTreeQuitOnOpen=1
 
 " Python 3 Setup
 " --------------
@@ -144,12 +156,12 @@ autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^
 let g:pydoc_cmd = "pydoc3"
 
 " Python code checks, tests, and runs
-" check
-autocmd BufRead *.py nmap <Leader>c :!pyflakes3k %<CR>
-" test all
-autocmd BufRead *.py nmap <Leader>t :!py.test-3 -s --doctest-modules --nocapturelog %<CR>
-" run
-autocmd BufRead *.py nmap <Leader>r :!python3 %<CR>
+" run checks
+"autocmd BufRead *.py nmap <Leader>rc :!pyflakes3k %<CR>
+" run test all
+"autocmd BufRead *.py nmap <Leader>rt :!py.test-3 -s --doctest-modules --nocapturelog %<CR>
+" run python
+"autocmd BufRead *.py nmap <Leader>rp :!python3 %<CR>
 
 " Pytest.vim and py.test
 autocmd BufRead *.py nmap <Leader>pf <Esc>:Pytest file<CR>
@@ -159,7 +171,7 @@ autocmd BufRead *.py nmap <Leader>ps <Esc>:Pytest session<CR>
 autocmd BufRead *.py nmap <Leader>pn <Esc>:Pytest next<CR>
 
 " Only save Python file after successful syntax check
-au! BufWriteCmd *.py call CheckPythonSyntax()
+"au! BufWriteCmd *.py call CheckPythonSyntax()
 function CheckPythonSyntax()
   " Write the current buffer to a temporary file, check the syntax and
   " if no syntax errors are found, write the file
@@ -217,10 +229,16 @@ nnoremap <silent> <Leader>l :set nolist!<CR>
 " toggle linenumbering
 nnoremap <silent> <Leader>n :set nonumber!<CR>
 
-" toggle the NERDTree plugin ("[d]irectory")
-nnoremap <silent> <Leader>d :NERDTreeToggle<CR>
-" toggle the TagList plugin ("[o]utline")
-nnoremap <silent> <Leader>o :TlistToggle<CR>
+" toggle the NERDTree plugin ("[d]irectory tree")
+nnoremap <silent> <Leader>d :NERDTreeToggle<CR>A
+" toggle the TagList plugin ("[t]aglist")
+nnoremap <silent> <Leader>t :TlistToggle<CR>
+" open the Command-T commandline ("[o]pen file")
+nnoremap <silent> <Leader>o :CommandT<CR>
+" open the Command-T commandline ("open [b]uffer")
+nnoremap <silent> <Leader>b :CommandTBuffer<CR>
+" flush the Command-T cache ("[f]lush")
+cnoremap <Leader>f :CommandTFlush<CR>
 
 " faster switch to last buffer faster (like gt)
 nmap <silent> tt :b#<CR>
