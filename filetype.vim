@@ -6,4 +6,4 @@ au BufNewFile,BufRead *.csv	setf text
 au BufNewFile,BufRead *.tab	setf text
 au BufNewFile,BufRead *.tsv	setf text
 au BufNewFile,BufRead README	setf text
-au BufNewFile,BufRead *.py      setf python3
+au BufNewFile,BufRead *.py      setf python
