@@ -1,4 +1,6 @@
 backup/*
 tmp/*
 .*
+*.pyc
+*.class
 !.gitignore
