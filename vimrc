@@ -15,6 +15,10 @@ set shortmess=atI " short (a), truncate file (t), and no intro (I) messages
 set matchtime=5 " 10ths/sec to jump to matching brackets
 " set number " shows line numbers
 
+" make the autocomplte menu readable...
+highlight Pmenu ctermfg=black
+highlight PmenuSel ctermfg=black
+
 " Un-nerf searches
 set incsearch " highlight search phrases
 set hlsearch " keep the search highlighted when going through them
@@ -49,6 +53,8 @@ autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
 autocmd FileType c set omnifunc=ccomplete#Complete
+autocmd FileType java set omnifunc=javacomplete#Complete
+autocmd FileType java set completefunc=javacomplete#CompleteParamsInfo
 
 " Command line completion
 set wildmenu " turn on command line completion wild style
