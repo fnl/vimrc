@@ -31,7 +31,7 @@ set backspace=eol,start,indent
 
 " Let vim switch to paste mode, disabling all kinds of smartness and just
 " paste a whole buffer of text instead of regular insert behaviour
-set pastetoggle=± "<F5>
+set pastetoggle=±
 
 " Set exec-bit on files that start with a she-bang line
 au BufWritePost * if getline(1) =~ "^#!" | silent !chmod +x <afile>
@@ -45,20 +45,20 @@ filetype plugin indent on
 syntax enable
 
 " omni-completion on for...
-autocmd FileType python set omnifunc=pythoncomplete#Complete
-autocmd FileType python3 set omnifunc=python3complete#Complete
-autocmd FileType ruby set omnifunc=rubycomplete#Complete
-autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
-autocmd FileType c set omnifunc=ccomplete#Complete
-autocmd FileType java set omnifunc=javacomplete#Complete
-autocmd FileType java set completefunc=javacomplete#CompleteParamsInfo
+au FileType python set omnifunc=pythoncomplete#Complete
+au FileType python3 set omnifunc=python3complete#Complete
+au FileType ruby set omnifunc=rubycomplete#Complete
+au FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+au FileType html set omnifunc=htmlcomplete#CompleteTags
+au FileType css set omnifunc=csscomplete#CompleteCSS
+au FileType xml set omnifunc=xmlcomplete#CompleteTags
+au FileType c set omnifunc=ccomplete#Complete
+au FileType java set omnifunc=javacomplete#Complete
+"au FileType java set completefunc=javacomplete#CompleteParamsInfo
 
 " Command line completion
 set wildmenu " turn on command line completion wild style
-" but ignore files that are completely "useless" from an IDE perspective
+" but ignore files that are "useless" from an IDE perspective
 set wildignore=*.dll,*.o,*.obj,*.pyc,*.pyo,*.jpg,*.gif,*.png,*.swp,*.class
 set wildmode=list:longest " and show everything possible for completion
 
@@ -124,6 +124,7 @@ endif
 let g:SuperTabDefaultCompletionType="context"
 
 " TagList setup
+set tags=~/.tags,./.tags
 " hilight tag in list after n seconds (default: 4)
 let TlistHighlightTag=2
 " focus taglist on toggle
