@@ -7,6 +7,6 @@ set nowrap " do not wrap lines
 set list " show invisble characters
 set guifont=Monaco:h13
 set fuoptions=maxvert,maxhorz
-let Tlist_Show_Menu=1
+let Tlist_Show_Menu=1 " show tags in a menu
 nnoremap <silent> <F5> :TlistToggle<CR>
 colorscheme moria
