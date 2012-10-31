@@ -47,14 +47,18 @@ syntax enable
 " omni-completion on for...
 au FileType python set omnifunc=pythoncomplete#Complete
 au FileType python3 set omnifunc=python3complete#Complete
+au FileType python3,python set tags=./tags,tags,~/.pytags
 au FileType ruby set omnifunc=rubycomplete#Complete
+au FileType ruby set set tags=./tags,tags,~/.rtags
 au FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 au FileType html set omnifunc=htmlcomplete#CompleteTags
 au FileType css set omnifunc=csscomplete#CompleteCSS
 au FileType xml set omnifunc=xmlcomplete#CompleteTags
-au FileType c set omnifunc=ccomplete#Complete
+au FileType c,h set omnifunc=ccomplete#Complete
+au FileTYpe c,h set tags=./tags,tags,~/.ctags
 au FileType java set omnifunc=javacomplete#Complete
 "au FileType java set completefunc=javacomplete#CompleteParamsInfo
+au FileType java set tags=./tags,tags,~/.jtags
 
 " Command line completion
 set wildmenu " turn on command line completion wild style
@@ -124,7 +128,7 @@ endif
 let g:SuperTabDefaultCompletionType="context"
 
 " TagList setup
-set tags=~/.tags,./.tags
+set tags=./tags,tags,~/.tags
 " hilight tag in list after n seconds (default: 4)
 let TlistHighlightTag=2
 " focus taglist on toggle
@@ -147,6 +151,23 @@ let Tlist_WinWidth="auto"
 
 " NERDtree setup
 let NERDTreeQuitOnOpen=1
+
+" cscope setup
+
+if has("cscope")
+    set csprg=cscope
+    set csto=0
+    au FileType c,h set cst
+    au FileType cpp,hpp set cst
+    set nocsverb
+    " add any database in current directory
+    if filereadable("cscope.out")
+        cs add cscope.out
+        " else add database pointed to by environment
+    elseif $CSCOPE_DB != ""
+        cs add $CSCOPE_DB
+    endif
+endif
 
 " Python 3 Setup
 " --------------
