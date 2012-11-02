@@ -13,11 +13,11 @@ set history=100 " a bit more history
 set visualbell " stop dinging!!!
 set shortmess=atI " short (a), truncate file (t), and no intro (I) messages
 set matchtime=5 " 10ths/sec to jump to matching brackets
-" set number " shows line numbers
+"set number " shows line numbers
 
-" make the autocomplte menu readable...
-highlight Pmenu ctermfg=black
-highlight PmenuSel ctermfg=black
+" make the autocomplete menu readable...
+"highlight Pmenu ctermfg=black
+"highlight PmenuSel ctermfg=black
 
 " Un-nerf searches
 set incsearch " highlight search phrases
@@ -34,31 +34,31 @@ set backspace=eol,start,indent
 set pastetoggle=±
 
 " Set exec-bit on files that start with a she-bang line
-au BufWritePost * if getline(1) =~ "^#!" | silent !chmod +x <afile>
-
-" Enable extended % matching (if/elsif/else/end) and SGML tags
-runtime macros/matchit.vim
+"au BufWritePost * if getline(1) =~ "^#!" | silent !chmod +x <afile>
 
 " Syntax highlighting and filetype-dependent indenting
 filetype on
 filetype plugin indent on
-syntax enable
+syntax on
+
+" Default tag files
+"set tags=./tags,tags,~/.tags
 
 " omni-completion on for...
-au FileType python set omnifunc=pythoncomplete#Complete
-au FileType python3 set omnifunc=python3complete#Complete
-au FileType python3,python set tags=./tags,tags,~/.pytags
-au FileType ruby set omnifunc=rubycomplete#Complete
-au FileType ruby set set tags=./tags,tags,~/.rtags
-au FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-au FileType html set omnifunc=htmlcomplete#CompleteTags
-au FileType css set omnifunc=csscomplete#CompleteCSS
-au FileType xml set omnifunc=xmlcomplete#CompleteTags
-au FileType c,h set omnifunc=ccomplete#Complete
-au FileTYpe c,h set tags=./tags,tags,~/.ctags
-au FileType java set omnifunc=javacomplete#Complete
+"au FileType python set omnifunc=pythoncomplete#Complete
+"au FileType python3 set omnifunc=python3complete#Complete
+"au FileType python3,python set tags=./tags,tags,~/.pytags
+"au FileType ruby set omnifunc=rubycomplete#Complete
+"au FileType ruby set set tags=./tags,tags,~/.rtags
+"au FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+"au FileType html set omnifunc=htmlcomplete#CompleteTags
+"au FileType css set omnifunc=csscomplete#CompleteCSS
+"au FileType xml set omnifunc=xmlcomplete#CompleteTags
+"au FileType c,h set omnifunc=ccomplete#Complete
+"au FileTYpe c,h set tags=./tags,tags,~/.ctags
+"au FileType java set omnifunc=javacomplete#Complete
 "au FileType java set completefunc=javacomplete#CompleteParamsInfo
-au FileType java set tags=./tags,tags,~/.jtags
+"au FileType java set tags=./tags,tags,~/.jtags
 
 " Command line completion
 set wildmenu " turn on command line completion wild style
@@ -76,8 +76,8 @@ set laststatus=2 " show the statusline - always
 
 " Tab indention handling
 set autoindent " indent files
-set copyindent " copy the previous indetation on autoindenting
 au FileType text set noautoindent
+set copyindent " copy the previous indetation on autoindenting
 set expandtab " no real tabs
 au FileType text set noexpandtab
 set smarttab " insert blanks using shiftwidth; off uses (soft)tabstop
@@ -95,7 +95,7 @@ set foldminlines=2 " number of lines up to which not to fold
 set foldnestmax=5 " fold max depth (20 is max for indent)
 
 " Store backups into special dirs
-set nobackup " by default, ignore backups - swaps are good enough
+"set nobackup " by default, ignore backups - swaps are good enough
 set backupdir=~/.vim/backup " backup files dir
 set directory=~/.vim/tmp " swap files dir
 
@@ -119,16 +119,40 @@ autocmd CursorMoved,CursorMovedI * call s:Cursor_Moved()
 let g:last_pos = 0
 
 " Tell Rgrep not to use Xargs on Mac OS 'cause it sucks.
-let s:os = system("uname")
-if s:os =~ "Darwin"
-  let g:Grep_Xargs_Options='-0'
+"let s:os = system("uname")
+"if s:os =~ "Darwin"
+"  let g:Grep_Xargs_Options='-0'
+"endif
+
+" PLUGINS
+
+" Pathogen setup
+call pathogen#infect()
+call pathogen#helptags()
+
+" cscope setup
+if has("cscope")
+    set csprg=cscope
+    set csto=0
+    au FileType c,h set cst
+    au FileType cpp,hpp set cst
+    set nocsverb
+    " add any database in current directory
+    if filereadable("cscope.out")
+        cs add cscope.out
+        " else add database pointed to by environment
+    elseif $CSCOPE_DB != ""
+        cs add $CSCOPE_DB
+    endif
 endif
+
+" Enable extended % matching (if/elsif/else/end) and SGML tags
+"runtime macros/matchit.vim
 
 " SuperTab setup: use context-dependent completion style
 let g:SuperTabDefaultCompletionType="context"
 
 " TagList setup
-set tags=./tags,tags,~/.tags
 " hilight tag in list after n seconds (default: 4)
 let TlistHighlightTag=2
 " focus taglist on toggle
@@ -147,27 +171,11 @@ let Tlist_Inc_Winwidth=0
 let Tlist_Close_On_Select=1
 " close vim if taglist is the only window and buffer
 let Tlist_Exit_OnlyWindow=1
-let Tlist_WinWidth="auto"
+" taglist window width setting
+"let Tlist_WinWidth="auto"
 
 " NERDtree setup
 let NERDTreeQuitOnOpen=1
-
-" cscope setup
-
-if has("cscope")
-    set csprg=cscope
-    set csto=0
-    au FileType c,h set cst
-    au FileType cpp,hpp set cst
-    set nocsverb
-    " add any database in current directory
-    if filereadable("cscope.out")
-        cs add cscope.out
-        " else add database pointed to by environment
-    elseif $CSCOPE_DB != ""
-        cs add $CSCOPE_DB
-    endif
-endif
 
 " Python 3 Setup
 " --------------
@@ -177,11 +185,11 @@ au BufRead,BufNewFile *.py set shiftwidth=4
 au BufRead,BufNewFile *.py set softtabstop=4
 
 " Python make commands
-autocmd BufRead *.py set makeprg=python3\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
-autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
+"autocmd BufRead *.py set makeprg=python3\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
+"autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
 
 " pydoc.vim setup
-let g:pydoc_cmd = "pydoc3"
+"let g:pydoc_cmd = "pydoc3"
 
 " Python code checks, tests, and runs
 " run checks
@@ -192,11 +200,11 @@ let g:pydoc_cmd = "pydoc3"
 "autocmd BufRead *.py nmap <Leader>rp :!python3 %<CR>
 
 " Pytest.vim and py.test
-autocmd BufRead *.py nmap <Leader>pf <Esc>:Pytest file<CR>
-autocmd BufRead *.py nmap <Leader>pc <Esc>:Pytest class<CR>
-autocmd BufRead *.py nmap <Leader>pm <Esc>:Pytest method<CR>
-autocmd BufRead *.py nmap <Leader>ps <Esc>:Pytest session<CR>
-autocmd BufRead *.py nmap <Leader>pn <Esc>:Pytest next<CR>
+"autocmd BufRead *.py nmap <Leader>pf <Esc>:Pytest file<CR>
+"autocmd BufRead *.py nmap <Leader>pc <Esc>:Pytest class<CR>
+"autocmd BufRead *.py nmap <Leader>pm <Esc>:Pytest method<CR>
+"autocmd BufRead *.py nmap <Leader>ps <Esc>:Pytest session<CR>
+"autocmd BufRead *.py nmap <Leader>pn <Esc>:Pytest next<CR>
 
 " Only save Python file after successful syntax check
 "au! BufWriteCmd *.py call CheckPythonSyntax()
@@ -220,17 +228,17 @@ function CheckPythonSyntax()
 endfunction
 
 " Text expansion - iabbrev
-autocmd BufRead *.py iabbrev ifmain if __name__ == '__main__':
-autocmd BufRead *.py iabbrev definit def __init__(self,
-autocmd BufRead *.py iabbrev defdel def __del__(self,
-autocmd BufRead *.py iabbrev defcall def __call__(self,
-autocmd BufRead *.py iabbrev defiter def __iter__(self,
-autocmd BufRead *.py iabbrev defnext def __next__(self,
+"autocmd BufRead *.py iabbrev ifmain if __name__ == '__main__':
+"autocmd BufRead *.py iabbrev definit def __init__(self,
+"autocmd BufRead *.py iabbrev defdel def __del__(self,
+"autocmd BufRead *.py iabbrev defcall def __call__(self,
+"autocmd BufRead *.py iabbrev defiter def __iter__(self,
+"autocmd BufRead *.py iabbrev defnext def __next__(self,
 
 " Command Line Mappings
 " ---------------------
 
-" Switch to sudo vim <file> **after** opening a file
+" Write in sudo mode **after** opening a file
 cmap w!! w !sudo tee % > /dev/null
 
 " Key Mappings -- remember <S-Space> does not work on Mac :(
@@ -241,9 +249,9 @@ cmap w!! w !sudo tee % > /dev/null
 nmap <silent> <Leader>\ :nohlsearch<CR>
 
 " quick make commands and moving through errors
-nnoremap <F7> :cprevious<CR>
-nnoremap <F8> :make<CR>
-nnoremap <F9> :cnext<CR>
+"nnoremap <F7> :cprevious<CR>
+"nnoremap <F8> :make<CR>
+"nnoremap <F9> :cnext<CR>
 
 " delete all trailing whitespaces when using BS in visual mode
 vnoremap <BS> :<BS><BS><BS><BS><BS>%s/\s\+$//ge<CR>
@@ -262,11 +270,15 @@ nnoremap <silent> <Leader>d :NERDTreeToggle<CR>A
 " toggle the TagList plugin ("[t]aglist")
 nnoremap <silent> <Leader>t :TlistToggle<CR>
 " open the Command-T commandline ("[o]pen file")
-nnoremap <silent> <Leader>o :CommandT<CR>
+"nnoremap <silent> <Leader>o :CommandT<CR>
+" open the CtrlP commandline ("[o]pen file")
+nnoremap <silent> <Leader>o :CtrlP<CR>
 " open the Command-T commandline ("open [b]uffer")
-nnoremap <silent> <Leader>b :CommandTBuffer<CR>
+"nnoremap <silent> <Leader>b :CommandTBuffer<CR>
+" open the CtrlP commandline ("open [b]uffer")
+nnoremap <silent> <Leader>b :CtrlPBuffer<CR>
 " flush the Command-T cache ("[f]lush")
-cnoremap <Leader>f :CommandTFlush<CR>
+"cnoremap <Leader>f :CommandTFlush<CR>
 
 " faster switch to last buffer faster (like gt)
 nmap <silent> tt :b#<CR>
