@@ -1,6 +1,4 @@
-backup/*
-tmp/*
 .*
-*.pyc
-*.class
+**/*.pyc
+**/*.class
 !.gitignore
