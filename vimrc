@@ -150,7 +150,7 @@ if has("cscope")
 endif
 
 " Enable extended % matching (if/elsif/else/end) and SGML tags
-"runtime macros/matchit.vim
+runtime macros/matchit.vim
 
 " SuperTab setup: use context-dependent completion style
 let g:SuperTabDefaultCompletionType="context"
