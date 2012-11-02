@@ -183,6 +183,15 @@ let NERDTreeQuitOnOpen=1
 " Python Setup
 " ------------
 
+" jedi setup
+let g:jedi#goto_command = ""
+let g:jedi#get_definition_command = ""
+let g:jedi#use_tabs_not_buffers = 0
+let g:jedi#popup_on_dot = 0
+let g:jedi#rename_command = ""
+let g:jedi#related_names_command = ""
+
+
 " Update shiftwidth/softtabstop
 au BufRead,BufNewFile *.py set shiftwidth=4
 au BufRead,BufNewFile *.py set softtabstop=4
