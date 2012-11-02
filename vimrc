@@ -44,12 +44,14 @@ filetype on
 filetype plugin indent on
 syntax enable
 
+" TagList setup
+set tags=./tags,tags,~/.tags
 " omni-completion on for...
 au FileType python set omnifunc=pythoncomplete#Complete
 au FileType python3 set omnifunc=python3complete#Complete
 au FileType python3,python set tags=./tags,tags,~/.pytags
 au FileType ruby set omnifunc=rubycomplete#Complete
-au FileType ruby set set tags=./tags,tags,~/.rtags
+au FileType ruby set tags=./tags,tags,~/.rtags
 au FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 au FileType html set omnifunc=htmlcomplete#CompleteTags
 au FileType css set omnifunc=csscomplete#CompleteCSS
@@ -127,8 +129,6 @@ endif
 " SuperTab setup: use context-dependent completion style
 let g:SuperTabDefaultCompletionType="context"
 
-" TagList setup
-set tags=./tags,tags,~/.tags
 " hilight tag in list after n seconds (default: 4)
 let TlistHighlightTag=2
 " focus taglist on toggle
