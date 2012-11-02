@@ -34,7 +34,7 @@ set backspace=eol,start,indent
 set pastetoggle=±
 
 " Set exec-bit on files that start with a she-bang line
-"au BufWritePost * if getline(1) =~ "^#!" | silent !chmod +x <afile>
+au BufWritePost * if getline(1) =~ "^#!" | silent !chmod +x <afile>
 
 " Syntax highlighting and filetype-dependent indenting
 filetype on
@@ -124,7 +124,8 @@ let g:last_pos = 0
 "  let g:Grep_Xargs_Options='-0'
 "endif
 
-" PLUGINS
+" Plugins Setup
+" -------------
 
 " Pathogen setup
 call pathogen#infect()
@@ -177,8 +178,8 @@ let Tlist_Exit_OnlyWindow=1
 " NERDtree setup
 let NERDTreeQuitOnOpen=1
 
-" Python 3 Setup
-" --------------
+" Python Setup
+" ------------
 
 " Update shiftwidth/softtabstop
 au BufRead,BufNewFile *.py set shiftwidth=4
