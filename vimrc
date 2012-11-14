@@ -45,6 +45,8 @@ syntax on
 "set tags=./tags,tags,~/.tags
 
 " TagList setup
+" python3 language
+let s:tlist_def_python_settings = 'python3;c:class;m:member;f:function'
 set tags=./tags,tags,~/.tags
 " omni-completion on for...
 "au FileType python set omnifunc=pythoncomplete#Complete
@@ -191,6 +193,9 @@ let g:jedi#popup_on_dot = 0
 let g:jedi#rename_command = ""
 let g:jedi#related_names_command = ""
 
+" Syntax highlighting
+let g:python_highlight_all = 1
+
 
 " Update shiftwidth/softtabstop
 au BufRead,BufNewFile *.py set shiftwidth=4
@@ -219,7 +224,7 @@ au BufRead,BufNewFile *.py set softtabstop=4
 "autocmd BufRead *.py nmap <Leader>pn <Esc>:Pytest next<CR>
 
 " Only save Python file after successful syntax check
-"au! BufWriteCmd *.py call CheckPythonSyntax()
+au! BufWriteCmd *.py call CheckPythonSyntax()
 function CheckPythonSyntax()
   " Write the current buffer to a temporary file, check the syntax and
   " if no syntax errors are found, write the file
@@ -227,7 +232,7 @@ function CheckPythonSyntax()
   let curfile = bufname("%")
   let tmpfile = tempname()
   silent execute "write! ".tmpfile
-  let output = system("python3 -c \"__import__('py_compile').compile(r'".tmpfile."')\" 2>&1")
+  let output = system(compiler." -c \"__import__('py_compile').compile(r'".tmpfile."')\" 2>&1")
   if output != ''
     " Make sure the output specifies the correct filename
     let output = substitute(output, fnameescape(tmpfile), fnameescape(curfile), "g")
