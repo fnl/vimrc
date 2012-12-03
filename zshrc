@@ -23,7 +23,8 @@ autoload -Uz compinit && compinit
 if [[ -x "dircolors" ]]
 then
   eval `dircolors`
-else if [[ -x "gdircolors" ]]
+elif [[ -x "gdircolors" ]]
+then
   eval `gdircolors`
 fi
 
