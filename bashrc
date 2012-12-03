@@ -6,15 +6,17 @@
 HISTCONTROL=$HISTCONTROL${HISTCONTROL+,}ignoredups
 # ... or force ignoredups and ignorespace
 #HISTCONTROL=ignoreboth
+HISTSIZE=1000
 
 # append to the history file, don't overwrite it
 shopt -s histappend
 
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
+
+# save each line of a multi-line command in the same history entry
+shopt -s cmdhist
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -83,6 +85,12 @@ if [ -f ~/.aliases ]; then
     . ~/.aliases
 fi
 
+# machine-specific environment
+if [ -f ~/.environment ]; then
+    . ~/.environment
+fi
+
+
 # machine-specific, local settings.
 if [ -f ~/.bash_local ]; then
   . ~/.bash_local
@@ -90,6 +98,9 @@ fi
 
 # use vim
 export EDITOR=vim
+
+# use US locale and UTF-8 encoding by default
+export LC_CTYPE=en_US.UTF-8
 
 # go Z
 #exec -l /usr/bin/zsh

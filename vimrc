@@ -190,7 +190,7 @@ let g:jedi#goto_command = ""
 let g:jedi#get_definition_command = ""
 let g:jedi#use_tabs_not_buffers = 0
 let g:jedi#popup_on_dot = 0
-let g:jedi#rename_command = ""
+let g:jedi#rename_command = "<leader>r"
 let g:jedi#related_names_command = ""
 
 " Syntax highlighting
@@ -228,7 +228,7 @@ au! BufWriteCmd *.py call CheckPythonSyntax()
 function CheckPythonSyntax()
   " Write the current buffer to a temporary file, check the syntax and
   " if no syntax errors are found, write the file
-  let compiler = "python3"
+  let compiler = "python"
   let curfile = bufname("%")
   let tmpfile = tempname()
   silent execute "write! ".tmpfile

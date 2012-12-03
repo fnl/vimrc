@@ -19,11 +19,17 @@ bindkey -e
 zstyle :compinstall filename '/home/fleitner/.zshrc'
 autoload -Uz compinit && compinit
 
+# completion color settings
+if [[ -x "dircolors" ]]
+then
+  eval `dircolors`
+else if [[ -x "gdircolors" ]]
+  eval `gdircolors`
+fi
+
 # completion settings
 # unset the '//' pattern to mean nothing
 zstyle ':completion:*' squeeze-slashes true
-# completion color settings
-eval `dircolors`
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 # make completion feel bash-like
@@ -35,7 +41,8 @@ setopt NO_ALWAYS_LAST_PROMPT
 # colors creates associative arrays $fg and $bg with escaped color codes
 autoload -U colors zsh/terminfo
 # set up colors if the terminal can display at least 8 colors
-if [[ "$terminfo[colors]" -ge 8 ]]; then
+if [[ "$terminfo[colors]" -ge 8 ]]
+then
   colors
   PROMPT="%{$fg[green]%}%(?..[%?] )%(1L.%L.)%{$reset_color%}#%{$fg[green]%}%h%{$reset_color%}<%{$fg[yellow]%}%l%{$reset_color%}>%{$fg[red]%}%m%{$reset_color%}:%{$fg[blue]%}%(4~,.../,)%3~%{$reset_color%}%(!.#.$) "
   alias ls='ls --color=auto'
@@ -66,6 +73,12 @@ alias -s tex=vim
 if [[ -f ~/.aliases ]]
 then
   . ~/.aliases
+fi
+
+# read in local environment setup
+if [[ -f ~/.environment ]]
+then
+  . ~/.environment
 fi
 
 # example function: ROT13 encryption
