@@ -1,4 +1,4 @@
-setopt autocd extendedglob nomatch
+setopt autocd extendedglob nomatch interactivecomments checkjobs
 
 # history settings
 HISTFILE=~/.zsh_history
