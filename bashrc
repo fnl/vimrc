@@ -103,4 +103,6 @@ export EDITOR=vim
 export LC_CTYPE=en_US.UTF-8
 
 # go Z
-exec -l `which zsh`
+if [ -x `which zsh` ]; then
+  exec -l `which zsh`
+fi
