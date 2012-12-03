@@ -103,4 +103,4 @@ export EDITOR=vim
 export LC_CTYPE=en_US.UTF-8
 
 # go Z
-#exec -l /usr/bin/zsh
+exec -l `which zsh`
