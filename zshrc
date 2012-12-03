@@ -57,19 +57,6 @@ fi
 # terminal title to "user@host: path"
 function precmd () { print -Pn "\e]0;%n@%m: %d\a" }
 
-# file-type commands
-alias -s c=vim
-alias -s C=vim
-alias -s cpp=vim
-alias -s h=vim
-alias -s H=vim
-alias -s hpp=vim
-alias -s java=vim
-alias -s pl=vim
-alias -s py=vim
-alias -s rb=vim
-alias -s tex=vim
-
 # read in default aliases
 if [[ -f ~/.aliases ]]
 then
