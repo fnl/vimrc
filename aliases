@@ -1,0 +1,15 @@
+alias ..='cd ..'
+alias ...='cd ../..'
+alias l='ls -CF'
+alias ll='ls -lh'
+alias la='ls -A'
+alias lla='ls -lhA'
+alias vi='vim'
+alias tirith="ssh tirith"
+alias geonosis="ssh geonosis"
+alias ackbar="ssh ackbar"
+alias mbp2="ssh mbp2"
+alias curl-json='curl -H"Content-Type: application/json;charset=utf-8"'
+alias curl-post='curl -X POST'
+alias curl-post-json='curl -X POST -H"Content-Type: application/json;charset=utf-8"'
+alias ipython-notebook='ipython notebook --pylab inline --autoindent --automagic --no-browser --ip 10.10.116.23 --notebook-dir ~/data/notebooks --pprint --pylab wx'
