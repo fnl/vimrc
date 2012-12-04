@@ -75,7 +75,7 @@ set wildmode=list:longest " and show everything possible for completion
 " flags: modified readonly help preview_window
 " (fileformat){filetype} tagname
 " [byteval_under_cursor][line_number,virtual_col_number][percentage_in_file]
-set statusline=%n:%f%m%r%h%w\ (%{&ff}){%Y}\ %{Tlist_Get_Tagname_By_Line()}\ %=[0x\%02.2B][%03l,%02v][%02p%%]
+set statusline=%n:%f%m%r%h%w\ [%{&fenc==\"\"?&enc:&fenc}](%{&ff}){%Y}\ %{Tlist_Get_Tagname_By_Line()}\ %=[0x\%02.2B][%03l,%02v][%02p%%]
 set laststatus=2 " show the statusline - always
 
 " Tab indention handling
@@ -222,27 +222,6 @@ au BufRead,BufNewFile *.py set softtabstop=4
 "autocmd BufRead *.py nmap <Leader>pm <Esc>:Pytest method<CR>
 "autocmd BufRead *.py nmap <Leader>ps <Esc>:Pytest session<CR>
 "autocmd BufRead *.py nmap <Leader>pn <Esc>:Pytest next<CR>
-
-" Only save Python file after successful syntax check
-au! BufWriteCmd *.py call CheckPythonSyntax()
-function CheckPythonSyntax()
-  " Write the current buffer to a temporary file, check the syntax and
-  " if no syntax errors are found, write the file
-  let compiler = "python"
-  let curfile = bufname("%")
-  let tmpfile = tempname()
-  silent execute "write! ".tmpfile
-  let output = system(compiler." -c \"__import__('py_compile').compile(r'".tmpfile."')\" 2>&1")
-  if output != ''
-    " Make sure the output specifies the correct filename
-    let output = substitute(output, fnameescape(tmpfile), fnameescape(curfile), "g")
-    echo output
-  else
-    write
-  endif
-  " Delete the temporary file when done
-  call delete(tmpfile)
-endfunction
 
 " Text expansion - iabbrev
 "autocmd BufRead *.py iabbrev ifmain if __name__ == '__main__':
