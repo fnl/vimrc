@@ -1,11 +1,12 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-# don't put duplicate lines in the history
-# don't overwrite GNU Midnight Commander's setting of `ignorespace'
+# don't put duplicate lines in the history and don't overwrite previous settings
 HISTCONTROL=$HISTCONTROL${HISTCONTROL+,}ignoredups
-# ... or force ignoredups and ignorespace
+# ... or force ignoredups and ignorespace (mc)
 #HISTCONTROL=ignoreboth
+
+# set the size of the history buffer
 HISTSIZE=1000
 
 # append to the history file, don't overwrite it
@@ -21,20 +22,18 @@ shopt -s cmdhist
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# set variable identifying the chroot you work in (used in the prompt below)
+# set variable identifying the chroot you work in
 if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-# set a fancy prompt (non-color, unless we know we "want" color)
+# check for a color terminal to set a color prompt
 case "$TERM" in
     xterm-color) color_prompt=yes;;
     xterm-256color) color_prompt=yes;;
 esac
 
-# uncomment for a colored prompt, if the terminal has the capability; turned
-# off by default to not distract the user: the focus in a terminal window
-# should be on the output of commands, not on the prompt
+# uncomment for a forced colored prompt
 #force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
@@ -48,61 +47,92 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
+# configure the prompt (color?)
 if [ "$color_prompt" = yes ]; then
-    PS1='\[\033[01;33m\]\u\[\033[00m\]@\[\033[01;32m\]\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1='\[\033[01;36m\]\!\[\033[00m\]#\[\033[01;33m\]\u\[\033[00m\]@\[\033[01;32m\]\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
-    PS1='\u@\h:\w\$ '
+    PS1='\!#\u@\h:\w\$ '
 fi
-unset color_prompt force_color_prompt
 
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
-*)
-    ;;
-esac
+# check for dircolors support of ls
+if [ -x dircolors ]; then
+  dircolors="dircolors"
+elif [ -x gdircolors ]; then
+  dircolors="gdircolors"
+else
+  dircolors=
+fi
 
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+#use GNU ls in preference over "default" ls (Mac OSX)
+[ -x gls ] && alias ls='gls'		
+
+if [ -n "$dircolors" ]; then
+    test -f ~/.dircolors && eval `$dircolors -b ~/.dircolors` || eval `$dircolors -b`
     alias ls='ls --color=auto'
     alias grep='grep --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
 fi
 
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
+# enable programmable completion features
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
+elif [ -f /usr/local/etc/bash_completion ] && ! shopt -oq posix; then
+    . /usr/local/etc/bash_completion
+else
+    echo "bash completion disabled"
 fi
 
-# machine-specific alias definitions
-if [ -f ~/.aliases ]; then
-    . ~/.aliases
-fi
-
-# machine-specific environment
-if [ -f ~/.environment ]; then
-    . ~/.environment
-fi
-
-
-# machine-specific, local settings.
-if [ -f ~/.bash_local ]; then
-  . ~/.bash_local
-fi
-
-# use vim
+# use vim as editor
 export EDITOR=vim
 
 # use US locale and UTF-8 encoding by default
 export LC_CTYPE=en_US.UTF-8
 
-# go Z
-if [ -x `which zsh` ]; then
-  exec -l `which zsh`
+# a simple terminal calculator
+calc() { awk "BEGIN{ print $* }"; }
+
+# extract the longest line from a file
+longestline() { awk '{ print length, $0}' "$1" | sort -nr | head -1; }
+
+# show line number X in file Y
+showline() { awk 'NR == '$1' { print; exit }' "$2"; }
+
+# convert between DOS line-breaks and UNIX newlines
+dos2unix() { awk '{ sub(/\r$/, ""); print }' "$@"; }
+unix2dos() { awk '{ sub(/$/, "\r"); print }' "$@"; }
+
+# remove Unicode BOMs from files
+removeBOM() { awk '{ if (NR==1) sub(/^\xef\xbb\xbf/, ""); print }' "$@"; }
+
+# show the ten most used commands
+topten() { history | awk '{ a[$2]++ }END{ for (i in a) {print a[i] " " i} }' | sort -rn | head; }
+
+# diff two unsorted files, sorting them in memory
+diff-sorted() { one="$1"; two="$2"; shift 2; diff $* <(sort "$one") <(sort "$two"); }
+
+# source local alias definitions
+if [ -f ~/.aliases ]; then
+    . ~/.aliases
 fi
+
+# source local environment variables
+if [ -r ~/.environment ]; then
+    . ~/.environment
+fi
+
+# source local shell settings
+if [ -r ~/.bash_local ]; then
+  . ~/.bash_local
+fi
+
+# global aliases
+alias ..='cd ..'
+alias ...='cd ../..'
+alias l='ls -CF'
+alias ll='ls -lh'
+alias la='ls -A'
+alias lla='ls -lhA'
+alias vi='vim' # always use vim
+alias curl-json='curl -H"Content-Type: application/json;charset=utf-8"'
+alias curl-post='curl -X POST'
+alias curl-post-json='curl -X POST -H"Content-Type: application/json;charset=utf-8"'
+
