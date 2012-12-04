@@ -65,6 +65,7 @@ if [ "$color_prompt" = yes ]
 then PS1='\[\033[01;36m\]\!\[\033[00m\]#\[\033[01;33m\]\u\[\033[00m\]@\[\033[01;32m\]\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else PS1='\!#\u@\h:\w\$ '
 fi
+unset color_prompt force_color_prompt
 
 unset color_prompt force_color_prompt
 
@@ -86,6 +87,7 @@ then
   fi
 else lscolor=
 fi
+unset dircolors
 
 unset dircolors
 
@@ -136,6 +138,7 @@ diff-sorted() { one="$1"; two="$2"; shift 2; diff $* <(sort "$one") <(sort "$two
 [ -f ~/.bash_local ] && . ~/.bash_local
 
 # global aliases
+#use GNU ls in preference over "default" ls (Mac OSX)
 alias ..='cd ..'
 alias ...='cd ../..'
 # use GNU ls in preference over "default" ls (Mac OSX)
