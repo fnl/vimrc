@@ -23,7 +23,7 @@ shopt -s cmdhist
 [ "`uname`" != "Darwin" ] && shopt -s autocd
 
 # patterns which fail to match filenames during filename expansion result in an expansion error
-shopt -s failglob
+#shopt -s failglob
 
 # extended pattern matching features
 shopt -s extglob
@@ -65,7 +65,6 @@ if [ "$color_prompt" = yes ]
 then PS1='\[\033[01;36m\]\!\[\033[00m\]#\[\033[01;33m\]\u\[\033[00m\]@\[\033[01;32m\]\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else PS1='\!#\u@\h:\w\$ '
 fi
-unset color_prompt force_color_prompt
 
 unset color_prompt force_color_prompt
 
