@@ -102,8 +102,7 @@ unset dircolors
 export EDITOR=vim
 
 # use US locale and UTF-8 encoding by default
-export LC_CTYPE="en_US.UTF-8"
-export LANG="en_US"
+export LC_ALL="en_US.UTF-8"
 
 # a simple terminal calculator
 calc() { awk "BEGIN{ print $* }"; }
