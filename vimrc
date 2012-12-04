@@ -43,11 +43,11 @@ syntax on
 
 " Default tag files
 "set tags=./tags,tags,~/.tags
+set tags=./tags,tags
 
 " TagList setup
 " python3 language
 let s:tlist_def_python_settings = 'python3;c:class;m:member;f:function'
-set tags=./tags,tags,~/.tags
 " omni-completion on for...
 "au FileType python set omnifunc=pythoncomplete#Complete
 "au FileType python3 set omnifunc=python3complete#Complete
@@ -73,7 +73,7 @@ set wildmode=list:longest " and show everything possible for completion
 " Status line as good as it gets...
 " %buffer_number:%file_name
 " flags: modified readonly help preview_window
-" (fileformat){filetype} tagname
+" [fileencoding](fileformat){filetype} tagname
 " [byteval_under_cursor][line_number,virtual_col_number][percentage_in_file]
 set statusline=%n:%f%m%r%h%w\ [%{&fenc==\"\"?&enc:&fenc}](%{&ff}){%Y}\ %{Tlist_Get_Tagname_By_Line()}\ %=[0x\%02.2B][%03l,%02v][%02p%%]
 set laststatus=2 " show the statusline - always
@@ -122,7 +122,7 @@ endfunction
 autocmd CursorMoved,CursorMovedI * call s:Cursor_Moved()
 let g:last_pos = 0
 
-" Tell Rgrep not to use Xargs on Mac OS 'cause it sucks.
+" Tell Rgrep not to use Xargs on Mac OS
 "let s:os = system("uname")
 "if s:os =~ "Darwin"
 "  let g:Grep_Xargs_Options='-0'
@@ -196,25 +196,22 @@ let g:jedi#related_names_command = ""
 " Syntax highlighting
 let g:python_highlight_all = 1
 
-
 " Update shiftwidth/softtabstop
 au BufRead,BufNewFile *.py set shiftwidth=4
 au BufRead,BufNewFile *.py set softtabstop=4
 
 " Python make commands
-"autocmd BufRead *.py set makeprg=python3\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
-"autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
 
 " pydoc.vim setup
-"let g:pydoc_cmd = "pydoc3"
+let g:pydoc_cmd = "pydoc3"
 
 " Python code checks, tests, and runs
 " run checks
-"autocmd BufRead *.py nmap <Leader>rc :!pyflakes3k %<CR>
+autocmd BufRead *.py nmap <Leader>rc :!pyflakes3k %<CR>
 " run test all
-"autocmd BufRead *.py nmap <Leader>rt :!py.test-3 -s --doctest-modules --nocapturelog %<CR>
+autocmd BufRead *.py nmap <Leader>rt :!py.test-3 -s --doctest-modules --nocapturelog %<CR>
 " run python
-"autocmd BufRead *.py nmap <Leader>rp :!python3 %<CR>
+autocmd BufRead *.py nmap <Leader>rp :!python3 %<CR>
 
 " Pytest.vim and py.test
 "autocmd BufRead *.py nmap <Leader>pf <Esc>:Pytest file<CR>
@@ -224,30 +221,29 @@ au BufRead,BufNewFile *.py set softtabstop=4
 "autocmd BufRead *.py nmap <Leader>pn <Esc>:Pytest next<CR>
 
 " Text expansion - iabbrev
-"autocmd BufRead *.py iabbrev ifmain if __name__ == '__main__':
-"autocmd BufRead *.py iabbrev definit def __init__(self,
-"autocmd BufRead *.py iabbrev defdel def __del__(self,
-"autocmd BufRead *.py iabbrev defcall def __call__(self,
-"autocmd BufRead *.py iabbrev defiter def __iter__(self,
-"autocmd BufRead *.py iabbrev defnext def __next__(self,
+autocmd BufRead *.py iabbrev ifmain if __name__ == '__main__':
+autocmd BufRead *.py iabbrev definit def __init__(self,
+autocmd BufRead *.py iabbrev defdel def __del__(self,
+autocmd BufRead *.py iabbrev defcall def __call__(self,
+autocmd BufRead *.py iabbrev defiter def __iter__(self,
+autocmd BufRead *.py iabbrev defnext def __next__(self,
 
 " Command Line Mappings
 " ---------------------
 
-" Write in sudo mode **after** opening a file
-cmap w!! w !sudo tee % > /dev/null
+" remember <S-Space> does not work on Mac :(
+" the mapping for highlight search disable was defined already
 
-" Key Mappings -- remember <S-Space> does not work on Mac :(
-" ------------
-" remember the mapping for highlight search disable was defined already
+" write in sudo mode **after** opening a file
+cmap w!! w !sudo tee % > /dev/null
 
 " quickly clear serach highlights
 nmap <silent> <Leader>\ :nohlsearch<CR>
 
 " quick make commands and moving through errors
-"nnoremap <F7> :cprevious<CR>
-"nnoremap <F8> :make<CR>
-"nnoremap <F9> :cnext<CR>
+nnoremap <F7> :cprevious<CR>
+nnoremap <F8> :make<CR>
+nnoremap <F9> :cnext<CR>
 
 " delete all trailing whitespaces when using BS in visual mode
 vnoremap <BS> :<BS><BS><BS><BS><BS>%s/\s\+$//ge<CR>
@@ -263,8 +259,10 @@ nnoremap <silent> <Leader>n :set nonumber!<CR>
 
 " toggle the NERDTree plugin ("[d]irectory tree")
 nnoremap <silent> <Leader>d :NERDTreeToggle<CR>A
+
 " toggle the TagList plugin ("[t]aglist")
 nnoremap <silent> <Leader>t :TlistToggle<CR>
+
 " open the Command-T commandline ("[o]pen file")
 "nnoremap <silent> <Leader>o :CommandT<CR>
 " open the CtrlP commandline ("[o]pen file")
