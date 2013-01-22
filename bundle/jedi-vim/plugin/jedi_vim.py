@@ -10,16 +10,22 @@ import os
 import vim
 import jedi
 import jedi.keywords
+from jedi._compatibility import unicode
 
 temp_rename = None  # used for jedi#rename
 
 
-class PythonToVimStr(str):
+class PythonToVimStr(unicode):
     """ Vim has a different string implementation of single quotes """
     __slots__ = []
 
     def __repr__(self):
-        return '"%s"' % self.replace('\\', '\\\\').replace('"', r'\"')
+        # this is totally stupid and makes no sense but vim/python unicode
+        # support is pretty bad. don't ask how I came up with this... It just
+        # works...
+        # It seems to be related to that bug: http://bugs.python.org/issue5876
+        s = self.encode('UTF-8')
+        return '"%s"' % s.replace('\\', '\\\\').replace('"', r'\"')
 
 
 def echo_highlight(msg):
@@ -35,7 +41,8 @@ def get_script(source=None, column=None):
     if column is None:
         column = vim.current.window.cursor[1]
     buf_path = vim.current.buffer.name
-    return jedi.Script(source, row, column, buf_path)
+    encoding = vim.eval('&encoding')
+    return jedi.Script(source, row, column, buf_path, encoding)
 
 
 def complete():
@@ -67,8 +74,8 @@ def complete():
 
             out = []
             for c in completions:
-                d = dict(word=c.word[:len(base)] + c.complete,
-                         abbr=c.word,
+                d = dict(word=PythonToVimStr(c.word[:len(base)] + c.complete),
+                         abbr=PythonToVimStr(c.word),
                          # stuff directly behind the completion
                          menu=PythonToVimStr(c.description),
                          info=PythonToVimStr(c.doc),  # docstr
@@ -76,8 +83,6 @@ def complete():
                          dup=1  # allow duplicates (maybe later remove this)
                 )
                 out.append(d)
-
-            out.sort(key=lambda x: x['word'].lower())
 
             strout = str(out)
         except Exception:
@@ -129,7 +134,8 @@ def goto(is_definition=False, is_related_name=False, no_output=False):
                     echo_highlight("Builtin modules cannot be displayed.")
             else:
                 if d.module_path != vim.current.buffer.name:
-                    vim.eval('jedi#new_buffer(%s)' % repr(d.module_path))
+                    vim.eval('jedi#new_buffer(%s)' % \
+                                        repr(PythonToVimStr(d.module_path)))
                 vim.current.window.cursor = d.line_nr, d.column
                 vim.command('normal! zt')  # cursor at top of screen
         else:
@@ -137,13 +143,37 @@ def goto(is_definition=False, is_related_name=False, no_output=False):
             lst = []
             for d in definitions:
                 if d.in_builtin_module():
-                    lst.append(dict(text='Builtin ' + d.description))
+                    lst.append(dict(text=
+                                PythonToVimStr('Builtin ' + d.description)))
                 else:
-                    lst.append(dict(filename=d.module_path, lnum=d.line_nr,
-                                        col=d.column + 1, text=d.description))
-            vim.eval('setqflist(%s)' % str(lst))
+                    lst.append(dict(filename=PythonToVimStr(d.module_path),
+                                    lnum=d.line_nr, col=d.column + 1,
+                                    text=PythonToVimStr(d.description)))
+            vim.eval('setqflist(%s)' % repr(lst))
             vim.eval('<sid>add_goto_window()')
     return definitions
+
+
+def show_pydoc():
+    script = get_script()
+    try:
+        definitions = script.get_definition()
+    except jedi.NotFoundError:
+        definitions = []
+    except Exception:
+        # print to stdout, will be in :messages
+        definitions = []
+        print("Exception, this shouldn't happen.")
+        print(traceback.format_exc())
+
+    if not definitions:
+        vim.command('return')
+    else:
+        docs = ['Docstring for %s\n%s\n%s' % (d.desc_with_module, '='*40, d.doc) if d.doc
+                    else '|No Docstring for %s|' % d for d in definitions]
+        text = ('\n' + '-' * 79 + '\n').join(docs)
+        vim.command('let l:doc = %s' % repr(PythonToVimStr(text)))
+        vim.command('let l:doc_lines = %s' % len(text.split('\n')))
 
 
 def clear_func_def():
@@ -197,8 +227,11 @@ def show_func_def(call_def=None, completion_lines=0):
         text = " (%s) " % ', '.join(params)
         text = ' ' * (insert_column - len(line)) + text
         end_column = insert_column + len(text) - 2  # -2 due to bold symbols
+
+        # Need to decode it with utf8, because vim returns always a python 2
+        # string even if it is unicode.
+        e = vim.eval('g:jedi#function_definition_escape').decode('UTF-8')
         # replace line before with cursor
-        e = vim.eval('g:jedi#function_definition_escape')
         regex = "xjedi=%sx%sxjedix".replace('x', e)
 
         prefix, replace = line[:insert_column], line[insert_column:end_column]
@@ -207,15 +240,15 @@ def show_func_def(call_def=None, completion_lines=0):
         # (don't want to break the syntax)
         regex_quotes = r'''\\*["']+'''
         # `add` are all the quotation marks.
-        add = ''.join(re.findall(regex_quotes, replace))
+        # join them with a space to avoid producing '''
+        add = ' '.join(re.findall(regex_quotes, replace))
         # search backwards
         if add and replace[0] in ['"', "'"]:
             a = re.search(regex_quotes + '$', prefix)
             add = ('' if a is None else a.group(0)) + add
 
         tup = '%s, %s' % (len(add), replace)
-        repl = ("%s" + regex + "%s") % \
-                                (prefix, tup, text, add + line[end_column:])
+        repl = prefix + (regex % (tup, text)) + add + line[end_column:]
 
         vim.eval('setline(%s, %s)' % \
                             (row_to_replace, repr(PythonToVimStr(repl))))
@@ -251,6 +284,10 @@ def rename():
         if replace is None:
             echo_highlight('No rename possible, if no name is given.')
         else:
+            # sort the whole thing reverse (positions at the end of the line
+            # must be first, because they move the stuff before the position).
+            temp_rename = sorted(temp_rename, reverse=True,
+                                key=lambda x: (x.module_path, x.start_pos))
             for r in temp_rename:
                 if r.in_builtin_module():
                     continue
@@ -289,3 +326,11 @@ def tabnew(path):
     else:
         # tab doesn't exist, add a new one.
         vim.command('tabnew %s' % path)
+
+
+def escape_file_path(path):
+    return path.replace(' ', r'\ ')
+
+
+def print_to_stdout(level, str_out):
+    print(str_out)
