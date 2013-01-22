@@ -6,8 +6,9 @@ HISTCONTROL=$HISTCONTROL${HISTCONTROL+,}ignoredups
 # ... or force ignoredups and ignorespace (mc)
 #HISTCONTROL=ignoreboth
 
-# set the size of the history buffer
-HISTSIZE=1000
+# set the size of the history buffer and file
+export HISTFILESIZE=1000
+export HISTSIZE=9999
 
 # append to the history file, don't overwrite it
 shopt -s histappend
