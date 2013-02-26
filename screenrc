@@ -1,0 +1,9 @@
+startup_message off
+# turn visual bell on
+vbell on
+# replace ctrl-A by ctrl-O
+escape ``
+# set a big scrolling buffer
+defscrollback 10000
+# Set the caption on the bottom line
+caption always "%{= kw}%-w%{= BW}%n %t%{-}%+w %-= @%H - %LD %d %LM - %c"
