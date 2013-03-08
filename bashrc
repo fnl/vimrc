@@ -29,6 +29,9 @@ shopt -s cmdhist
 # extended pattern matching features
 shopt -s extglob
 
+# fix cd spelling mistakes
+shopt -s cdspell
+
 # ** matches all files and zero or more directories and subdirectories;
 # if the pattern is followed by a ‘/’, only directories and subdirectories match
 [ "`uname`" != "Darwin" ] && shopt -s globstar
@@ -127,6 +130,15 @@ topten() { history | awk '{ a[$2]++ }END{ for (i in a) {print a[i] " " i} }' | s
 # diff two unsorted files, sorting them in memory
 diff-sorted() { one="$1"; two="$2"; shift 2; diff $* <(sort "$one") <(sort "$two"); }
 
+# remove the tags in XML documents
+untag() { sed -e 's/<[^>]*>//g' "$@"; }
+
+# show the last modified files
+lt() { ls -ltrha "$@" | tail; }
+
+# grep the ps shortcut
+psgrep() { ps aux | grep -v grep | grep "$@" -i --color=auto; }
+
 # source local alias definitions
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
 
@@ -135,6 +147,9 @@ diff-sorted() { one="$1"; two="$2"; shift 2; diff $* <(sort "$one") <(sort "$two
 
 # source local shell settings
 [ -f ~/.bash_local ] && . ~/.bash_local
+
+# set up z - jump around
+[ -f ~/.vim/z/z.sh ] && . ~/.vim/z/z.sh
 
 # global aliases
 #use GNU ls in preference over "default" ls (Mac OSX)
