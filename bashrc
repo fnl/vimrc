@@ -6,8 +6,9 @@ HISTCONTROL=$HISTCONTROL${HISTCONTROL+,}ignoredups
 # ... or force ignoredups and ignorespace (mc)
 #HISTCONTROL=ignoreboth
 
-# set the size of the history buffer
-HISTSIZE=1000
+# set the size of the history buffer and file
+export HISTFILESIZE=1000
+export HISTSIZE=9999
 
 # append to the history file, don't overwrite it
 shopt -s histappend
@@ -27,6 +28,9 @@ shopt -s cmdhist
 
 # extended pattern matching features
 shopt -s extglob
+
+# fix cd spelling mistakes
+shopt -s cdspell
 
 # ** matches all files and zero or more directories and subdirectories;
 # if the pattern is followed by a ‘/’, only directories and subdirectories match
@@ -61,12 +65,29 @@ then
 fi
 
 # configure the prompt (color?)
+black=30
+red=31
+green=32
+yellow=33
+blue=34
+magenta=35
+cyan=36
+white=37
+hostname=`hostname -s`
+if [ $hostname = ackbar ]
+then color=$magenta
+elif [ $hostname = mbp2 ]
+then color=$green
+elif [ $hostname = vader ]
+then color=$red
+else color=$white
+fi
 if [ "$color_prompt" = yes ]
-then PS1='\[\033[01;37m\]\!\[\033[00m\] \[\033[01;33m\]\u\[\033[00m\]@\[\033[01;35m\]\h\[\033[00m\]:\[\033[01;36m\]\w\[\033[00m\] \$ '
+then PS1='\[\033[01;37m\]\!\[\033[00m\] \[\033[01;33m\]\u\[\033[00m\]@\[\033[01;'$color'm\]\h\[\033[00m\]:\[\033[01;36m\]\w\[\033[00m\] \$ '
 else PS1='\!#\u@\h:\w\$ '
 fi
-
-unset color_prompt force_color_prompt
+unset hostname black red green yellow blue magenta cyan white
+unset color color_prompt force_color_prompt
 
 # check for dircolors support of ls
 if [ -x /usr/bin/dircolors ]
@@ -86,8 +107,6 @@ then
   fi
 else lscolor=
 fi
-unset dircolors
-
 unset dircolors
 
 # enable programmable completion features
@@ -126,6 +145,15 @@ topten() { history | awk '{ a[$2]++ }END{ for (i in a) {print a[i] " " i} }' | s
 # diff two unsorted files, sorting them in memory
 diff-sorted() { one="$1"; two="$2"; shift 2; diff $* <(sort "$one") <(sort "$two"); }
 
+# remove the tags in XML documents
+untag() { sed -e 's/<[^>]*>//g' "$@"; }
+
+# show the last modified files
+lt() { ls -ltrha "$@" | tail; }
+
+# grep the ps shortcut
+psgrep() { ps aux | grep -v grep | grep "$@" -i --color=auto; }
+
 # source local alias definitions
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
 
@@ -134,6 +162,9 @@ diff-sorted() { one="$1"; two="$2"; shift 2; diff $* <(sort "$one") <(sort "$two
 
 # source local shell settings
 [ -f ~/.bash_local ] && . ~/.bash_local
+
+# set up z - jump around
+[ -f ~/.vim/z/z.sh ] && . ~/.vim/z/z.sh
 
 # global aliases
 #use GNU ls in preference over "default" ls (Mac OSX)

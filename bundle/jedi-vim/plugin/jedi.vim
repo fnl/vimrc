@@ -5,8 +5,10 @@
 " This part of the software is just the vim interface. The main source code
 " lies in the python files around it.
 
-if !has('python')
-    echomsg "Error: Required vim compiled with +python"
+if !has('python') && !has('python3')
+    if !exists("g:jedi#squelch_py_warning")
+        echomsg "Error: Required vim compiled with +python"
+    endif
     finish
 endif
 
@@ -22,7 +24,9 @@ let g:loaded_jedi = 1
 let s:settings = {
     \ 'use_tabs_not_buffers': 1,
     \ 'auto_initialization': 1,
+    \ 'auto_vim_configuration': 1,
     \ 'goto_command': "'<leader>g'",
+    \ 'autocompletion_command': "'<C-Space>'",
     \ 'get_definition_command': "'<leader>d'",
     \ 'related_names_command': "'<leader>n'",
     \ 'rename_command': "'<leader>r'",
@@ -30,7 +34,8 @@ let s:settings = {
     \ 'pydoc': "'K'",
     \ 'show_function_definition': 1,
     \ 'function_definition_escape': "'≡'",
-    \ 'auto_close_doc': 1
+    \ 'auto_close_doc': 1,
+    \ 'popup_select_first': 1
 \ }
 
 for [key, val] in items(s:settings)
@@ -40,35 +45,17 @@ for [key, val] in items(s:settings)
 endfor
 
 
-set switchbuf=useopen  " needed for pydoc
-
 if g:jedi#auto_initialization 
     " this is only here because in some cases the VIM library adds their
     " autocompletion as a default, which may cause problems, depending on the
     " order of invocation.
-    autocmd FileType python setlocal omnifunc=jedi#complete
+    autocmd FileType Python setlocal omnifunc=jedi#complete switchbuf=useopen  " needed for pydoc
 endif
 
-
-
-python << PYTHONEOF
-""" here we initialize the jedi stuff """
-import vim
-
-# update the system path, to include the jedi path
-import sys
-import os
-from os.path import dirname, abspath, join
-sys.path.insert(0, join(dirname(dirname(abspath(vim.eval('expand("<sfile>")')))), 'jedi'))
-
-# to display errors correctly
-import traceback
-
-# update the sys path to include the jedi_vim script
-sys.path.append(dirname(abspath(vim.eval('expand("<sfile>")'))))
-import jedi_vim
-sys.path.pop()
-
-PYTHONEOF
+if has('python')
+    command! -nargs=1 Python python <args>
+else
+    command! -nargs=1 Python python3 <args>
+end
 
 " vim: set et ts=4:
