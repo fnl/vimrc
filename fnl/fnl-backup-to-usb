@@ -1,0 +1,2 @@
+#!/usr/bin/env sh
+time rsync --recursive --update --delete --links --hard-links --safe-links --perms --times --stats --exclude '.DS_Store' --exclude '._*' ~/Documents/ /Volumes/fnl
