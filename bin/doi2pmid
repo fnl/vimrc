@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+# for a argument list of DOIs, print each DOI and matching PubMed ID
+for doi in $@; do
+  echo $doi `wget "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=PubMed&retmode=xml&term=$doi" -O - 2> /dev/null | grep "<Id>" | sed -E 's|</?Id>||g' | cut -f3`
+done
+# By Florian Leitner <florian.leitner@gmail.com>. No rights reserved.

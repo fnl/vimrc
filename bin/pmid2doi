@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+# for a argument list of PubMed IDs, print each PMID and matching DOI (if any).
+for pmid in $@; do
+  echo $pmid `wget "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&rettype=medline&retmode=text&id=$pmid" -O - 2> /dev/null | sed -nE "s/^AID - ([^ ]*) \[doi\]/\1/p"`
+done
+# By Florian Leitner <florian.leitner@gmail.com>. No rights reserved.

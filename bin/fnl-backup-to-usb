@@ -1,2 +1,3 @@
 #!/usr/bin/env sh
+# backup data to my USB drive ("fnl")
 time rsync --recursive --update --delete --links --hard-links --safe-links --perms --times --stats --exclude '.DS_Store' --exclude '._*' ~/Documents/ /Volumes/fnl

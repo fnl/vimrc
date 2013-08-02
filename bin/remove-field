@@ -1,5 +1,6 @@
 #!/sw/bin/awk -f
-# usage: hide [field=FIELD_NOT_TO_PRINT, default=1] infile
+# remove a particluar column ("anti-cut")
+# usage: remove-field [field=FIELD_NOT_TO_PRINT, default=1] infile
 { 
     field = (field) ? field : 1;
 

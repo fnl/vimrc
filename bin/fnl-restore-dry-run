@@ -1,2 +1,3 @@
 #!/usr/bin/env sh
+# test-sync data from my USB drive ("fnl")
 rsync --verbose --dry-run --recursive --update --delete --links --hard-links --safe-links --perms --times --stats  --exclude '.DS_Store' --exclude '.fseventsd' --exclude '.Trashes' --exclude '.metadata_never_index' /Volumes/fnl/ ~/Documents | grep -v "^[A-ce-z].*/$"
