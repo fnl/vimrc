@@ -100,7 +100,7 @@ fi
 if [ -n "$dircolors" ]
 then
   test -f ~/.dircolors && "$($dircolors -b ~/.dircolors)" || eval "$($dircolors -b)"
-  alias grep="grep --color"
+  alias grepc="grep --color"
   if [ -x /usr/local/bin/gls ] || [ "`uname`" != "Darwin" ]
   then lscolor="--color"
   else lscolor="-G"
@@ -172,19 +172,19 @@ psgrep() { ps aux | grep -v grep | grep "$@" -i --color=auto; }
 # set up z - jump around
 [ -f ~/.vim/z/z.sh ] && . ~/.vim/z/z.sh
 
+# ls convenience: l, ll and la
+# use GNU ls in preference over "default" ls (Mac OSX)
+[ -x /usr/local/bin/gls ] && alias l="gls $lscolor " || alias l="ls $lscolor"
+alias ll='ls -lh'
+alias la='l -A'
+unset lscolor
+
 # global aliases
 #use GNU ls in preference over "default" ls (Mac OSX)
 alias ..='cd ..'
 alias ...='cd ../..'
-# use GNU ls in preference over "default" ls (Mac OSX)
-[ -x /usr/local/bin/gls ] && alias ls="gls $lscolor" || alias ls="ls $lscolor"
-alias l='ls -f --ignore ".*"' # get rid of color
-alias ll='ls -lh'
-alias la='ls -A'
-alias lla='ls -lhAi'
 alias vi='vim' # always use vim
 alias curl-json='curl -H"Content-Type: application/json;charset=utf-8"'
 alias curl-post='curl -X POST'
 alias curl-post-json='curl -X POST -H"Content-Type: application/json;charset=utf-8"'
 
-unset lscolor
