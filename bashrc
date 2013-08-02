@@ -158,7 +158,7 @@ untag() { sed -e 's/<[^>]*>//g' "$@"; }
 lt() { ls -ltrha "$@" | tail; }
 
 # grep the ps shortcut
-psgrep() { ps aux | grep -v grep | grep "$@" -i --color=auto; }
+psgrep() { ps aux | tee >(head -1>&2) | grep -v " grep $@" | grep "$@" -i --color=auto; }
 
 # source local alias definitions
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
