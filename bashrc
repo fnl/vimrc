@@ -132,6 +132,12 @@ longestline() { awk '{ print length, $0}' "$1" | sort -nr | head -1; }
 # show line number X in file Y
 showline() { awk 'NR == '$1' { print; exit }' "$2"; }
 
+# count and rank the unqiue lines in a file
+uniqcount() { sort "$@" | uniq -c | sort -rn | sed 's/^ *//' | sed 's/ /	/'; }
+
+# count and rank the unique fields from a cut
+cutcount() { cut "$@" | sort | uniq -c | sort -rn | sed 's/^ *//' | sed 's/ /	/'; }
+
 # convert between DOS line-breaks and UNIX newlines
 dos2unix() { awk '{ sub(/\r$/, ""); print }' "$@"; }
 unix2dos() { awk '{ sub(/$/, "\r"); print }' "$@"; }

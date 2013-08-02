@@ -1,0 +1,10 @@
+#!/bin/sh
+
+mkdir "$1"
+cd "$1"
+mkdir -p src/github.com/fnl
+mkdir bin
+mkdir pkg
+export GOPATH=`pwd`
+export PATH=$PATH:$GOPATH/bin
+go get github.com/nsf/gocode

@@ -182,6 +182,18 @@ let Tlist_Exit_OnlyWindow=1
 " NERDtree setup
 let NERDTreeQuitOnOpen=1
 
+" Go Setup
+" --------
+
+filetype off
+filetype plugin indent off
+set runtimepath+=$GOROOT/misc/vim
+filetype plugin indent on
+syntax on
+
+au FileType go autocmd BufWritePre <buffer> Fmt
+au FileType go set tabstop=2
+
 " Python Setup
 " ------------
 
@@ -237,6 +249,9 @@ autocmd BufRead *.py iabbrev defnext def __next__(self,
 " write in sudo mode **after** opening a file
 cmap w!! w !sudo tee % > /dev/null
 
+" reset the working dir of the current buffer to the file's dir
+nmap <Leader>c :lcd %:p:h<CR>
+
 " quickly clear serach highlights
 nmap <silent> <Leader>\ :nohlsearch<CR>
 
@@ -288,4 +303,4 @@ nmap <C-l> <C-w>l
 nmap <silent> <Up> <C-W>-
 nmap <silent> <Down> <C-W>+
 nmap <silent> <Left> <C-W>>
-nmap <silent> <Right> <C-W><
+nmap <silent> <Right> <C-W>;<
