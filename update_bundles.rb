@@ -4,6 +4,8 @@ git_bundles = [
   "git://github.com/davidhalter/jedi-vim.git",
   "git://github.com/ervandew/supertab.git",
   "git://github.com/kien/ctrlp.vim.git",
+  "git://github.com/Shutnik/jshint2.vim.git",
+  "git://github.com/pangloss/vim-javascript.git",
   "git://github.com/scrooloose/nerdcommenter.git",
   "git://github.com/scrooloose/nerdtree.git",
   "git://github.com/tpope/vim-fugitive.git",
