@@ -80,6 +80,8 @@ elif [ $hostname = mbp2 ]
 then color=$green
 elif [ $hostname = vader ]
 then color=$red
+elif [ $hostname = mba ]
+then color=$cyan
 else color=$white
 fi
 if [ "$color_prompt" = yes ]
