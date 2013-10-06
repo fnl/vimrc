@@ -4,6 +4,6 @@
   "noarg": true,
   "nonew": true,
   "quotmark": true,
-  "undef": true, // use the /* global ... */ directive to use undefined vars
-  "strict": true,
+  "undef": true,
+  "asi": true
 }
