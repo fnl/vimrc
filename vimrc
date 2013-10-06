@@ -182,6 +182,23 @@ let Tlist_Exit_OnlyWindow=1
 " NERDtree setup
 let NERDTreeQuitOnOpen=1
 
+" JavaScript Setup
+" ----------------
+
+" vim-jshint2
+let jshint2_save = 1
+
+" vim-javascript
+" Enable HTML/CSS syntax highlighting in your JavaScript files.
+let javascript_enable_domhtmlcss = 1
+" Enable JavaScript code folding.
+let b:javascript_fold = 1
+" Enable concealing characters. For example, function is replaced with ƒ.
+let g:javascript_conceal = 1
+" Disable JSDoc syntax highlighting.
+let javascript_ignore_javaScriptdoc = 0
+
+
 " Go Setup
 " --------
 
@@ -198,12 +215,12 @@ au FileType go set tabstop=2
 " ------------
 
 " jedi setup
-let g:jedi#goto_command = ""
-let g:jedi#get_definition_command = ""
+let g:jedi#goto_assignments_command = "<leader>a"
+let g:jedi#goto_definitions_command = "<leader>d"
 let g:jedi#use_tabs_not_buffers = 0
 let g:jedi#popup_on_dot = 0
 let g:jedi#rename_command = "<leader>r"
-let g:jedi#related_names_command = ""
+let g:jedi#usages_command = "<leader>u"
 
 " Syntax highlighting
 let g:python_highlight_all = 1
