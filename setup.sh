@@ -1,12 +1,13 @@
 #!/bin/sh
-ln -s ~/.vim/bashrc ~/.bash_profile
-ln -s ~/.vim/gvimrc ~/.gvimrc
-ln -s ~/.vim/inputrc ~/.inputrc
-ln -s ~/.vim/jshintrc ~/.jshintrc
-ln -s ~/.vim/screenrc ~/.screenrc
-ln -s ~/.vim/vimrc ~/.vimrc
+dir=`dirname $0`
+ln -s $dir/bashrc ~/.bash_profile
+ln -s $dir/gvimrc ~/.gvimrc
+ln -s $dir/inputrc ~/.inputrc
+ln -s $dir/jshintrc ~/.jshintrc
+ln -s $dir/screenrc ~/.screenrc
+ln -s $dir/vimrc ~/.vimrc
 touch ~/.bash_environment
 touch ~/.bash_aliases
-cd ~/.vim
+cd $dir
 ./update_bundles.rb
 cd -
