@@ -14,6 +14,8 @@ git_bundles = [
   "git://github.com/vim-scripts/taglist.vim.git",
   "git://github.com/uggedal/go-vim.git",
   "git://github.com/derekwyatt/vim-scala.git",
+  "git://github.com/mattn/emmet-vim.git",
+  "git://github.com/digitaltoad/vim-jade.git"
 ]
 
 vim_org_scripts = [

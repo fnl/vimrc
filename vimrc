@@ -198,7 +198,6 @@ let g:javascript_conceal = 1
 " Disable JSDoc syntax highlighting.
 let javascript_ignore_javaScriptdoc = 0
 
-
 " Go Setup
 " --------
 
