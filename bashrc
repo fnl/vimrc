@@ -150,6 +150,12 @@ removeBOM() { awk '{ if (NR==1) sub(/^\xef\xbb\xbf/, ""); print }' "$@"; }
 # show the ten most used commands
 topten() { history | awk '{ a[$2]++ }END{ for (i in a) {print a[i] " " i} }' | sort -rn | head; }
 
+# determine the external IP
+myip() { dig +short myip.opendns.com @resolver1.opendns.com; }
+
+# get a list of all TODO/FIXME tasks in the current project dir
+tasks() { grep --exclude-dir=.git -rEI "TODO|FIXME" . 2>/dev/null; }
+
 # diff two unsorted files, sorting them in memory
 diff-sorted() { one="$1"; two="$2"; shift 2; diff $* <(sort "$one") <(sort "$two"); }
 
