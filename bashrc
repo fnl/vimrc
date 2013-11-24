@@ -195,4 +195,3 @@ alias vi='vim' # always use vim
 alias curl-json='curl -H"Content-Type: application/json;charset=utf-8"'
 alias curl-post='curl -X POST'
 alias curl-post-json='curl -X POST -H"Content-Type: application/json;charset=utf-8"'
-
