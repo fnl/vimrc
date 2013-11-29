@@ -153,6 +153,9 @@ removeBOM() { awk '{ if (NR==1) sub(/^\xef\xbb\xbf/, ""); print }' "$@"; }
 # show the ten most used commands
 topten() { history | awk '{ a[$2]++ }END{ for (i in a) {print a[i] " " i} }' | sort -rn | head; }
 
+# sort the ps output by process RSS memmory usage
+psmem() { ps aux | sort -nk +6; }
+
 # determine the external IP
 myip() { dig +short myip.opendns.com @resolver1.opendns.com; }
 

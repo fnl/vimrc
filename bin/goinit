@@ -1,12 +1,17 @@
 #!/bin/sh
 
 # setup a directory structure for programming in go
+VCS_HUB=github.com/fnl
+PROJECT=`basename "$1"`
 
-mkdir "$1"
+mkdir -p "$1"
 cd "$1"
-mkdir -p src/github.com/fnl
+mkdir -p "src/$VCS_HUB/$PROJECT"
 mkdir bin
 mkdir pkg
-export GOPATH=`pwd`
-export PATH=$PATH:$GOPATH/bin
-go get github.com/nsf/gocode
+GOPATH=`pwd` go get github.com/nsf/gocode
+cat << ACTIVATE > bin/activate
+export GOPATH="`pwd`"
+export PATH="\$GOPATH/bin:\$PATH"
+export PS1="($PROJECT)\$PS1"
+ACTIVATE
