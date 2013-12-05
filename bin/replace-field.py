@@ -1,22 +1,49 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-"replace-field.py input.tsv val2alt_val.tsv {col=1st}"
+"replace-field.py 2_COLUMN_DICTIONARY [--col=1] [TSV]"
 
 __author__ = "Florian Leitner <florian.leitner@gmail.com>" # no rights reserved
 __version__ = "1.0"
 
+import fileinput
 import sys
 
-if not len(sys.argv) > 2 or "-h" in sys.argv or "--help" in sys.argv:
-    print >> sys.stderr, __doc__
+if not len(sys.argv) > 1 or "-h" == sys.argv[0] or "--help" == sys.argv[0]:
+    print(__doc__, file=sys.stderr)
     sys.exit(1)
 
-val2alt = dict(i.strip().split('\t') for i in open(sys.argv[2]))
-col = 0 if len(sys.argv) == 3 else int(sys.argv[3]) - 1
+# parse mappings
+mappings = dict(m.strip().split('\t') for m in open(sys.argv[1]))
+sys.argv.pop(1)
 
-def printer(items):
-    items[col] = val2alt[items[col]]
-    print '\t'.join(items)
+# determine column in input to be mapped
+col = 1
+if len(sys.argv) > 1 and sys.argv[1].startswith("--col"):
+    if sys.argv[1] == "--col":
+        if len(sys.argv) > 2:
+            col = int(sys.argv[2])
+            sys.argv.pop(1)
+            sys.argv.pop(1)
+    elif sys.argv[1].startswith("--col="):
+        col = int(sys.argv[1][6:])
+        sys.argv.pop(1)
 
-for line in open(sys.argv[1]):
-    printer(line.strip().split('\t'))
+col -= 1
+errors = 0
+
+def Process(items):
+    try:
+        items[col] = mappings[items[col]]
+        print('\t'.join(items))
+    except KeyError as e:
+        print('not in dictionary:', e, file=sys.stderr)
+        global errors
+        errors += 1
+
+for line in fileinput.input():
+    Process(line.strip().split('\t'))
+
+if errors > 0:
+    print(errors, 'entries not found (skipped)', file=sys.stderr)
+
+sys.exit(errors)
