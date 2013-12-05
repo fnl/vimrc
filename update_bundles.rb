@@ -12,10 +12,12 @@ git_bundles = [
   "git://github.com/tpope/vim-surround.git",
   "git://github.com/tsaleh/vim-matchit.git",
   "git://github.com/vim-scripts/taglist.vim.git",
+  "git://github.com/majutsushi/tagbar.git",
   "git://github.com/uggedal/go-vim.git",
   "git://github.com/derekwyatt/vim-scala.git",
   "git://github.com/mattn/emmet-vim.git",
-  "git://github.com/digitaltoad/vim-jade.git"
+  "git://github.com/digitaltoad/vim-jade.git",
+  "git://github.com/scrooloose/syntastic.git"
 ]
 
 vim_org_scripts = [
