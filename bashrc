@@ -48,6 +48,7 @@ fi
 case "$TERM" in
   xterm-color) color_prompt=yes;;
   xterm-256color) color_prompt=yes;;
+  screen-256color) color_prompt=yes;;
 esac
 
 # uncomment for a forced colored prompt
@@ -87,8 +88,8 @@ fi
 if [ "$color_prompt" = yes ]
 #then PS1='\[\033[01;37m\]\!\[\033[00m\] \[\033[01;33m\]\u\[\033[00m\]@\[\033[01;'$color'm\]\h\[\033[00m\]:\[\033[01;36m\]\w\[\033[00m\] \$ '
 then PS1=' \[\033[01;33m\]\u\[\033[00m\]@\[\033[01;'$color'm\]\h\[\033[00m\]:\[\033[01;36m\]\w\[\033[00m\] \$ '
-else PS1='\! \u@\h:\w \$ '
-#else PS1=' \u@\h:\w \$ '
+else PS1=' \u@\h:\w \$ '
+#else PS1='\! \u@\h:\w \$ '
 fi
 unset hostname black red green yellow blue magenta cyan white
 unset color color_prompt force_color_prompt
