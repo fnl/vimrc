@@ -19,11 +19,22 @@ set matchtime=5 " 10ths/sec to jump to matching brackets
 "highlight Pmenu ctermfg=black
 "highlight PmenuSel ctermfg=black
 
+" Un-nref parenthesis highlights so the cursor can be seen
+hi MatchParen cterm=bold ctermbg=none ctermfg=magenta
+
 " Un-nerf searches
 set incsearch " highlight search phrases
 set hlsearch " keep the search highlighted when going through them
 set ignorecase " ignore case in seraches...
 set smartcase " ...but only if there is no capital letter present
+hi Search cterm=none ctermfg=black ctermbg=yellow
+
+" Enable spell checking in text files
+au FileType text set spell spelllang=en_us " enable spellchecking
+hi SpellBad cterm=underline ctermbg=none
+hi SpellCap cterm=underline ctermbg=none
+hi SpellRare cterm=underline ctermbg=none
+hi SpellLocal cterm=underline ctermbg=none
 
 " Allow <BkSpc> to delete line breaks, beyond the start of the current
 " insertion, and over indentations:
@@ -34,7 +45,7 @@ set backspace=eol,start,indent
 set pastetoggle=±
 
 " Set exec-bit on files that start with a she-bang line
-au BufWritePost * if getline(1) =~ "^#!" | silent !chmod +x <afile>
+"au BufWritePost * if getline(1) =~ "^#!" | silent !chmod +x <afile>
 
 " Syntax highlighting and filetype-dependent indenting
 filetype on
@@ -45,9 +56,7 @@ syntax on
 "set tags=./tags,tags,~/.tags
 set tags=./tags,tags
 
-" TagList setup
-" python3 language
-let s:tlist_def_python_settings = 'python3;c:class;m:member;f:function'
+" tagging setup
 " omni-completion on for...
 "au FileType python set omnifunc=pythoncomplete#Complete
 "au FileType python3 set omnifunc=python3complete#Complete
@@ -75,7 +84,7 @@ set wildmode=list:longest " and show everything possible for completion
 " flags: modified readonly help preview_window
 " [fileencoding](fileformat){filetype} tagname
 " [byteval_under_cursor][line_number,virtual_col_number][percentage_in_file]
-set statusline=%n:%f%m%r%h%w\ [%{&fenc==\"\"?&enc:&fenc}](%{&ff}){%Y}\ %{Tlist_Get_Tagname_By_Line()}\ %=[0x\%02.2B][%03l,%02v][%02p%%]
+set statusline=%n:%f%m%r%h%w\ [%{&fenc==\"\"?&enc:&fenc}](%{&ff}){%Y}\ %{Tlist_Get_Tagname_By_Line()}\ %{SyntasticStatuslineFlag()}\ %=[0x\%02.2B][%03l,%02v][%02p%%]
 set laststatus=2 " show the statusline - always
 
 " Tab indention handling
@@ -154,10 +163,35 @@ endif
 " Enable extended % matching (if/elsif/else/end) and SGML tags
 runtime macros/matchit.vim
 
-" SuperTab setup: use context-dependent completion style
+" Command-T/CtrlP setup
+" ---------------------
+
+" open the Command-T commandline ("[o]pen file")
+"nnoremap <silent> <Leader>o :CommandT<CR>
+
+" open the CtrlP file commandline ("[o]pen file")
+nmap <silent> <Leader>o :CtrlP<CR>
+
+" open the Command-T commandline ("open [b]uffer")
+"nnoremap <silent> <Leader>b :CommandTBuffer<CR>
+
+" open the CtrlP buffer commandline ("open [b]uffer")
+nmap <silent> <Leader>b :CtrlPBuffer<CR>
+
+" flush the Command-T cache ("[f]lush")
+"cnoremap <Leader>f :CommandTFlush<CR>
+
+" SuperTab setup
+" --------------
+
+" use context-dependent completion style
 let g:SuperTabDefaultCompletionType="context"
 
 " TagList setup
+" -------------
+
+" python3 language
+let s:tlist_def_python_settings = 'python3;c:class;m:member;f:function'
 " hilight tag in list after n seconds (default: 4)
 let TlistHighlightTag=2
 " focus taglist on toggle
@@ -179,14 +213,71 @@ let Tlist_Exit_OnlyWindow=1
 " taglist window width setting
 "let Tlist_WinWidth="auto"
 
+" toggle the TagList plugin ("[T]aglist")
+nmap <silent> <Leader>T :TlistToggle<CR>
+
+" TagBar setup
+" ------------
+
+" place the bar on the left
+let g:tagbar_left=1
+" auto-close the tagbar
+let g:tagbar_autoclose=1
+" bar width
+let g:tagbar_width=50
+" focus on bar when opened
+let g:tagbar_autofocus=1
+" omit irrelevant info to save space
+"let g:tagbar_compact=1
+" use smaller icons
+let g:tagbar_iconchars = ['▸', '▾']
+
+" toggle the TagBar plugin ("[t]agbar")
+nmap <silent> <Leader>t :TagbarToggle<CR>
+
 " NERDtree setup
+" --------------
+
+" close the directory tree when browsing to an entry
 let NERDTreeQuitOnOpen=1
+
+" toggle the NERDTree plugin ("[d]irectory tree")
+nmap <silent> <Leader>d :NERDTreeToggle<CR>A
+
+" Syntastic setup
+" ---------------
+
+" aggregate errors from multiple checkers
+let g:syntastic_aggregate_errors = 1
+" automatically open location window
+let g:syntastic_auto_loc_list=1
+" show current error in command window
+let g:syntastic_echo_current_error = 1
+" populate loclist with errors
+let g:syntastic_always_populate_loc_list = 1
+" enable on open file
+let g:syntastic_check_on_open = 1
+" enable on write
+"let g:syntastic_check_on_wq = 1
+" dis/en-able left column signs
+let g:syntastic_enable_signs = 0
+" set location list window height
+let g:syntastic_loc_list_height = 5
+
+" toggle [s]yntastic plugin mode
+"nmap <silent> <Leader>s :SyntasticToggleMode<CR>
+" [c] syntax with Syntasstic plugin
+nmap <Leader>c :SyntasticCheck<CR>
+" show Syntastic [e]rror messages
+" (can be done with :lopen too)
+"nmap <Leader>e :Errors<CR>
 
 " JavaScript Setup
 " ----------------
 
 " vim-jshint2
-let jshint2_save = 1
+" using this breaks syntastic...
+let jshint2_save = 0
 
 " vim-javascript
 " Enable HTML/CSS syntax highlighting in your JavaScript files.
@@ -214,12 +305,12 @@ au FileType go set tabstop=2
 " ------------
 
 " jedi setup
-let g:jedi#goto_assignments_command = "<leader>a"
-let g:jedi#goto_definitions_command = "<leader>d"
+let g:jedi#goto_assignments_command = "<Leader>a"
+let g:jedi#goto_definitions_command = "<Leader>g"
 let g:jedi#use_tabs_not_buffers = 0
 let g:jedi#popup_on_dot = 0
-let g:jedi#rename_command = "<leader>r"
-let g:jedi#usages_command = "<leader>u"
+let g:jedi#rename_command = "<Leader>r"
+let g:jedi#usages_command = "<Leader>u"
 
 " Syntax highlighting
 let g:python_highlight_all = 1
@@ -235,11 +326,13 @@ let g:pydoc_cmd = "pydoc3"
 
 " Python code checks, tests, and runs
 " run checks
-autocmd BufRead *.py nmap <Leader>rc :!pyflakes3k %<CR>
+"autocmd BufRead *.py nmap <Leader>rc :!pyflakes3k %<CR>
 " run test all
-autocmd BufRead *.py nmap <Leader>rt :!py.test-3 -s --doctest-modules --nocapturelog %<CR>
+"autocmd BufRead *.py nmap <Leader>rt :!py.test-3 -s --doctest-modules --nocapturelog %<CR>
+autocmd BufRead *.py nmap <Leader>rt :!nosetest -s --doctest-modules --nocapturelog %<CR>
 " run python
-autocmd BufRead *.py nmap <Leader>rp :!python3 %<CR>
+autocmd BufRead *.py nmap <Leader>rp :!python %<CR>
+"autocmd BufRead *.py nmap <Leader>rp :!python3 %<CR>
 
 " Pytest.vim and py.test
 "autocmd BufRead *.py nmap <Leader>pf <Esc>:Pytest file<CR>
@@ -256,8 +349,8 @@ autocmd BufRead *.py iabbrev defcall def __call__(self,
 autocmd BufRead *.py iabbrev defiter def __iter__(self,
 autocmd BufRead *.py iabbrev defnext def __next__(self,
 
-" Command Line Mappings
-" ---------------------
+" General Command Mappings
+" ------------------------
 
 " remember <S-Space> does not work on Mac :(
 " the mapping for highlight search disable was defined already
@@ -266,44 +359,35 @@ autocmd BufRead *.py iabbrev defnext def __next__(self,
 cmap w!! w !sudo tee % > /dev/null
 
 " reset the working dir of the current buffer to the file's dir
-nmap <Leader>c :lcd %:p:h<CR>
+nmap <Leader>p :lcd %:p:h<CR>
 
 " quickly clear serach highlights
 nmap <silent> <Leader>\ :nohlsearch<CR>
 
 " quick make commands and moving through errors
-nnoremap <F7> :cprevious<CR>
-nnoremap <F8> :make<CR>
-nnoremap <F9> :cnext<CR>
+nmap <F7> :cprevious<CR>
+nmap <F8> :make<CR>
+nmap <F9> :cnext<CR>
+
+" moving around the loclist
+nmap <Leader>] :lnext<CR>
+nmap <Leader>[ :lprevious<CR>
 
 " delete all trailing whitespaces when using BS in visual mode
 vnoremap <BS> :<BS><BS><BS><BS><BS>%s/\s\+$//ge<CR>
 
 " scroll viewport a bit fater
-nnoremap <C-e> 2<C-e>
-nnoremap <C-y> 2<C-y>
+nmap <C-e> 2<C-e>
+nmap <C-y> 2<C-y>
 
-" toggle showing list characters (tab, trail, eol)
-nnoremap <silent> <Leader>l :set nolist!<CR>
-" toggle linenumbering
-nnoremap <silent> <Leader>n :set nonumber!<CR>
+" toggle showing hidden ("list") characters (tab, trail, eol)
+nmap <silent> <Leader>h :set nolist!<CR>
 
-" toggle the NERDTree plugin ("[d]irectory tree")
-nnoremap <silent> <Leader>d :NERDTreeToggle<CR>A
+" remap back in help to something intuitive
+au filetype help nnoremap <buffer> <C-[> <C-t>
 
-" toggle the TagList plugin ("[t]aglist")
-nnoremap <silent> <Leader>t :TlistToggle<CR>
-
-" open the Command-T commandline ("[o]pen file")
-"nnoremap <silent> <Leader>o :CommandT<CR>
-" open the CtrlP commandline ("[o]pen file")
-nnoremap <silent> <Leader>o :CtrlP<CR>
-" open the Command-T commandline ("open [b]uffer")
-"nnoremap <silent> <Leader>b :CommandTBuffer<CR>
-" open the CtrlP commandline ("open [b]uffer")
-nnoremap <silent> <Leader>b :CtrlPBuffer<CR>
-" flush the Command-T cache ("[f]lush")
-"cnoremap <Leader>f :CommandTFlush<CR>
+" toggle showing line numbers
+nmap <silent> <Leader>l :set nonumber!<CR>
 
 " faster switch to last buffer faster (like gt)
 nmap <silent> tt :b#<CR>
@@ -317,6 +401,6 @@ nmap <C-l> <C-w>l
 " Make window resizing easier
 " (note: reversed setting more intuitive)
 nmap <silent> <Up> <C-W>-
-nmap <silent> <Down> <C-W>+
-nmap <silent> <Left> <C-W>>
+  nmap <silent> <Down> <C-W>+
+  nmap <silent> <Left> <C-W>>
 nmap <silent> <Right> <C-W>;<
