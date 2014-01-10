@@ -2,6 +2,14 @@
 set nocompatible " disable vi compatiblity
 set hidden " change buffers w/o saving - essential
 
+if ! isdirectory(expand('$HOME/.vim/backup'))
+  call mkdir(expand('$HOME/.vim/backup'))
+endif
+
+if ! isdirectory(expand('$HOME/.vim/tmp'))
+  call mkdir(expand('$HOME/.vim/tmp'))
+endif
+
 fun! EnsureVamIsOnDisk(plugin_root_dir)
   let vam_autoload_dir = a:plugin_root_dir.'/vim-addon-manager/autoload'
   if isdirectory(vam_autoload_dir)
