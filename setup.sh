@@ -6,8 +6,7 @@ ln -s $dir/inputrc ~/.inputrc
 ln -s $dir/jshintrc ~/.jshintrc
 ln -s $dir/screenrc ~/.screenrc
 ln -s $dir/vimrc ~/.vimrc
+mkdir -p ~/bin
+ln -s $dir/bin/* ~/bin/
 touch ~/.bash_environment
 touch ~/.bash_aliases
-cd $dir
-./update_bundles.rb
-cd -
