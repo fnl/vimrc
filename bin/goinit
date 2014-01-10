@@ -9,8 +9,11 @@ cd "$1"
 mkdir -p "src/$VCS_HUB/$PROJECT"
 mkdir bin
 mkdir pkg
-GOPATH=`pwd` go get github.com/nsf/gocode
-GOPATH=`pwd` go get github.com/jstemmer/gotags
+GOPATH=`pwd`
+go get github.com/nsf/gocode
+go get github.com/jstemmer/gotags
+go get github.com/davecheney/godoc2md
+go get github.com/grobins2/gobrew
 cat << ACTIVATE > bin/activate
 export GOPATH="`pwd`"
 export PATH="\$GOPATH/bin:\$PATH"
