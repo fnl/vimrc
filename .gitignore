@@ -1,5 +1,6 @@
 .*
 *.pyc
 *.class
-addons
-tags
+/addons
+/backup
+/tmp
