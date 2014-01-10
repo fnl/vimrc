@@ -33,7 +33,7 @@ fun! SetupVAM()
   " VAM install location:
   let c = get(g:, 'vim_addon_manager', {})
   let g:vim_addon_manager = c
-  let c.plugin_root_dir = expand('$HOME/.vim/vim-addons', 1)
+  let c.plugin_root_dir = expand('$HOME/.vim/addons', 1)
   if !EnsureVamIsOnDisk(c.plugin_root_dir)
     echohl ErrorMsg | echomsg "No VAM found!" | echohl NONE
     return
@@ -41,7 +41,7 @@ fun! SetupVAM()
   let &rtp.=(empty(&rtp)?'':',').c.plugin_root_dir.'/vim-addon-manager'
 
   " Tell VAM which plugins to fetch & load:
-  call vam#ActivateAddons([ 'ctrlp', 'Emmet', 'matchit.zip', 'surround', 'The_NERD_Commenter', 'The_NERD_tree', 'Supertab', 'Syntastic', 'Tagbar', 'taglist', 'fugitive', 'vim-javascript', 'jshint2', 'Go_Syntax', 'vim-scala', 'jedi-vim', ], {'auto_install' : 1})
+  call vam#ActivateAddons([ 'ctrlp', 'Emmet', 'matchit.zip', 'surround', 'AutoTag', 'The_NERD_Commenter', 'The_NERD_tree', 'Supertab', 'Syntastic', 'Tagbar', 'taglist', 'Gundo', 'fugitive', 'vim-javascript', 'jshint2', 'Go_Syntax', 'vim-scala', 'jedi-vim' ], {'auto_install' : 1})
   " sample: call vam#ActivateAddons(['pluginA','pluginB', ...], {'auto_install' : 0})
   " Also See "plugins-per-line" below
 
@@ -111,11 +111,9 @@ filetype plugin indent on
 syntax on
 
 " Default tag files
-"set tags=./tags,tags,~/.tags
-set tags=./tags,tags
+set tags=./tags,tags,~/.tags
 
-" tagging setup
-" omni-completion on for...
+" tagging and omni-completion setup (UNUSED FOR NOW)
 "au FileType python set omnifunc=pythoncomplete#Complete
 "au FileType python3 set omnifunc=python3complete#Complete
 "au FileType python3,python set tags=./tags,tags,~/.pytags
@@ -195,6 +193,19 @@ let g:last_pos = 0
 "  let g:Grep_Xargs_Options='-0'
 "endif
 
+" Scoped Variable Renaming
+" ------------------------
+
+function! Rename()
+  " Rename variable under cursor (except Python!)
+  call inputsave()
+  let @z=input("Rename ".@z." to: ")
+  call inputrestore()
+endfunction
+
+" jedi-vim for Python will override this to use its own renmaing function
+nmap <Leader>r "zyiw:call Rename()<cr>mx:silent! norm gd<cr>[{V%:s/<C-R>//<c-r>z/g<cr>`x
+
 " Plugins Setup
 " -------------
 
@@ -244,6 +255,11 @@ nmap <silent> <Leader>b :CtrlPBuffer<CR>
 
 " use context-dependent completion style
 let g:SuperTabDefaultCompletionType="context"
+
+" ctags setup
+" -----------
+
+map <F2> :!ctags --recurse --c++-kinds=+p --c-kinds=+p --fields=+iaS --extra=+q .<CR>
 
 " TagList setup
 " -------------
@@ -330,6 +346,11 @@ nmap <Leader>s :SyntasticCheck<CR>
 " (can be done with :lopen too)
 "nmap <Leader>e :Errors<CR>
 
+" C/C++ Setup
+" -----------
+
+au FileType c,cpp,h,hpp set makeprg=make
+
 " JavaScript Setup
 " ----------------
 
@@ -350,6 +371,9 @@ let javascript_ignore_javaScriptdoc = 0
 " Go Setup
 " --------
 
+" use makeprg to run unittests
+au FileType go set makeprg=go\ test
+
 filetype off
 filetype plugin indent off
 set runtimepath+=$GOROOT/misc/vim
@@ -361,6 +385,9 @@ au FileType go set tabstop=2
 
 " Python Setup
 " ------------
+
+" use makeprg to run unittests
+au FileType py,py3 set makeprg=nosetests
 
 " jedi setup
 let g:jedi#goto_assignments_command = "<Leader>a"
@@ -423,9 +450,11 @@ nmap <Leader>c :lcd %:p:h<CR>
 nmap <silent> <Leader>\ :nohlsearch<CR>
 
 " quick make commands and moving through errors
+" easier to just use :cp, :cn, :cw ?
 nmap <F7> :cprevious<CR>
 nmap <F8> :make<CR>
 nmap <F9> :cnext<CR>
+"nmap <Leader>q :cwindow<CR>
 
 " moving around the loclist
 nmap <Leader>] :lnext<CR>
