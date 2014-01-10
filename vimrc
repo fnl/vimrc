@@ -2,6 +2,64 @@
 set nocompatible " disable vi compatiblity
 set hidden " change buffers w/o saving - essential
 
+fun! EnsureVamIsOnDisk(plugin_root_dir)
+  let vam_autoload_dir = a:plugin_root_dir.'/vim-addon-manager/autoload'
+  if isdirectory(vam_autoload_dir)
+    return 1
+  else
+    if 1 == confirm("Clone VAM into ".a:plugin_root_dir."?","&Y\n&N")
+      call mkdir(a:plugin_root_dir, 'p')
+      execute '!git clone --depth=1 git://github.com/MarcWeber/vim-addon-manager '.
+              \       shellescape(a:plugin_root_dir, 1).'/vim-addon-manager'
+      " VAM runs helptags automatically when you install or update plugins
+      exec 'helptags '.fnameescape(a:plugin_root_dir.'/vim-addon-manager/doc')
+    endif
+    return isdirectory(vam_autoload_dir)
+  endif
+endfun
+
+fun! SetupVAM()
+  " Set advanced options like this:
+  " let g:vim_addon_manager = {}
+  " let g:vim_addon_manager.key = value
+  "     Pipe all output into a buffer which gets written to disk
+  " let g:vim_addon_manager.log_to_buf =1
+
+  " Example: drop git sources unless git is in PATH. Same plugins can
+  " be installed from www.vim.org. Lookup MergeSources to get more control
+  " let g:vim_addon_manager.drop_git_sources = !executable('git')
+  " let g:vim_addon_manager.debug_activation = 1
+
+  " VAM install location:
+  let c = get(g:, 'vim_addon_manager', {})
+  let g:vim_addon_manager = c
+  let c.plugin_root_dir = expand('$HOME/.vim/vim-addons', 1)
+  if !EnsureVamIsOnDisk(c.plugin_root_dir)
+    echohl ErrorMsg | echomsg "No VAM found!" | echohl NONE
+    return
+  endif
+  let &rtp.=(empty(&rtp)?'':',').c.plugin_root_dir.'/vim-addon-manager'
+
+  " Tell VAM which plugins to fetch & load:
+  call vam#ActivateAddons([ 'ctrlp', 'Emmet', 'matchit.zip', 'surround', 'The_NERD_Commenter', 'The_NERD_tree', 'Supertab', 'Syntastic', 'Tagbar', 'taglist', 'fugitive', 'vim-javascript', 'jshint2', 'Go_Syntax', 'vim-scala', 'jedi-vim', ], {'auto_install' : 1})
+  " sample: call vam#ActivateAddons(['pluginA','pluginB', ...], {'auto_install' : 0})
+  " Also See "plugins-per-line" below
+
+  " Addons are put into plugin_root_dir/plugin-name directory
+  " unless those directories exist. Then they are activated.
+  " Activating means adding addon dirs to rtp and do some additional
+  " magic
+
+  " How to find addon names?
+  " - look up source from pool
+  " - (<c-x><c-p> complete plugin names):
+  " You can use name rewritings to point to sources:
+  "    ..ActivateAddons(["github:foo", .. => github://foo/vim-addon-foo
+  "    ..ActivateAddons(["github:user/repo", .. => github://user/repo
+  " Also see section "2.2. names of addons and addon sources" in VAM's documentation
+endfun
+call SetupVAM()
+
 " Some basic settings
 set listchars=tab:→⋅,trail:⋅,eol:¬,extends:➧,nbsp:∙ " invisibles definitions
 set scrolloff=3 " start scrolling a bit earlier
@@ -267,7 +325,7 @@ let g:syntastic_loc_list_height = 5
 " toggle [s]yntastic plugin mode
 "nmap <silent> <Leader>s :SyntasticToggleMode<CR>
 " [c] syntax with Syntasstic plugin
-nmap <Leader>c :SyntasticCheck<CR>
+nmap <Leader>s :SyntasticCheck<CR>
 " show Syntastic [e]rror messages
 " (can be done with :lopen too)
 "nmap <Leader>e :Errors<CR>
@@ -359,7 +417,7 @@ autocmd BufRead *.py iabbrev defnext def __next__(self,
 cmap w!! w !sudo tee % > /dev/null
 
 " reset the working dir of the current buffer to the file's dir
-nmap <Leader>p :lcd %:p:h<CR>
+nmap <Leader>c :lcd %:p:h<CR>
 
 " quickly clear serach highlights
 nmap <silent> <Leader>\ :nohlsearch<CR>
@@ -377,8 +435,8 @@ nmap <Leader>[ :lprevious<CR>
 vnoremap <BS> :<BS><BS><BS><BS><BS>%s/\s\+$//ge<CR>
 
 " scroll viewport a bit fater
-nmap <C-e> 2<C-e>
-nmap <C-y> 2<C-y>
+nnoremap <C-e> 2<C-e>
+nnoremap <C-y> 2<C-y>
 
 " toggle showing hidden ("list") characters (tab, trail, eol)
 nmap <silent> <Leader>h :set nolist!<CR>

@@ -2,4 +2,4 @@
 *.pyc
 *.class
 tags
-bundle
+vim-addons
