@@ -209,10 +209,6 @@ nmap <Leader>r "zyiw:call Rename()<cr>mx:silent! norm gd<cr>[{V%:s/<C-R>//<c-r>z
 " Plugins Setup
 " -------------
 
-" Pathogen setup
-call pathogen#infect()
-call pathogen#helptags()
-
 " cscope setup
 if has("cscope")
     set csprg=cscope
@@ -231,6 +227,17 @@ endif
 
 " Enable extended % matching (if/elsif/else/end) and SGML tags
 runtime macros/matchit.vim
+
+" Gundo setup
+" -----------
+
+let g:gundo_width = 30
+let g:gundo_preview_height = 20
+let g:gundo_close_on_revert = 1
+let g:gundo_preview_bottom = 1
+
+" open Revision history
+map <Leader>R :GundoToggle<CR>
 
 " Command-T/CtrlP setup
 " ---------------------
@@ -488,6 +495,6 @@ nmap <C-l> <C-w>l
 " Make window resizing easier
 " (note: reversed setting more intuitive)
 nmap <silent> <Up> <C-W>-
-  nmap <silent> <Down> <C-W>+
-  nmap <silent> <Left> <C-W>>
+nmap <silent> <Down> <C-W>+
+nmap <silent> <Left> <C-W>>
 nmap <silent> <Right> <C-W>;<
