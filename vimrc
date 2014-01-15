@@ -49,7 +49,7 @@ fun! SetupVAM()
   let &rtp.=(empty(&rtp)?'':',').c.plugin_root_dir.'/vim-addon-manager'
 
   " Tell VAM which plugins to fetch & load:
-  call vam#ActivateAddons([ 'ctrlp', 'Emmet', 'matchit.zip', 'surround', 'AutoTag', 'The_NERD_Commenter', 'The_NERD_tree', 'Supertab', 'Syntastic', 'Tagbar', 'taglist', 'Gundo', 'fugitive', 'vim-javascript', 'jshint2', 'Go_Syntax', 'vim-scala', 'jedi-vim' ], {'auto_install' : 1})
+  call vam#ActivateAddons([ 'ctrlp', 'Emmet', 'matchit.zip', 'surround', 'AutoTag', 'The_NERD_Commenter', 'The_NERD_tree', 'Supertab', 'Syntastic', 'Tagbar', 'taglist', 'Gundo', 'fugitive', 'vim-javascript', 'jshint2', 'Go_Syntax', 'vim-scala', 'jedi-vim', 'indentpython%974' ], {'auto_install' : 1})
   " sample: call vam#ActivateAddons(['pluginA','pluginB', ...], {'auto_install' : 0})
   " Also See "plugins-per-line" below
 
