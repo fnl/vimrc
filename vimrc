@@ -49,7 +49,9 @@ fun! SetupVAM()
   let &rtp.=(empty(&rtp)?'':',').c.plugin_root_dir.'/vim-addon-manager'
 
   " Tell VAM which plugins to fetch & load:
-  call vam#ActivateAddons([ 'ctrlp', 'Emmet', 'matchit.zip', 'surround', 'AutoTag', 'The_NERD_Commenter', 'The_NERD_tree', 'Supertab', 'Syntastic', 'Tagbar', 'taglist', 'Gundo', 'fugitive', 'vim-javascript', 'jshint2', 'Go_Syntax', 'vim-scala', 'jedi-vim', 'indentpython%974' ], {'auto_install' : 1})
+  " snippets seems to not work well with code completion...
+  " 'github:MarcWeber/ultisnips', 'vim-snippets', 
+  call vam#ActivateAddons([ 'ctrlp', 'EasyMotion', 'Emmet', 'matchit.zip', 'surround', 'AutoTag', 'The_NERD_Commenter', 'The_NERD_tree', 'Supertab', 'Syntastic', 'Tagbar', 'taglist', 'Gundo', 'fugitive', 'vim-javascript', 'jshint2', 'Go_Syntax', 'vim-scala', 'jedi-vim', 'indentpython%974' ], {'auto_install' : 1})
   " sample: call vam#ActivateAddons(['pluginA','pluginB', ...], {'auto_install' : 0})
   " Also See "plugins-per-line" below
 
@@ -214,10 +216,12 @@ endfunction
 " jedi-vim for Python will override this to use its own renmaing function
 nmap <Leader>r "zyiw:call Rename()<cr>mx:silent! norm gd<cr>[{V%:s/<C-R>//<c-r>z/g<cr>`x
 
-" Plugins Setup
+" PLUGINS SETUP
 " -------------
 
-" cscope setup
+" cscope 
+" ------
+
 if has("cscope")
     set csprg=cscope
     set csto=0
@@ -236,8 +240,14 @@ endif
 " Enable extended % matching (if/elsif/else/end) and SGML tags
 runtime macros/matchit.vim
 
-" Gundo setup
-" -----------
+" EasyMotion
+" ----------
+
+" find characters
+let g:EasyMotion_leader_key = '<Leader>f'
+
+" Gundo 
+" -----
 
 let g:gundo_width = 30
 let g:gundo_preview_height = 20
@@ -247,8 +257,8 @@ let g:gundo_preview_bottom = 1
 " open Revision history
 map <Leader>R :GundoToggle<CR>
 
-" Command-T/CtrlP setup
-" ---------------------
+" Command-T/CtrlP 
+" ---------------
 
 " open the Command-T commandline ("[o]pen file")
 "nnoremap <silent> <Leader>o :CommandT<CR>
@@ -256,8 +266,8 @@ map <Leader>R :GundoToggle<CR>
 " open the CtrlP file commandline ("[o]pen file")
 nmap <silent> <Leader>o :CtrlP<CR>
 
-" open the Command-T commandline ("open [b]uffer")
-"nnoremap <silent> <Leader>b :CommandTBuffer<CR>
+" open the Command-T commandline ("open buffer")
+"nnoremap <silent> <Leader>O :CommandTBuffer<CR>
 
 " open the CtrlP buffer commandline ("open [b]uffer")
 nmap <silent> <Leader>b :CtrlPBuffer<CR>
@@ -265,19 +275,19 @@ nmap <silent> <Leader>b :CtrlPBuffer<CR>
 " flush the Command-T cache ("[f]lush")
 "cnoremap <Leader>f :CommandTFlush<CR>
 
-" SuperTab setup
-" --------------
+" SuperTab 
+" --------
 
 " use context-dependent completion style
 let g:SuperTabDefaultCompletionType="context"
 
-" ctags setup
-" -----------
+" ctags 
+" -----
 
 map <F2> :!ctags --recurse --c++-kinds=+p --c-kinds=+p --fields=+iaS --extra=+q .<CR>
 
-" TagList setup
-" -------------
+" TagList
+" -------
 
 " python3 language
 let s:tlist_def_python_settings = 'python3;c:class;m:member;f:function'
@@ -302,11 +312,11 @@ let Tlist_Exit_OnlyWindow=1
 " taglist window width setting
 "let Tlist_WinWidth="auto"
 
-" toggle the TagList plugin ("[T]aglist")
-nmap <silent> <Leader>T :TlistToggle<CR>
+" toggle the TagList plugin ("[t]aglist")
+nmap <silent> <Leader>t :TlistToggle<CR>
 
-" TagBar setup
-" ------------
+" TagBar
+" ------
 
 " place the bar on the left
 let g:tagbar_left=1
@@ -321,11 +331,11 @@ let g:tagbar_autofocus=1
 " use smaller icons
 let g:tagbar_iconchars = ['▸', '▾']
 
-" toggle the TagBar plugin ("[t]agbar")
-nmap <silent> <Leader>t :TagbarToggle<CR>
+" toggle the TagBar plugin ("[T]agbar")
+nmap <silent> <Leader>T :TagbarToggle<CR>
 
-" NERDtree setup
-" --------------
+" NERDtree
+" --------
 
 " close the directory tree when browsing to an entry
 let NERDTreeQuitOnOpen=1
@@ -333,8 +343,8 @@ let NERDTreeQuitOnOpen=1
 " toggle the NERDTree plugin ("[d]irectory tree")
 nmap <silent> <Leader>d :NERDTreeToggle<CR>A
 
-" Syntastic setup
-" ---------------
+" Syntastic
+" ---------
 
 " aggregate errors from multiple checkers
 let g:syntastic_aggregate_errors = 1
@@ -355,19 +365,29 @@ let g:syntastic_loc_list_height = 5
 
 " toggle [s]yntastic plugin mode
 "nmap <silent> <Leader>s :SyntasticToggleMode<CR>
-" [c] syntax with Syntasstic plugin
+" [s]yntax check with Syntasstic plugin
 nmap <Leader>s :SyntasticCheck<CR>
 " show Syntastic [e]rror messages
 " (can be done with :lopen too)
 "nmap <Leader>e :Errors<CR>
 
-" C/C++ Setup
-" -----------
+" UltiSnip/SnipMate
+" -----------------
+
+"let g:UltiSnips = {}
+"let g:UltiSnips.JumpForwardTrigger = "SnipMate"
+
+" PROGRAMMING LANGUAGES
+" ---------------------
+
+" C/C++ 
+" -----
 
 au FileType c,cpp,h,hpp set makeprg=make
+au FileType c,cpp,h,hpp set tabstop=2
 
-" JavaScript Setup
-" ----------------
+" JavaScript 
+" ----------
 
 " vim-jshint2
 " using this breaks syntastic...
@@ -383,8 +403,8 @@ let g:javascript_conceal = 1
 " Disable JSDoc syntax highlighting.
 let javascript_ignore_javaScriptdoc = 0
 
-" Go Setup
-" --------
+" Golang
+" ------
 
 " use makeprg to run unittests
 au FileType go set makeprg=go\ test
@@ -398,15 +418,23 @@ syntax on
 au FileType go autocmd BufWritePre <buffer> Fmt
 au FileType go set tabstop=2
 
-" Python Setup
-" ------------
+" Octave
+" ------
+
+" Octave syntax
+augroup filetypedetect
+  au! BufRead,BufNewFile *.m,*.oct set filetype=octave
+augroup END
+
+" Python 
+" ------
 
 " use makeprg to run unittests
-au FileType py,py3 set makeprg=nosetests
+au FileType py,py3 set makeprg=nosetests\ --doctest-modules
 
 " jedi setup
 let g:jedi#goto_assignments_command = "<Leader>a"
-let g:jedi#goto_definitions_command = "<Leader>g"
+let g:jedi#goto_definitions_command = "<Leader>d"
 let g:jedi#use_tabs_not_buffers = 0
 let g:jedi#popup_on_dot = 0
 let g:jedi#rename_command = "<Leader>r"
@@ -429,9 +457,9 @@ let g:pydoc_cmd = "pydoc3"
 "autocmd BufRead *.py nmap <Leader>rc :!pyflakes3k %<CR>
 " run test all
 "autocmd BufRead *.py nmap <Leader>rt :!py.test-3 -s --doctest-modules --nocapturelog %<CR>
-autocmd BufRead *.py nmap <Leader>rt :!nosetest -s --doctest-modules --nocapturelog %<CR>
+"autocmd BufRead *.py nmap <Leader>rt :!nosetest -s --doctest-modules --nocapturelog %<CR>
 " run python
-autocmd BufRead *.py nmap <Leader>rp :!python %<CR>
+"autocmd BufRead *.py nmap <Leader>rp :!python %<CR>
 "autocmd BufRead *.py nmap <Leader>rp :!python3 %<CR>
 
 " Pytest.vim and py.test
@@ -458,11 +486,11 @@ autocmd BufRead *.py iabbrev defnext def __next__(self,
 " write in sudo mode **after** opening a file
 cmap w!! w !sudo tee % > /dev/null
 
-" reset the working dir of the current buffer to the file's dir
+" [c]hange the working dir of the current buffer to the file's dir
 nmap <Leader>c :lcd %:p:h<CR>
 
 " quickly clear serach highlights
-nmap <silent> <Leader>\ :nohlsearch<CR>
+nmap <silent> <Leader><Leader> :nohlsearch<CR>
 
 " quick make commands and moving through errors
 " easier to just use :cp, :cn, :cw ?
@@ -482,14 +510,14 @@ vnoremap <BS> :<BS><BS><BS><BS><BS>%s/\s\+$//ge<CR>
 nnoremap <C-e> 2<C-e>
 nnoremap <C-y> 2<C-y>
 
-" toggle showing hidden ("list") characters (tab, trail, eol)
+" toggle showing [h]idden ("list") characters (tab, trail, eol)
 nmap <silent> <Leader>h :set nolist!<CR>
 
 " remap back in help to something intuitive
 au filetype help nnoremap <buffer> <C-[> <C-t>
 
 " toggle showing line numbers
-nmap <silent> <Leader>l :set nonumber!<CR>
+nmap <silent> <Leader>n :set nonumber!<CR>
 
 " faster switch to last buffer faster (like gt)
 nmap <silent> tt :b#<CR>
