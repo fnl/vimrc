@@ -174,6 +174,17 @@ lt() { ls -ltrha "$@" | tail; }
 # grep the ps shortcut
 psgrep() { ps aux | tee >(head -1>&2) | grep -v " grep $@" | grep "$@" -i --color=auto; }
 
+# cd to last path after exiting ranger
+function ranger-cd {
+	tempfile='/tmp/rangerdir'
+	ranger --choosedir="$tempfile" "${@:-$(pwd)}"
+	test -f "$tempfile" &&
+	if [ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]; then
+		cd -- "$(cat "$tempfile")"
+	fi
+	rm -f -- "$tempfile"
+}
+
 # source local alias definitions
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
 
