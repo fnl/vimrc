@@ -1,49 +1,55 @@
 #!/usr/bin/env python3
 
-"replace-field.py 2_COLUMN_DICTIONARY [--col=1] [TSV]"
+"%s [--rev[erse]] DICT [--col[umn]=1] < TSV > MAPPED"
 
-__author__ = "Florian Leitner <florian.leitner@gmail.com>" # no rights reserved
+__author__ = "Florian Leitner <florian.leitner@gmail.com>"  # no rights reserved
 __version__ = "1.0"
 
 import fileinput
+import os
 import sys
 
-if not len(sys.argv) > 1 or "-h" == sys.argv[0] or "--help" == sys.argv[0]:
-    print(__doc__, file=sys.stderr)
+basename = os.path.basename(sys.argv.pop(0))
+
+if not len(sys.argv) or "-h" == sys.argv[0] or "--help" == sys.argv[0]:
+    print(__doc__ % basename, file=sys.stderr)
     sys.exit(1)
 
-# parse mappings
-mappings = dict(m.strip().split('\t') for m in open(sys.argv[1]))
-sys.argv.pop(1)
+if len(sys.argv) and sys.argv[0] in ("--reverse", "--rev"):
+    print('reversed dictionary', file=sys.stderr)
+    order = reversed
+    sys.argv.pop(0)
+else:
+    order = lambda x: x
 
-# determine column in input to be mapped
+mappings = dict(order(m.strip().split('\t')) for m in open(sys.argv.pop(0)))
 col = 1
-if len(sys.argv) > 1 and sys.argv[1].startswith("--col"):
-    if sys.argv[1] == "--col":
-        if len(sys.argv) > 2:
-            col = int(sys.argv[2])
-            sys.argv.pop(1)
-            sys.argv.pop(1)
-    elif sys.argv[1].startswith("--col="):
-        col = int(sys.argv[1][6:])
-        sys.argv.pop(1)
+
+if len(sys.argv) and sys.argv[0].startswith("--col"):
+    col = sys.argv.pop(0)
+
+    if '=' in col and not sys.argv:
+        col = int(col[col.find('=')+1:])
+    elif sys.argv:
+        col = int(sys.argv.pop(0))
+    else:
+        print('unrecognized option', col, file=sys.stderr)
 
 col -= 1
 errors = 0
+print('mapping input...', file=sys.stderr)
 
-def Process(items):
+for line in fileinput.input():
+    items = line.strip().split('\t')
+
     try:
         items[col] = mappings[items[col]]
         print('\t'.join(items))
     except KeyError as e:
         print('not in dictionary:', e, file=sys.stderr)
-        global errors
         errors += 1
 
-for line in fileinput.input():
-    Process(line.strip().split('\t'))
-
-if errors > 0:
+if errors:
     print(errors, 'entries not found (skipped)', file=sys.stderr)
 
 sys.exit(errors)
