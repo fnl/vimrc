@@ -51,7 +51,7 @@ fun! SetupVAM()
   " Tell VAM which plugins to fetch & load:
   " snippets seems to not work well with code completion...
   " 'github:MarcWeber/ultisnips', 'vim-snippets', 
-  call vam#ActivateAddons([ 'ctrlp', 'EasyMotion', 'Emmet', 'matchit.zip', 'surround', 'AutoTag', 'The_NERD_Commenter', 'The_NERD_tree', 'Supertab', 'Syntastic', 'Tagbar', 'taglist', 'Gundo', 'fugitive', 'vim-javascript', 'jshint2', 'Go_Syntax', 'vim-scala', 'jedi-vim', 'indentpython%974' ], {'auto_install' : 1})
+  call vam#ActivateAddons([ 'ctrlp', 'EasyMotion', 'Emmet', 'matchit.zip', 'surround', 'AutoTag', 'The_NERD_Commenter', 'The_NERD_tree', 'Supertab', 'Syntastic', 'Tagbar', 'taglist', 'Gundo', 'fugitive', 'vim-javascript', 'jshint2', 'Go_Syntax', 'Vim-R-plugin', 'vim-scala', 'jedi-vim', 'python_pydoc', 'indentpython%974' ], {'auto_install' : 1})
   " sample: call vam#ActivateAddons(['pluginA','pluginB', ...], {'auto_install' : 0})
   " Also See "plugins-per-line" below
 
@@ -155,14 +155,16 @@ set laststatus=2 " show the statusline - always
 
 " Tab indention handling
 set autoindent " indent files
-au FileType text set noautoindent
 set copyindent " copy the previous indetation on autoindenting
-set expandtab " no real tabs
-au FileType text set noexpandtab
-set smarttab " insert blanks using shiftwidth; off uses (soft)tabstop
+set noexpandtab " (/no) real tabs
+set tabstop=2 " number of spaces to use when editing tabs (Python see below)
+set softtabstop=0 " number of spaces to use when editing tabs (Python see below)
 set shiftwidth=2 " for smarttab (Python uses 4, defined below)
-set softtabstop=2 " number of spaces to use when editing tabs (Python see below)
+"set smarttab " insert blanks using shiftwidth; off uses (soft)tabstop
+au FileType text set noautoindent
+au FileType text set noexpandtab
 au FileType text set softtabstop=0
+au FileType text set tabstop=8 " number of spaces to use when editing tabs (Python see below)
 
 " Code folding
 set foldenable
@@ -444,13 +446,16 @@ let g:jedi#usages_command = "<Leader>u"
 let g:python_highlight_all = 1
 
 " Update shiftwidth/softtabstop
+au BufRead,BufNewFile *.py set softtabstop=0
+au BufRead,BufNewFile *.py set noexpandtab
+au BufRead,BufNewFile *.py set tabstop=4
 au BufRead,BufNewFile *.py set shiftwidth=4
-au BufRead,BufNewFile *.py set softtabstop=4
 
 " Python make commands
 
-" pydoc.vim setup
-let g:pydoc_cmd = "pydoc3"
+" python_pydoc.vim setup
+let g:pydoc_cmd = "python -m pydoc"
+let g:pydoc_window_lines=0.25
 
 " Python code checks, tests, and runs
 " run checks
