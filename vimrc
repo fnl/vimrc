@@ -108,6 +108,11 @@ hi SpellLocal cterm=underline ctermbg=none
 " insertion, and over indentations:
 set backspace=eol,start,indent
 
+" Make vimdiff play nice on dark background
+if &diff
+	colorscheme evening
+endif
+
 " Let vim switch to paste mode, disabling all kinds of smartness and just
 " paste a whole buffer of text instead of regular insert behaviour
 set pastetoggle=±
