@@ -1,0 +1,3 @@
+[submodule "distribution"]
+	path = distribution
+	url = git://github.com/philovivero/distribution.git
