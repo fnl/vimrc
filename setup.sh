@@ -8,7 +8,9 @@ ln -s $dir/octaverc ~/.octaverc
 ln -s $dir/Rprofile ~/.Rprofile
 ln -s $dir/screenrc ~/.screenrc
 ln -s $dir/vimrc ~/.vimrc
+ln -s $dir/distributionrc ~/.distributionrc
 mkdir -p ~/bin
 ln -s $dir/bin/* ~/bin/
+ln -s $dir/distribution/distribution ~/bin/
 touch ~/.bash_environment
 touch ~/.bash_aliases
