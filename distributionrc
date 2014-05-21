@@ -8,15 +8,11 @@
 # do not try to specify the same option twice in this file, you'll probably be
 # surprised by the reverse-order of overrides
 
-# obvious options?
 --color
---size=med
-
-# cool unicode partial-width characters
---char=pb
+#--char=ba
 # other interesting-but-unusual graph bar choices
 #--char=◵
-#--char=■
+--char=■
 #--char=◣
 #--char=░
 #--char=▞
