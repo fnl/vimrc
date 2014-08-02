@@ -1,7 +1,33 @@
-" This must be first, because it changes other options as side effect
+" These two must be first, because it changes other options as side effect
 set nocompatible " disable vi compatiblity
 set hidden " change buffers w/o saving - essential
 
+" List of addons to maintain with VAM
+let addonList = keys({
+\ 'AutoTag': "update entries in tag files on saves",
+\ 'ctrlp': "[open] files: '<Leader>o' and buffer: '<Leader>b' navigation",
+\ 'EasyMotion': "jump around ('<number>w', wtc.): '<Leader>j'",
+\ 'fugitive': "git commands: ':G'...",
+\ 'github:klen/python-mode': "Python IDE",
+\ 'Go_Syntax': "syntax files for Golang",
+\ 'Gundo': "visual undo tree: '<Leader>u'",
+\ 'jshint2': "JavaScript IDE (hints and lint)",
+\ 'matchit.zip': "extended % matching",
+\ 'Supertab': "tab completion",
+\ 'surround': "change surrounding a->b: 'csab' add surrounding ...: 'ysiw'...",
+\ 'Syntastic': "automatic syntax checking",
+\ 'Tagbar': "display the current tags: '<Leader>T'",
+\ 'taglist': "display the current tags: '<Leader>t'",
+\ 'The_NERD_Commenter': "toggle comments: '<Leader>c<space>'",
+\ 'The_NERD_tree': "file system directory: '<Leader>d'",
+\ 'vim-javascript': "JavaScript syntax",
+\ 'Vim-R-plugin': "R IDE",
+\ 'vim-scala': "Scala syntax",
+\ 'vimside': "Scala IDE",
+\ })
+" 'Emmet': "abbreviation expansion with '<C-y>,'"
+
+" .vim directory and VAM setup
 if ! isdirectory(expand('$HOME/.vim/backup'))
   call mkdir(expand('$HOME/.vim/backup'))
 endif
@@ -26,7 +52,7 @@ fun! EnsureVamIsOnDisk(plugin_root_dir)
   endif
 endfun
 
-fun! SetupVAM()
+fun! SetupVAM(addons)
   " Set advanced options like this:
   " let g:vim_addon_manager = {}
   " let g:vim_addon_manager.key = value
@@ -51,7 +77,7 @@ fun! SetupVAM()
   " Tell VAM which plugins to fetch & load:
   " snippets seems to not work well with code completion...
   " 'github:MarcWeber/ultisnips', 'vim-snippets', 
-  call vam#ActivateAddons([ 'ctrlp', 'EasyMotion', 'Emmet', 'matchit.zip', 'surround', 'AutoTag', 'The_NERD_Commenter', 'The_NERD_tree', 'Supertab', 'Syntastic', 'Tagbar', 'taglist', 'Gundo', 'fugitive', 'vim-javascript', 'jshint2', 'Go_Syntax', 'Vim-R-plugin', 'vim-scala', 'jedi-vim', 'python_pydoc', 'indentpython%974' ], {'auto_install' : 1})
+  call vam#ActivateAddons(a:addons, {'auto_install' : 1})
   " sample: call vam#ActivateAddons(['pluginA','pluginB', ...], {'auto_install' : 0})
   " Also See "plugins-per-line" below
 
@@ -68,7 +94,7 @@ fun! SetupVAM()
   "    ..ActivateAddons(["github:user/repo", .. => github://user/repo
   " Also see section "2.2. names of addons and addon sources" in VAM's documentation
 endfun
-call SetupVAM()
+call SetupVAM(addonList)
 
 " Some basic settings
 set listchars=tab:→⋅,trail:⋅,eol:¬,extends:➧,nbsp:∙ " invisibles definitions
@@ -220,7 +246,7 @@ function! Rename()
   call inputrestore()
 endfunction
 
-" jedi-vim for Python will override this to use its own renmaing function
+" Python will override this to use its own renmaing functionality
 nmap <Leader>r "zyiw:call Rename()<cr>mx:silent! norm gd<cr>[{V%:s/<C-R>//<c-r>z/g<cr>`x
 
 " PLUGINS SETUP
@@ -251,7 +277,7 @@ runtime macros/matchit.vim
 " ----------
 
 " find characters
-let g:EasyMotion_leader_key = '<Leader>f'
+let g:EasyMotion_leader_key = '<Leader>j'
 
 " Gundo 
 " -----
@@ -262,7 +288,7 @@ let g:gundo_close_on_revert = 1
 let g:gundo_preview_bottom = 1
 
 " open Revision history
-map <Leader>R :GundoToggle<CR>
+map <Leader>u :GundoToggle<CR>
 
 " Command-T/CtrlP 
 " ---------------
@@ -439,16 +465,25 @@ augroup END
 " use makeprg to run unittests
 au FileType py,py3 set makeprg=nosetests\ --doctest-modules
 
+" python-mode pymode setup
+let g:pymode_trim_whitespaces = 1
+let g:pymode_options_max_line_length = 99
+
+" ropevim setup
+
+"let ropevim_local_prefix = "<Leader>r"
+"let ropevim_global_prefix = "<Leader>R"
+
 " jedi setup
-let g:jedi#goto_assignments_command = "<Leader>a"
-let g:jedi#goto_definitions_command = "<Leader>d"
-let g:jedi#use_tabs_not_buffers = 0
-let g:jedi#popup_on_dot = 0
-let g:jedi#rename_command = "<Leader>r"
-let g:jedi#usages_command = "<Leader>u"
+"let g:jedi#goto_assignments_command = "<Leader>a"
+"let g:jedi#goto_definitions_command = "<Leader>d"
+"let g:jedi#use_tabs_not_buffers = 0
+"let g:jedi#popup_on_dot = 0
+"let g:jedi#rename_command = "<Leader>r"
+"let g:jedi#usages_command = "<Leader>u"
 
 " Syntax highlighting
-let g:python_highlight_all = 1
+"let g:python_highlight_all = 1
 
 " Update shiftwidth/softtabstop
 au BufRead,BufNewFile *.py set softtabstop=0
@@ -459,8 +494,8 @@ au BufRead,BufNewFile *.py set shiftwidth=4
 " Python make commands
 
 " python_pydoc.vim setup
-let g:pydoc_cmd = "python -m pydoc"
-let g:pydoc_window_lines=0.25
+"let g:pydoc_cmd = "python -m pydoc"
+"let g:pydoc_window_lines=0.25
 
 " Python code checks, tests, and runs
 " run checks
@@ -486,6 +521,8 @@ autocmd BufRead *.py iabbrev defdel def __del__(self,
 autocmd BufRead *.py iabbrev defcall def __call__(self,
 autocmd BufRead *.py iabbrev defiter def __iter__(self,
 autocmd BufRead *.py iabbrev defnext def __next__(self,
+autocmd BufRead *.py iabbrev d def
+autocmd BufRead *.py iabbrev c class
 
 " General Command Mappings
 " ------------------------
@@ -499,19 +536,20 @@ cmap w!! w !sudo tee % > /dev/null
 " [c]hange the working dir of the current buffer to the file's dir
 nmap <Leader>c :lcd %:p:h<CR>
 
-" quickly clear serach highlights
+" clear serach highlights
 nmap <silent> <Leader><Leader> :nohlsearch<CR>
 
 " quick make commands and moving through errors
 " easier to just use :cp, :cn, :cw ?
-nmap <F7> :cprevious<CR>
-nmap <F8> :make<CR>
-nmap <F9> :cnext<CR>
+" nmap <F7> :cprevious<CR>
+nmap <Leader>m :make<CR>
+" nmap <F9> :cnext<CR>
 "nmap <Leader>q :cwindow<CR>
 
 " moving around the loclist
-nmap <Leader>] :lnext<CR>
-nmap <Leader>[ :lprevious<CR>
+" easier to just use :ln and :lp
+" nmap <Leader>] :lnext<CR>
+" nmap <Leader>[ :lprevious<CR>
 
 " delete all trailing whitespaces when using BS in visual mode
 vnoremap <BS> :<BS><BS><BS><BS><BS>%s/\s\+$//ge<CR>
@@ -523,7 +561,7 @@ nnoremap <C-y> 2<C-y>
 " toggle showing [h]idden ("list") characters (tab, trail, eol)
 nmap <silent> <Leader>h :set nolist!<CR>
 
-" remap back in help to something intuitive
+" remap C-t (back) in help navigation to something intuitive
 au filetype help nnoremap <buffer> <C-[> <C-t>
 
 " toggle showing line numbers
