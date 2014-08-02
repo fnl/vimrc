@@ -1,5 +1,6 @@
 options("repos"=c(CRAN="http://cran.es.r-project.org/"))
 options(tab.width=2)
+options(stringsAsFactors = FALSE) # text mining ahoy!
 
 # Create an invisible environment for all functions so they don't clutter your workspace.
 .env <- new.env()
