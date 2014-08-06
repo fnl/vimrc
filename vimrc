@@ -1,12 +1,23 @@
+" ===================
+" A VIM CONFIGURATION
+" ===================
+"
+" by Florian Leitner <florian.leitner@gmail.com>
+"
+" Should be used in conjunction with an accompanying setup.sh file.
+
 " These two must be first, because it changes other options as side effect
-set nocompatible " disable vi compatiblity
+set nocompatible " disable vi compatibility
 set hidden " change buffers w/o saving - essential
 
-" List of addons to maintain with VAM
+" VIM ADD-ON MANAGER
+" ==================
+
+" List of add-ons to maintain with VAM
 let addonList = keys({
 \ 'AutoTag': "update entries in tag files on saves",
 \ 'ctrlp': "[open] files: '<Leader>o' and buffer: '<Leader>b' navigation",
-\ 'EasyMotion': "jump around ('<number>w', wtc.): '<Leader>j'",
+\ 'EasyMotion': "jump around ('<number>w', etc.): '<Leader>j'",
 \ 'fugitive': "git commands: ':G'...",
 \ 'github:klen/python-mode': "Python IDE",
 \ 'Go_Syntax': "syntax files for Golang",
@@ -20,6 +31,7 @@ let addonList = keys({
 \ 'taglist': "display the current tags: '<Leader>t'",
 \ 'The_NERD_Commenter': "toggle comments: '<Leader>c<space>'",
 \ 'The_NERD_tree': "file system directory: '<Leader>d'",
+\ 'vim-autoformat': "use external formatting programs to arrange code",
 \ 'vim-javascript': "JavaScript syntax",
 \ 'Vim-R-plugin': "R IDE",
 \ 'vim-scala': "Scala syntax",
@@ -53,17 +65,6 @@ fun! EnsureVamIsOnDisk(plugin_root_dir)
 endfun
 
 fun! SetupVAM(addons)
-  " Set advanced options like this:
-  " let g:vim_addon_manager = {}
-  " let g:vim_addon_manager.key = value
-  "     Pipe all output into a buffer which gets written to disk
-  " let g:vim_addon_manager.log_to_buf =1
-
-  " Example: drop git sources unless git is in PATH. Same plugins can
-  " be installed from www.vim.org. Lookup MergeSources to get more control
-  " let g:vim_addon_manager.drop_git_sources = !executable('git')
-  " let g:vim_addon_manager.debug_activation = 1
-
   " VAM install location:
   let c = get(g:, 'vim_addon_manager', {})
   let g:vim_addon_manager = c
@@ -73,50 +74,32 @@ fun! SetupVAM(addons)
     return
   endif
   let &rtp.=(empty(&rtp)?'':',').c.plugin_root_dir.'/vim-addon-manager'
-
   " Tell VAM which plugins to fetch & load:
-  " snippets seems to not work well with code completion...
-  " 'github:MarcWeber/ultisnips', 'vim-snippets', 
   call vam#ActivateAddons(a:addons, {'auto_install' : 1})
-  " sample: call vam#ActivateAddons(['pluginA','pluginB', ...], {'auto_install' : 0})
-  " Also See "plugins-per-line" below
-
-  " Addons are put into plugin_root_dir/plugin-name directory
-  " unless those directories exist. Then they are activated.
-  " Activating means adding addon dirs to rtp and do some additional
-  " magic
-
-  " How to find addon names?
-  " - look up source from pool
-  " - (<c-x><c-p> complete plugin names):
-  " You can use name rewritings to point to sources:
-  "    ..ActivateAddons(["github:foo", .. => github://foo/vim-addon-foo
-  "    ..ActivateAddons(["github:user/repo", .. => github://user/repo
-  " Also see section "2.2. names of addons and addon sources" in VAM's documentation
 endfun
+
+" Ensure VAM and its addons
 call SetupVAM(addonList)
 
-" Some basic settings
+" BASIC CONFIGURATION
+" ===================
+
 set listchars=tab:→⋅,trail:⋅,eol:¬,extends:➧,nbsp:∙ " invisibles definitions
-set scrolloff=3 " start scrolling a bit earlier
-set sidescrolloff=3 " scroll at n colums when at the side margin in nowrap mode
+set scrolloff=3 " start vertical scrolling a bit earlier
+set sidescrolloff=3 " scroll at n colums before the side margin in nowrap mode
 set wrap " (do not) wrap lines
 set undolevels=1000 " tons of undos
 set showmatch " jump to matching parens when inserting
 set history=100 " a bit more history
-set visualbell " stop dinging!!!
+set visualbell " stop dinging
 set shortmess=atI " short (a), truncate file (t), and no intro (I) messages
 set matchtime=5 " 10ths/sec to jump to matching brackets
-"set number " shows line numbers
-
-" make the autocomplete menu readable...
-"highlight Pmenu ctermfg=black
-"highlight PmenuSel ctermfg=black
+set nonumber " show/hide line numbers
 
 " Un-nref parenthesis highlights so the cursor can be seen
 hi MatchParen cterm=bold ctermbg=none ctermfg=magenta
 
-" Un-nerf searches
+" Un-nerf searche and associated highlights
 set incsearch " highlight search phrases
 set hlsearch " keep the search highlighted when going through them
 set ignorecase " ignore case in seraches...
@@ -141,77 +124,59 @@ endif
 
 " Let vim switch to paste mode, disabling all kinds of smartness and just
 " paste a whole buffer of text instead of regular insert behaviour
-set pastetoggle=±
-
-" Set exec-bit on files that start with a she-bang line
-"au BufWritePost * if getline(1) =~ "^#!" | silent !chmod +x <afile>
+set pastetoggle=§
 
 " Syntax highlighting and filetype-dependent indenting
 filetype on
 filetype plugin indent on
 syntax on
 
-" Default tag files
+" Default ctag file names
 set tags=./tags,tags,~/.tags
-
-" tagging and omni-completion setup (UNUSED FOR NOW)
-"au FileType python set omnifunc=pythoncomplete#Complete
-"au FileType python3 set omnifunc=python3complete#Complete
-"au FileType python3,python set tags=./tags,tags,~/.pytags
-"au FileType ruby set omnifunc=rubycomplete#Complete
-"au FileType ruby set set tags=./tags,tags,~/.rtags
-"au FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-"au FileType html set omnifunc=htmlcomplete#CompleteTags
-"au FileType css set omnifunc=csscomplete#CompleteCSS
-"au FileType xml set omnifunc=xmlcomplete#CompleteTags
-"au FileType c,h set omnifunc=ccomplete#Complete
-"au FileTYpe c,h set tags=./tags,tags,~/.ctags
-"au FileType java set omnifunc=javacomplete#Complete
-"au FileType java set completefunc=javacomplete#CompleteParamsInfo
-"au FileType java set tags=./tags,tags,~/.jtags
 
 " Command line completion
 set wildmenu " turn on command line completion wild style
-" but ignore files that are "useless" from an IDE perspective
+" but ignore files that are sure to be binaries
 set wildignore=*.dll,*.o,*.obj,*.pyc,*.pyo,*.jpg,*.gif,*.png,*.swp,*.class
-set wildmode=list:longest " and show everything possible for completion
+set wildmode=list:longest " and show every possible completion
 
-" Status line as good as it gets...
+" Status line:
 " %buffer_number:%file_name
-" flags: modified readonly help preview_window
-" [fileencoding](fileformat){filetype} tagname
+" flags: m=modified r=readonly h=help w=preview_window
+" [fileencoding](fileformat){filetype}
+" tagname_if_set syntastic_flag_if_relevant
 " [byteval_under_cursor][line_number,virtual_col_number][percentage_in_file]
 set statusline=%n:%f%m%r%h%w\ [%{&fenc==\"\"?&enc:&fenc}](%{&ff}){%Y}\ %{Tlist_Get_Tagname_By_Line()}\ %{SyntasticStatuslineFlag()}\ %=[0x\%02.2B][%03l,%02v][%02p%%]
-set laststatus=2 " show the statusline - always
+set laststatus=2 " show the statusline: 2=always
 
-" Tab indention handling
-set autoindent " indent files
-set copyindent " copy the previous indetation on autoindenting
-set noexpandtab " (/no) real tabs
-set tabstop=2 " number of spaces to use when editing tabs (Python see below)
-set softtabstop=0 " number of spaces to use when editing tabs (Python see below)
-set shiftwidth=2 " for smarttab (Python uses 4, defined below)
-"set smarttab " insert blanks using shiftwidth; off uses (soft)tabstop
-au FileType text set noautoindent
-au FileType text set noexpandtab
-au FileType text set softtabstop=0
-au FileType text set tabstop=8 " number of spaces to use when editing tabs (Python see below)
+" Tab and indention handling
+set autoindent " indent file by default
+set copyindent " copy the previous indentation when autoindenting
+set tabstop=2 " number of spaces to use to display tabs
+set noexpandtab " (do not) replace (expand) tabs with spaces
+set softtabstop=0 " number of spaces to delete/insert when editing expanded tabs
+set shiftwidth=0 " number of spaces to manipulate for reindent ops (<< and >>)
+" special cases
+au FileType text set tabstop=8 noautoindent
+au FileType python set tabstop=4 shiftwidth=4 softtabstop=4 expandtab 
 
 " Code folding
 set foldenable
 set foldmarker={,} " when foldmethod marker is used
 set foldmethod=syntax " fold based on... indent, marker, or syntax
 " note that Python indention seems to work best with indent
+au FileType python set foldmethod=indent
 set foldlevel=5 " default fold level (20 is max level for indent)
 set foldminlines=2 " number of lines up to which not to fold
 set foldnestmax=5 " fold max depth (20 is max for indent)
 
-" Store backups into special dirs
-"set nobackup " by default, ignore backups - swaps are good enough
+" Swap and backup settings
+set backup " (do not) make backups
 set backupdir=~/.vim/backup " backup files dir
 set directory=~/.vim/tmp " swap files dir
 
-" Higlight the cursorline after a jump, but deactivate on move
+" Higlight the cursorline after a jump,
+" but deactivate highlight on move
 function s:Cursor_Moved()
   let cur_pos = winline()
   if g:last_pos == 0
@@ -230,29 +195,60 @@ endfunction
 autocmd CursorMoved,CursorMovedI * call s:Cursor_Moved()
 let g:last_pos = 0
 
-" Tell Rgrep not to use Xargs on Mac OS
-"let s:os = system("uname")
-"if s:os =~ "Darwin"
-"  let g:Grep_Xargs_Options='-0'
-"endif
-
-" Scoped Variable Renaming
-" ------------------------
-
+" Scoped variable renaming
 function! Rename()
-  " Rename variable under cursor (except Python!)
+  " Rename variable under cursor
   call inputsave()
   let @z=input("Rename ".@z." to: ")
   call inputrestore()
 endfunction
 
-" Python will override this to use its own renmaing functionality
-nmap <Leader>r "zyiw:call Rename()<cr>mx:silent! norm gd<cr>[{V%:s/<C-R>//<c-r>z/g<cr>`x
+" makeprg
+" -------
 
-" PLUGINS SETUP
-" -------------
+" Ensure C/C++ uses make
+au FileType c,cpp,h,hpp set makeprg=make
+" Run Golang unittests
+au FileType go set makeprg=go\ test
+" Run Python nosetests
+au FileType python set makeprg=nosetests\ --doctest-modules
 
-" cscope 
+" Golang
+" ------
+
+" always format Golang code on write
+au FileType go autocmd BufWritePre <buffer> Fmt
+
+" Golang-specifc vim addons
+filetype off
+filetype plugin indent off
+set runtimepath+=$GOROOT/misc/vim
+filetype plugin indent on
+syntax on
+
+" Python
+" ------
+
+autocmd BufRead *.py iabbrev ifmain if __name__ == '__main__':
+autocmd BufRead *.py iabbrev definit def __init__(self,
+autocmd BufRead *.py iabbrev defdel def __del__(self,
+autocmd BufRead *.py iabbrev defcall def __call__(self,
+autocmd BufRead *.py iabbrev defiter def __iter__(self,
+autocmd BufRead *.py iabbrev defnext def __next__(self,
+autocmd BufRead *.py iabbrev d def
+autocmd BufRead *.py iabbrev c class
+autocmd BufRead *.py iabbrev s self.
+
+" ADD-ON CONFIGURATIONS
+" =====================
+
+" AutoFormat
+" ----------
+
+let g:autoformat_verbosemode = 1
+let g:formatprg_args_python = "-a --max-line-length 99 -"
+
+" CScope
 " ------
 
 if has("cscope")
@@ -270,16 +266,7 @@ if has("cscope")
     endif
 endif
 
-" Enable extended % matching (if/elsif/else/end) and SGML tags
-runtime macros/matchit.vim
-
-" EasyMotion
-" ----------
-
-" find characters
-let g:EasyMotion_leader_key = '<Leader>j'
-
-" Gundo 
+" Gundo
 " -----
 
 let g:gundo_width = 30
@@ -287,44 +274,46 @@ let g:gundo_preview_height = 20
 let g:gundo_close_on_revert = 1
 let g:gundo_preview_bottom = 1
 
-" open Revision history
-map <Leader>u :GundoToggle<CR>
+" MatchIt
+" -------
 
-" Command-T/CtrlP 
-" ---------------
+" enable extended % matching (if/elsif/else/end) and SGML tags
+runtime macros/matchit.vim
 
-" open the Command-T commandline ("[o]pen file")
-"nnoremap <silent> <Leader>o :CommandT<CR>
+" NERDtree
+" --------
 
-" open the CtrlP file commandline ("[o]pen file")
-nmap <silent> <Leader>o :CtrlP<CR>
+" close the directory tree when browsing to an entry
+let NERDTreeQuitOnOpen=1
 
-" open the Command-T commandline ("open buffer")
-"nnoremap <silent> <Leader>O :CommandTBuffer<CR>
+" Python-Mode
+" -----------
 
-" open the CtrlP buffer commandline ("open [b]uffer")
-nmap <silent> <Leader>b :CtrlPBuffer<CR>
+let g:pymode_debug = 0
+let g:pymode_python = 'python3'
+let g:pymode_options = 0
+let g:pymode_trim_whitespaces = 1
+let g:pymode_syntax_print_as_function = 1
+let g:pymode_lint = 0 " syntastic works better...
+let g:pymode_lint_unmodified = 1
+let g:pymode_lint_on_fly = 1
+let g:pymode_lint_options_mccabe = { 'complexity': 6 }
+let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'mccabe']
+" navigating source code (from pymode_options)
+au FileType python set define=^\s*\\(def\\\\|class\\)
 
-" flush the Command-T cache ("[f]lush")
-"cnoremap <Leader>f :CommandTFlush<CR>
-
-" SuperTab 
+" SuperTab
 " --------
 
 " use context-dependent completion style
 let g:SuperTabDefaultCompletionType="context"
-
-" ctags 
-" -----
-
-map <F2> :!ctags --recurse --c++-kinds=+p --c-kinds=+p --fields=+iaS --extra=+q .<CR>
 
 " TagList
 " -------
 
 " python3 language
 let s:tlist_def_python_settings = 'python3;c:class;m:member;f:function'
-" hilight tag in list after n seconds (default: 4)
+" highlight tag in list after n seconds (default: 4)
 let TlistHighlightTag=2
 " focus taglist on toggle
 let Tlist_GainFocus_On_ToggleOpen=1
@@ -333,7 +322,7 @@ let Tlist_Show_One_File=1
 " update the taglist on file modifications
 let Tlist_Auto_Update=1
 " display the taglist to the right
-"let Tlist_Use_Right_Window=1
+let Tlist_Use_Right_Window=0
 " hide the fold columns
 let Tlist_Enable_Fold_Column=0
 " do not change the terminal window width
@@ -342,39 +331,22 @@ let Tlist_Inc_Winwidth=0
 let Tlist_Close_On_Select=1
 " close vim if taglist is the only window and buffer
 let Tlist_Exit_OnlyWindow=1
-" taglist window width setting
-"let Tlist_WinWidth="auto"
-
-" toggle the TagList plugin ("[t]aglist")
-nmap <silent> <Leader>t :TlistToggle<CR>
 
 " TagBar
 " ------
 
 " place the bar on the left
-let g:tagbar_left=1
+let g:tagbar_left = 1
 " auto-close the tagbar
-let g:tagbar_autoclose=1
+let g:tagbar_autoclose = 1
 " bar width
-let g:tagbar_width=50
+let g:tagbar_width = 50
 " focus on bar when opened
-let g:tagbar_autofocus=1
+let g:tagbar_autofocus = 1
 " omit irrelevant info to save space
-"let g:tagbar_compact=1
+let g:tagbar_compact = 0
 " use smaller icons
 let g:tagbar_iconchars = ['▸', '▾']
-
-" toggle the TagBar plugin ("[T]agbar")
-nmap <silent> <Leader>T :TagbarToggle<CR>
-
-" NERDtree
-" --------
-
-" close the directory tree when browsing to an entry
-let NERDTreeQuitOnOpen=1
-
-" toggle the NERDTree plugin ("[d]irectory tree")
-nmap <silent> <Leader>d :NERDTreeToggle<CR>A
 
 " Syntastic
 " ---------
@@ -387,46 +359,21 @@ let g:syntastic_auto_loc_list=1
 let g:syntastic_echo_current_error = 1
 " populate loclist with errors
 let g:syntastic_always_populate_loc_list = 1
-" enable on open file
+" dis/en-able on open file
 let g:syntastic_check_on_open = 1
-" enable on write
-"let g:syntastic_check_on_wq = 1
+" dis/en-able on write
+let g:syntastic_check_on_wq = 0
 " dis/en-able left column signs
 let g:syntastic_enable_signs = 0
 " set location list window height
 let g:syntastic_loc_list_height = 5
+" Python-specific setup
+let g:syntastic_python_checkers = ['flake8', 'pep257']
+let g:syntastic_python_pep257_args = '--ignore=D102,D205,D400'
 
-" toggle [s]yntastic plugin mode
-"nmap <silent> <Leader>s :SyntasticToggleMode<CR>
-" [s]yntax check with Syntasstic plugin
-nmap <Leader>s :SyntasticCheck<CR>
-" show Syntastic [e]rror messages
-" (can be done with :lopen too)
-"nmap <Leader>e :Errors<CR>
+" Vim-JavaScript
+" --------------
 
-" UltiSnip/SnipMate
-" -----------------
-
-"let g:UltiSnips = {}
-"let g:UltiSnips.JumpForwardTrigger = "SnipMate"
-
-" PROGRAMMING LANGUAGES
-" ---------------------
-
-" C/C++ 
-" -----
-
-au FileType c,cpp,h,hpp set makeprg=make
-au FileType c,cpp,h,hpp set tabstop=2
-
-" JavaScript 
-" ----------
-
-" vim-jshint2
-" using this breaks syntastic...
-let jshint2_save = 0
-
-" vim-javascript
 " Enable HTML/CSS syntax highlighting in your JavaScript files.
 let javascript_enable_domhtmlcss = 1
 " Enable JavaScript code folding.
@@ -436,136 +383,134 @@ let g:javascript_conceal = 1
 " Disable JSDoc syntax highlighting.
 let javascript_ignore_javaScriptdoc = 0
 
-" Golang
-" ------
+" Vim-JSHint2
+" -----------
 
-" use makeprg to run unittests
-au FileType go set makeprg=go\ test
+" disable save, as using this breaks syntastic
+let jshint2_save = 0
 
-filetype off
-filetype plugin indent off
-set runtimepath+=$GOROOT/misc/vim
-filetype plugin indent on
-syntax on
+" KEYMAPPINGS
+" ===========
 
-au FileType go autocmd BufWritePre <buffer> Fmt
-au FileType go set tabstop=2
+" used leaders:
+" a -> autoformat
+" b -> switch to buffer
+" c -> cwd
+" d -> directory tree
+" h -> hidden characters
+" j -> jump
+" m -> :make
+" n -> line numbers
+" o -> open file
+" p -> pymode
+" r -> renaming
+" s -> syntastic
+" t -> taglist
+" T -> Tagbar
+" u -> undo window toggle
+" [,] -> moving around the loclist
 
-" Octave
-" ------
+" Add-On Keymappings
+" ------------------
 
-" Octave syntax
-augroup filetypedetect
-  au! BufRead,BufNewFile *.m,*.oct set filetype=octave
-augroup END
+" Auotformat
+noremap <Leader>a :Autoformat<CR><CR>
 
-" Python 
-" ------
+" CtrlP 
+" open the CtrlP file commandline ("[o]pen file")
+nmap <silent> <Leader>o :CtrlP<CR>
+" open the CtrlP buffer commandline ("open [b]uffer")
+nmap <silent> <Leader>b :CtrlPBuffer<CR>
 
-" use makeprg to run unittests
-au FileType py,py3 set makeprg=nosetests\ --doctest-modules
+" EasyMotion
+" find characters (jump)
+let g:EasyMotion_leader_key = '<Leader>j'
 
-" python-mode pymode setup
-let g:pymode_trim_whitespaces = 1
-let g:pymode_options_max_line_length = 99
+" Gundo
+" open revision history
+map <Leader>u :GundoToggle<CR>
 
-" ropevim setup
+" NERDTree
+" toggle plugin ("[d]irectory tree")
+nmap <silent> <Leader>d :NERDTreeToggle<CR>A
 
-"let ropevim_local_prefix = "<Leader>r"
-"let ropevim_global_prefix = "<Leader>R"
+" Python-Mode
+let g:pymode_run_bind = '<Leader>pp'
+let g:pymode_breakpoint_bind = '<Leader>pb'
+let g:pymode_rope_rename_bind = '<Leader>prr'
+let g:pymode_rope_rename_module_bind = '<Leader>prm'
+let g:pymode_rope_organize_imports_bind = '<Leader>pro'
+let g:pymode_rope_autoimport_bind = '<Leader>pra'
+let g:pymode_rope_module_to_package_bind = '<Leader>prp'
+let g:pymode_rope_extract_method_bind = '<Leader>pre'
+let g:pymode_rope_extract_variable_bind = '<Leader>prv'
+let g:pymode_rope_use_function_bind = '<Leader>prf'
+let g:pymode_rope_move_bind = '<Leader>prb'
+let g:pymode_rope_change_signature_bind = '<Leader>prs'
 
-" jedi setup
-"let g:jedi#goto_assignments_command = "<Leader>a"
-"let g:jedi#goto_definitions_command = "<Leader>d"
-"let g:jedi#use_tabs_not_buffers = 0
-"let g:jedi#popup_on_dot = 0
-"let g:jedi#rename_command = "<Leader>r"
-"let g:jedi#usages_command = "<Leader>u"
+" Syntastic
+" toggle [s]yntastic plugin mode
+nmap <silent> <Leader>ss :SyntasticToggleMode<CR>
+" syntax [c]heck with Syntasstic plugin
+nmap <Leader>sc :SyntasticCheck<CR>
+" show Syntastic [e]rror messages
+" (could be done with :lopen too)
+nmap <Leader>se :Errors<CR>
 
-" Syntax highlighting
-"let g:python_highlight_all = 1
+" TagBar
+" toggle the plugin ("[T]agbar")
+nmap <silent> <Leader>T :TagbarToggle<CR>
 
-" Update shiftwidth/softtabstop
-au BufRead,BufNewFile *.py set softtabstop=0
-au BufRead,BufNewFile *.py set noexpandtab
-au BufRead,BufNewFile *.py set tabstop=4
-au BufRead,BufNewFile *.py set shiftwidth=4
+" TagList
+" toggle the plugin ("[t]aglist")
+nmap <silent> <Leader>t :TlistToggle<CR>
 
-" Python make commands
+" Custom (Leader) Keymappings
+" ---------------------------
 
-" python_pydoc.vim setup
-"let g:pydoc_cmd = "python -m pydoc"
-"let g:pydoc_window_lines=0.25
+" rename stuff (see custom function Rename())
+nmap <Leader>r "zyiw:call Rename()<cr>mx:silent! norm gd<cr>[{V%:s/<C-R>//<c-r>z/g<cr>`x
 
-" Python code checks, tests, and runs
-" run checks
-"autocmd BufRead *.py nmap <Leader>rc :!pyflakes3k %<CR>
-" run test all
-"autocmd BufRead *.py nmap <Leader>rt :!py.test-3 -s --doctest-modules --nocapturelog %<CR>
-"autocmd BufRead *.py nmap <Leader>rt :!nosetest -s --doctest-modules --nocapturelog %<CR>
-" run python
-"autocmd BufRead *.py nmap <Leader>rp :!python %<CR>
-"autocmd BufRead *.py nmap <Leader>rp :!python3 %<CR>
-
-" Pytest.vim and py.test
-"autocmd BufRead *.py nmap <Leader>pf <Esc>:Pytest file<CR>
-"autocmd BufRead *.py nmap <Leader>pc <Esc>:Pytest class<CR>
-"autocmd BufRead *.py nmap <Leader>pm <Esc>:Pytest method<CR>
-"autocmd BufRead *.py nmap <Leader>ps <Esc>:Pytest session<CR>
-"autocmd BufRead *.py nmap <Leader>pn <Esc>:Pytest next<CR>
-
-" Text expansion - iabbrev
-autocmd BufRead *.py iabbrev ifmain if __name__ == '__main__':
-autocmd BufRead *.py iabbrev definit def __init__(self,
-autocmd BufRead *.py iabbrev defdel def __del__(self,
-autocmd BufRead *.py iabbrev defcall def __call__(self,
-autocmd BufRead *.py iabbrev defiter def __iter__(self,
-autocmd BufRead *.py iabbrev defnext def __next__(self,
-autocmd BufRead *.py iabbrev d def
-autocmd BufRead *.py iabbrev c class
-
-" General Command Mappings
-" ------------------------
-
-" remember <S-Space> does not work on Mac :(
-" the mapping for highlight search disable was defined already
-
-" write in sudo mode **after** opening a file
-cmap w!! w !sudo tee % > /dev/null
-
-" [c]hange the working dir of the current buffer to the file's dir
+" [c]hange vim's working dir to the current buffer's file's dir
 nmap <Leader>c :lcd %:p:h<CR>
 
 " clear serach highlights
 nmap <silent> <Leader><Leader> :nohlsearch<CR>
 
 " quick make commands and moving through errors
-" easier to just use :cp, :cn, :cw ?
-" nmap <F7> :cprevious<CR>
+" NB: use :cp, :cn, :cw  for previous, next, and close window
 nmap <Leader>m :make<CR>
-" nmap <F9> :cnext<CR>
-"nmap <Leader>q :cwindow<CR>
 
 " moving around the loclist
-" easier to just use :ln and :lp
-" nmap <Leader>] :lnext<CR>
-" nmap <Leader>[ :lprevious<CR>
+nmap <Leader>] :lnext<CR>
+nmap <Leader>[ :lprevious<CR>
+
+" toggle [h]idden ("list") characters (tab, trail, eol)
+nmap <silent> <Leader>h :set nolist!<CR>
+
+" toggle line numbers
+nmap <silent> <Leader>n :set nonumber!<CR>
+
+" Changed Default Keymappings
+" ---------------------------
+
+" remember <S-Space> does not work on Mac :(
+
+" write in sudo mode **after** opening a file
+cmap w!! w !sudo tee % > /dev/null
 
 " delete all trailing whitespaces when using BS in visual mode
 vnoremap <BS> :<BS><BS><BS><BS><BS>%s/\s\+$//ge<CR>
+
+" ctags 
+map <F2> :!ctags --recurse --c++-kinds=+p --c-kinds=+p --fields=+iaS --extra=+q .<CR>
 
 " scroll viewport a bit fater
 nnoremap <C-e> 2<C-e>
 nnoremap <C-y> 2<C-y>
 
-" toggle showing [h]idden ("list") characters (tab, trail, eol)
-nmap <silent> <Leader>h :set nolist!<CR>
-
 " remap C-t (back) in help navigation to something intuitive
 au filetype help nnoremap <buffer> <C-[> <C-t>
-
-" toggle showing line numbers
-nmap <silent> <Leader>n :set nonumber!<CR>
 
 " faster switch to last buffer faster (like gt)
 nmap <silent> tt :b#<CR>
@@ -577,7 +522,7 @@ nmap <C-k> <C-w>k
 nmap <C-l> <C-w>l
 
 " Make window resizing easier
-" (note: reversed setting more intuitive)
+" (note: this reversed setting is more intuitive)
 nmap <silent> <Up> <C-W>-
 nmap <silent> <Down> <C-W>+
 nmap <silent> <Left> <C-W>>
