@@ -12,5 +12,8 @@ ln -s $dir/distributionrc ~/.distributionrc
 mkdir -p ~/bin
 ln -s $dir/bin/* ~/bin/
 ln -s $dir/distribution/distribution ~/bin/
+ln -s $dir/z/z.sh ~/bin/z
+mkdir -p ~/man/man.1
+ln -s $dir/z/z.1 ~/man/man.1/
 touch ~/.bash_environment
 touch ~/.bash_aliases
