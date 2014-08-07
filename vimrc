@@ -17,13 +17,16 @@ set hidden " change buffers w/o saving - essential
 let addonList = keys({
 \ 'AutoTag': "update entries in tag files on saves",
 \ 'ctrlp': "[open] files: '<Leader>o' and buffer: '<Leader>b' navigation",
+\ 'Conque_Shell': "better shell support (pytest!)",
 \ 'EasyMotion': "jump around ('<number>w', etc.): '<Leader>j'",
 \ 'fugitive': "git commands: ':G'...",
-\ 'github:klen/python-mode': "Python IDE",
 \ 'Go_Syntax': "syntax files for Golang",
 \ 'Gundo': "visual undo tree: '<Leader>u'",
+\ 'jedi-vim': "Python code editing",
 \ 'jshint2': "JavaScript IDE (hints and lint)",
 \ 'matchit.zip': "extended % matching",
+\ 'pytest': "support for py.test",
+\ 'python_pydoc': "python documentation viewer",
 \ 'Supertab': "tab completion",
 \ 'surround': "change surrounding a->b: 'csab' add surrounding ...: 'ysiw'...",
 \ 'Syntastic': "automatic syntax checking",
@@ -95,6 +98,7 @@ set visualbell " stop dinging
 set shortmess=atI " short (a), truncate file (t), and no intro (I) messages
 set matchtime=5 " 10ths/sec to jump to matching brackets
 set nonumber " show/hide line numbers
+set colorcolumn=99 " highlight the ideal textwidth to use
 
 " Un-nref parenthesis highlights so the cursor can be seen
 hi MatchParen cterm=bold ctermbg=none ctermfg=magenta
@@ -107,7 +111,7 @@ set smartcase " ...but only if there is no capital letter present
 hi Search cterm=none ctermfg=black ctermbg=yellow
 
 " Enable spell checking in text files
-au FileType text set spell spelllang=en_us " enable spellchecking
+au FileType text setlocal spell spelllang=en_us " enable spellchecking
 hi SpellBad cterm=underline ctermbg=none
 hi SpellCap cterm=underline ctermbg=none
 hi SpellRare cterm=underline ctermbg=none
@@ -157,15 +161,15 @@ set noexpandtab " (do not) replace (expand) tabs with spaces
 set softtabstop=0 " number of spaces to delete/insert when editing expanded tabs
 set shiftwidth=0 " number of spaces to manipulate for reindent ops (<< and >>)
 " special cases
-au FileType text set tabstop=8 noautoindent
-au FileType python set tabstop=4 shiftwidth=4 softtabstop=4 expandtab 
+au FileType text setlocal tabstop=8 noautoindent
+au FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab 
 
 " Code folding
 set foldenable
 set foldmarker={,} " when foldmethod marker is used
 set foldmethod=syntax " fold based on... indent, marker, or syntax
 " note that Python indention seems to work best with indent
-au FileType python set foldmethod=indent
+au FileType python setlocal foldmethod=indent
 set foldlevel=5 " default fold level (20 is max level for indent)
 set foldminlines=2 " number of lines up to which not to fold
 set foldnestmax=5 " fold max depth (20 is max for indent)
@@ -203,15 +207,23 @@ function! Rename()
   call inputrestore()
 endfunction
 
+" Remove spaces left of cursor
+func Eatspace()
+	let c = nr2char(getchar(0))
+	return (c =~ '\s') ? '' : c
+endfunc
+" for example:
+" iabbr <silent> if if ()<Left><C-R>=Eatspace()<CR>
+
 " makeprg
 " -------
 
 " Ensure C/C++ uses make
-au FileType c,cpp,h,hpp set makeprg=make
+au FileType c,cpp,h,hpp setlocal makeprg=make
 " Run Golang unittests
-au FileType go set makeprg=go\ test
-" Run Python nosetests
-au FileType python set makeprg=nosetests\ --doctest-modules
+au FileType go setlocal makeprg=go\ test
+" Run Python unittests
+au FileType python setlocal makeprg=py.test\ --doctest-modules
 
 " Golang
 " ------
@@ -229,15 +241,47 @@ syntax on
 " Python
 " ------
 
-autocmd BufRead *.py iabbrev ifmain if __name__ == '__main__':
-autocmd BufRead *.py iabbrev definit def __init__(self,
-autocmd BufRead *.py iabbrev defdel def __del__(self,
-autocmd BufRead *.py iabbrev defcall def __call__(self,
-autocmd BufRead *.py iabbrev defiter def __iter__(self,
-autocmd BufRead *.py iabbrev defnext def __next__(self,
-autocmd BufRead *.py iabbrev d def
-autocmd BufRead *.py iabbrev c class
-autocmd BufRead *.py iabbrev s self.
+" python.vim
+let g:python_highlight_all = 1
+
+" navigating source code (stolen from pymode)
+au FileType python setlocal define=^\s*\\(def\\\\|class\\)
+
+" common expansions of Python special methods and keywords
+au FileType python iabb cl class
+au FileType python iabb fr from
+au FileType python iabb im import
+au FileType python iabb la lambda
+au FileType python iabb s. self.<C-R>=Eatspace()<CR>
+au FileType python iabb ifmain if __name__ == '__main__':<C-R>=Eatspace()<CR><CR>
+au FileType python iabb definit def __init__(self,):<Left><Left>
+au FileType python iabb defnew def __new__(cls,):<Left><Left>
+au FileType python iabb defdel def __del__(self):<C-R>=Eatspace()<CR><CR>
+au FileType python iabb defrepr def __repr__(self):<C-R>=Eatspace()<CR><CR>
+au FileType python iabb defstr def __str__(self):<C-R>=Eatspace()<CR><CR>
+au FileType python iabb defbytes def __bytes__(self):<C-R>=Eatspace()<CR><CR>
+au FileType python iabb defeq def __eq__(self, other):<C-R>=Eatspace()<CR><CR>
+au FileType python iabb deflt def __lt__(self, other):<C-R>=Eatspace()<CR><CR>
+au FileType python iabb defhash def __hash__(self):<C-R>=Eatspace()<CR><CR>
+au FileType python iabb defbool def __bool__(self):<C-R>=Eatspace()<CR><CR>
+au FileType python iabb defgetattribute def __getattribute__(self, name):<C-R>=Eatspace()<CR><CR>
+au FileType python iabb defgetattr def __getattr__(self, name):<C-R>=Eatspace()<CR><CR>
+au FileType python iabb defsetattr def __setattr__(self, name, value):<C-R>=Eatspace()<CR><CR>
+au FileType python iabb defdelattr def __delattr__(self, name, value):<C-R>=Eatspace()<CR><CR>
+au FileType python iabb defdir def __dir__(self):<C-R>=Eatspace()<CR><CR>
+au FileType python iabb defget def __get__(self, instance, owner):<C-R>=Eatspace()<CR><CR>
+au FileType python iabb defset def __set__(self, instance, value):<C-R>=Eatspace()<CR><CR>
+au FileType python iabb defdelete def __delete__(self, instance):<C-R>=Eatspace()<CR><CR>
+au FileType python iabb defcall def __call__(self,):<Left><Left>
+au FileType python iabb deflen def __len__(self):<C-R>=Eatspace()<CR><CR>
+au FileType python iabb deflenhint def __length_hint__(self):<C-R>=Eatspace()<CR><CR>
+au FileType python iabb defgetitem def __getitem__(self, key):<C-R>=Eatspace()<CR><CR>
+au FileType python iabb defsetitem def __setitem__(self, key, value):<C-R>=Eatspace()<CR><CR>
+au FileType python iabb defdelitem def __delitem__(self, key):<C-R>=Eatspace()<CR><CR>
+au FileType python iabb defiter def __iter__(self):<C-R>=Eatspace()<CR><CR>
+au FileType python iabb defnext def __next__(self):<C-R>=Eatspace()<CR><CR>
+au FileType python iabb defreversed def __reversed__(self):<C-R>=Eatspace()<CR><CR>
+au FileType python iabb defcontains def __contains__(self, item):<C-R>=Eatspace()<CR><CR>
 
 " ADD-ON CONFIGURATIONS
 " =====================
@@ -274,6 +318,12 @@ let g:gundo_preview_height = 20
 let g:gundo_close_on_revert = 1
 let g:gundo_preview_bottom = 1
 
+" Jedi
+" ----
+
+let g:jedi#use_tabs_not_buffers = 0
+let g:jedi#popup_on_dot = 0
+
 " MatchIt
 " -------
 
@@ -286,21 +336,11 @@ runtime macros/matchit.vim
 " close the directory tree when browsing to an entry
 let NERDTreeQuitOnOpen=1
 
-" Python-Mode
-" -----------
+" Python_PyDoc
+" ------------
 
-let g:pymode_debug = 0
-let g:pymode_python = 'python3'
-let g:pymode_options = 0
-let g:pymode_trim_whitespaces = 1
-let g:pymode_syntax_print_as_function = 1
-let g:pymode_lint = 0 " syntastic works better...
-let g:pymode_lint_unmodified = 1
-let g:pymode_lint_on_fly = 1
-let g:pymode_lint_options_mccabe = { 'complexity': 6 }
-let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'mccabe']
-" navigating source code (from pymode_options)
-au FileType python set define=^\s*\\(def\\\\|class\\)
+let g:pydoc_cmd = "pydoc"
+let g:pydoc_window_lines=0.25
 
 " SuperTab
 " --------
@@ -402,8 +442,8 @@ let jshint2_save = 0
 " m -> :make
 " n -> line numbers
 " o -> open file
-" p -> pymode
 " r -> renaming
+" p -> python
 " s -> syntastic
 " t -> taglist
 " T -> Tagbar
@@ -430,23 +470,29 @@ let g:EasyMotion_leader_key = '<Leader>j'
 " open revision history
 map <Leader>u :GundoToggle<CR>
 
+" Jedi
+let g:jedi#goto_assignments_command = "<Leader>pa"
+let g:jedi#goto_definitions_command = "<Leader>pd"
+let g:jedi#usages_command = "<Leader>pu"
+let g:jedi#rename_command = "<Leader>pr"
+
 " NERDTree
 " toggle plugin ("[d]irectory tree")
 nmap <silent> <Leader>d :NERDTreeToggle<CR>A
 
-" Python-Mode
-let g:pymode_run_bind = '<Leader>pp'
-let g:pymode_breakpoint_bind = '<Leader>pb'
-let g:pymode_rope_rename_bind = '<Leader>prr'
-let g:pymode_rope_rename_module_bind = '<Leader>prm'
-let g:pymode_rope_organize_imports_bind = '<Leader>pro'
-let g:pymode_rope_autoimport_bind = '<Leader>pra'
-let g:pymode_rope_module_to_package_bind = '<Leader>prp'
-let g:pymode_rope_extract_method_bind = '<Leader>pre'
-let g:pymode_rope_extract_variable_bind = '<Leader>prv'
-let g:pymode_rope_use_function_bind = '<Leader>prf'
-let g:pymode_rope_move_bind = '<Leader>prb'
-let g:pymode_rope_change_signature_bind = '<Leader>prs'
+" Py.test
+" run py.test for:
+au FileType python nmap <Leader>pta <Esc>:Pytest file --pdb<CR>
+au FileType python nmap <Leader>ptc <Esc>:Pytest class --pdb<CR>
+au FileType python nmap <Leader>ptf <Esc>:Pytest function looponfail<CR>
+au FileType python nmap <Leader>ptm <Esc>:Pytest method looponfail<CR>
+au FileType python nmap <Leader>ptp <Esc>:Pytest project<CR>
+" navigate the current session:
+au FileType python nmap <Leader>pts <Esc>:Pytest session<CR>
+au FileType python nmap <Leader>ptn <Esc>:Pytest next<CR>
+au FileType python nmap <Leader>pte <Esc>:Pytest end<CR>
+" stop py.test from running (looponfail):
+au FileType python nmap <Leader>ptq <Esc>:Pytest clear<CR>
 
 " Syntastic
 " toggle [s]yntastic plugin mode
@@ -490,6 +536,10 @@ nmap <silent> <Leader>h :set nolist!<CR>
 
 " toggle line numbers
 nmap <silent> <Leader>n :set nonumber!<CR>
+
+" run python and pytest
+autocmd FileType python nmap <Leader>pp :!python %<CR>
+autocmd FileType python nmap <Leader>pt :!py.test -s --doctest-modules %<CR>
 
 " Changed Default Keymappings
 " ---------------------------
