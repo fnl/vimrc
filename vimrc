@@ -17,7 +17,6 @@ set hidden " change buffers w/o saving - essential
 let addonList = keys({
 \ 'AutoTag': "update entries in tag files on saves",
 \ 'ctrlp': "[open] files: '<Leader>o' and buffer: '<Leader>b' navigation",
-\ 'Conque_Shell': "better shell support (pytest!)",
 \ 'EasyMotion': "jump around ('<number>w', etc.): '<Leader>j'",
 \ 'fugitive': "git commands: ':G'...",
 \ 'Go_Syntax': "syntax files for Golang",
@@ -162,7 +161,7 @@ set softtabstop=0 " number of spaces to delete/insert when editing expanded tabs
 set shiftwidth=0 " number of spaces to manipulate for reindent ops (<< and >>)
 " special cases
 au FileType text setlocal tabstop=8 noautoindent
-au FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab 
+au FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab
 
 " Code folding
 set foldenable
@@ -435,11 +434,12 @@ let jshint2_save = 0
 " used leaders:
 " a -> autoformat
 " b -> switch to buffer
-" c -> cwd
+" c -> NERD Commenter
 " d -> directory tree
 " h -> hidden characters
 " j -> jump
 " m -> :make
+" M -> menu
 " n -> line numbers
 " o -> open file
 " r -> renaming
@@ -456,7 +456,7 @@ let jshint2_save = 0
 " Auotformat
 noremap <Leader>a :Autoformat<CR><CR>
 
-" CtrlP 
+" CtrlP
 " open the CtrlP file commandline ("[o]pen file")
 nmap <silent> <Leader>o :CtrlP<CR>
 " open the CtrlP buffer commandline ("open [b]uffer")
@@ -466,13 +466,18 @@ nmap <silent> <Leader>b :CtrlPBuffer<CR>
 " find characters (jump)
 let g:EasyMotion_leader_key = '<Leader>j'
 
+" Forms (disable)
+let g:menu_map_keys=1
+nmap <Leader>M :call forms#menu#MakeMenu('n')<CR>
+vmap <Leader>M :call forms#menu#MakeMenu('v')<CR>
+
 " Gundo
 " open revision history
 map <Leader>u :GundoToggle<CR>
 
 " Jedi
 let g:jedi#goto_assignments_command = "<Leader>pa"
-let g:jedi#goto_definitions_command = "<Leader>pd"
+let g:jedi#goto_definitions_command = "<Leader>pg"
 let g:jedi#usages_command = "<Leader>pu"
 let g:jedi#rename_command = "<Leader>pr"
 
@@ -482,10 +487,10 @@ nmap <silent> <Leader>d :NERDTreeToggle<CR>A
 
 " Py.test
 " run py.test for:
-au FileType python nmap <Leader>pta <Esc>:Pytest file --pdb<CR>
-au FileType python nmap <Leader>ptc <Esc>:Pytest class --pdb<CR>
-au FileType python nmap <Leader>ptf <Esc>:Pytest function looponfail<CR>
-au FileType python nmap <Leader>ptm <Esc>:Pytest method looponfail<CR>
+au FileType python nmap <Leader>pta <Esc>:Pytest file<CR>
+au FileType python nmap <Leader>ptc <Esc>:Pytest class<CR>
+au FileType python nmap <Leader>ptf <Esc>:Pytest function<CR>
+au FileType python nmap <Leader>ptm <Esc>:Pytest method<CR>
 au FileType python nmap <Leader>ptp <Esc>:Pytest project<CR>
 " navigate the current session:
 au FileType python nmap <Leader>pts <Esc>:Pytest session<CR>
@@ -518,7 +523,7 @@ nmap <silent> <Leader>t :TlistToggle<CR>
 nmap <Leader>r "zyiw:call Rename()<cr>mx:silent! norm gd<cr>[{V%:s/<C-R>//<c-r>z/g<cr>`x
 
 " [c]hange vim's working dir to the current buffer's file's dir
-nmap <Leader>c :lcd %:p:h<CR>
+nmap <Leader>cwd :lcd %:p:h<CR>
 
 " clear serach highlights
 nmap <silent> <Leader><Leader> :nohlsearch<CR>
@@ -539,7 +544,7 @@ nmap <silent> <Leader>n :set nonumber!<CR>
 
 " run python and pytest
 autocmd FileType python nmap <Leader>pp :!python %<CR>
-autocmd FileType python nmap <Leader>pt :!py.test -s --doctest-modules %<CR>
+autocmd FileType python nmap <Leader>ptt :!py.test -s --doctest-modules %<CR>
 
 " Changed Default Keymappings
 " ---------------------------
@@ -552,7 +557,7 @@ cmap w!! w !sudo tee % > /dev/null
 " delete all trailing whitespaces when using BS in visual mode
 vnoremap <BS> :<BS><BS><BS><BS><BS>%s/\s\+$//ge<CR>
 
-" ctags 
+" ctags
 map <F2> :!ctags --recurse --c++-kinds=+p --c-kinds=+p --fields=+iaS --extra=+q .<CR>
 
 " scroll viewport a bit fater
