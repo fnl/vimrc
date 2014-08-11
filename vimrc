@@ -24,6 +24,7 @@ let addonList = keys({
 \ 'jedi-vim': "Python code editing",
 \ 'jshint2': "JavaScript IDE (hints and lint)",
 \ 'matchit.zip': "extended % matching",
+\ 'Markdown_syntax': "Markdown support",
 \ 'pytest': "support for py.test",
 \ 'python_pydoc': "python documentation viewer",
 \ 'Supertab': "tab completion",
@@ -97,7 +98,8 @@ set visualbell " stop dinging
 set shortmess=atI " short (a), truncate file (t), and no intro (I) messages
 set matchtime=5 " 10ths/sec to jump to matching brackets
 set nonumber " show/hide line numbers
-set colorcolumn=99 " highlight the ideal textwidth to use
+au Filetype * set colorcolumn=99 " highlight the ideal textwidth to use
+au FileType text,rst,mkd set colorcolumn=0 " unless it is plain text
 
 " Un-nref parenthesis highlights so the cursor can be seen
 hi MatchParen cterm=bold ctermbg=none ctermfg=magenta
