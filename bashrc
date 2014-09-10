@@ -77,13 +77,9 @@ white=37
 hostname=`hostname -s`
 if [ $hostname = ackbar ]
 then color=$magenta
-elif [ $hostname = mbp2 ]
-then color=$green
-elif [ $hostname = vader ]
-then color=$red
 elif [ $hostname = mba ]
 then color=$cyan
-else color=$white
+else color=$blue
 fi
 if [ "$color_prompt" = yes ]
 #then PS1='\[\033[01;37m\]\!\[\033[00m\] \[\033[01;33m\]\u\[\033[00m\]@\[\033[01;'$color'm\]\h\[\033[00m\]:\[\033[01;36m\]\w\[\033[00m\] \$ '
