@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+QUERY=`echo "$@" | tr " " +`
+echo "$QUERY" 1>&2
+
+wget "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=PubMed&retmax=99&term=$QUERY" -O - 2> /dev/null | grep "^<Id>" | sed -E 's|</?Id>||g' | cut -f3
