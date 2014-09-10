@@ -40,7 +40,9 @@ let addonList = keys({
 \ 'vim-scala': "Scala syntax",
 \ 'vimside': "Scala IDE",
 \ })
+" 'OmniCppComplete': "Omnicomplete support for C++",
 " 'Emmet': "abbreviation expansion with '<C-y>,'"
+" 'clang_complete': "Autocompleteion for C, C++, ObjC, and ObjC++", ONLY FOR :Py2!
 
 " .vim directory and VAM setup
 if ! isdirectory(expand('$HOME/.vim/backup'))
@@ -159,8 +161,8 @@ set autoindent " indent file by default
 set copyindent " copy the previous indentation when autoindenting
 set tabstop=2 " number of spaces to use to display tabs
 set noexpandtab " (do not) replace (expand) tabs with spaces
-set softtabstop=0 " number of spaces to delete/insert when editing expanded tabs
-set shiftwidth=0 " number of spaces to manipulate for reindent ops (<< and >>)
+set softtabstop=2 " number of spaces to delete/insert when editing expanded tabs
+set shiftwidth=2 " number of spaces to manipulate for reindent ops (<< and >>)
 " special cases
 au FileType text setlocal tabstop=8 noautoindent
 au FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab
@@ -169,9 +171,9 @@ au FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab
 set foldenable
 set foldmarker={,} " when foldmethod marker is used
 set foldmethod=syntax " fold based on... indent, marker, or syntax
-" note that Python indention seems to work best with indent
+" note that Python seems to work best with indent
 au FileType python setlocal foldmethod=indent
-set foldlevel=5 " default fold level (20 is max level for indent)
+set foldlevel=0 " default fold level (20 is max level for indent)
 set foldminlines=2 " number of lines up to which not to fold
 set foldnestmax=5 " fold max depth (20 is max for indent)
 
@@ -292,6 +294,17 @@ au FileType python iabb defcontains def __contains__(self, item):<C-R>=Eatspace(
 
 let g:autoformat_verbosemode = 1
 let g:formatprg_args_python = "-a --max-line-length 99 -"
+
+" clang_complete
+" --------------
+
+"let g:clang_auto_select = 1
+let g:clang_complete_copen = 1
+let g:clang_use_library = 1
+let g:clang_library_path='/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/'
+let g:clang_complete_macros = 1
+let g:clang_complete_patterns = 1
+
 
 " CScope
 " ------
