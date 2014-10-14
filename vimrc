@@ -10,81 +10,45 @@
 set nocompatible " disable vi compatibility
 set hidden " change buffers w/o saving - essential
 
-" VIM ADD-ON MANAGER
-" ==================
+" VIM PLUG
+" ========
 
-" List of add-ons to maintain with VAM
-let addonList = keys({
-\ 'AutoTag': "update entries in tag files on saves",
-\ 'ctrlp': "[open] files: '<Leader>o' and buffer: '<Leader>b' navigation",
-\ 'EasyMotion': "jump around ('<number>w', etc.): '<Leader>j'",
-\ 'fugitive': "git commands: ':G'...",
-\ 'Go_Syntax': "syntax files for Golang",
-\ 'Gundo': "visual undo tree: '<Leader>u'",
-\ 'jedi-vim': "Python code editing",
-\ 'jshint2': "JavaScript IDE (hints and lint)",
-\ 'matchit.zip': "extended % matching",
-\ 'Markdown_syntax': "Markdown support",
-\ 'pytest': "support for py.test",
-\ 'python_pydoc': "python documentation viewer",
-\ 'Supertab': "tab completion",
-\ 'surround': "change surrounding a->b: 'csab' add surrounding ...: 'ysiw'...",
-\ 'Syntastic': "automatic syntax checking",
-\ 'Tagbar': "display the current tags: '<Leader>T'",
-\ 'taglist': "display the current tags: '<Leader>t'",
-\ 'The_NERD_Commenter': "toggle comments: '<Leader>c<space>'",
-\ 'The_NERD_tree': "file system directory: '<Leader>d'",
-\ 'vim-autoformat': "use external formatting programs to arrange code",
-\ 'vim-javascript': "JavaScript syntax",
-\ 'Vim-R-plugin': "R IDE",
-\ 'vim-scala': "Scala syntax",
-\ 'vimside': "Scala IDE",
-\ })
-" 'OmniCppComplete': "Omnicomplete support for C++",
-" 'Emmet': "abbreviation expansion with '<C-y>,'"
-" 'clang_complete': "Autocompleteion for C, C++, ObjC, and ObjC++", ONLY FOR :Py2!
+" https://github.com/junegunn/vim-plug
+" to set up Plug itself:
+" $ mkdir -p ~/.vim/autoload
+" $ curl -fLo ~/.vim/autoload/plug.vim \
+"        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-" .vim directory and VAM setup
-if ! isdirectory(expand('$HOME/.vim/backup'))
-  call mkdir(expand('$HOME/.vim/backup'))
-endif
-
-if ! isdirectory(expand('$HOME/.vim/tmp'))
-  call mkdir(expand('$HOME/.vim/tmp'))
-endif
-
-fun! EnsureVamIsOnDisk(plugin_root_dir)
-  let vam_autoload_dir = a:plugin_root_dir.'/vim-addon-manager/autoload'
-  if isdirectory(vam_autoload_dir)
-    return 1
-  else
-    if 1 == confirm("Clone VAM into ".a:plugin_root_dir."?","&Y\n&N")
-      call mkdir(a:plugin_root_dir, 'p')
-      execute '!git clone --depth=1 git://github.com/MarcWeber/vim-addon-manager '.
-              \       shellescape(a:plugin_root_dir, 1).'/vim-addon-manager'
-      " VAM runs helptags automatically when you install or update plugins
-      exec 'helptags '.fnameescape(a:plugin_root_dir.'/vim-addon-manager/doc')
-    endif
-    return isdirectory(vam_autoload_dir)
-  endif
-endfun
-
-fun! SetupVAM(addons)
-  " VAM install location:
-  let c = get(g:, 'vim_addon_manager', {})
-  let g:vim_addon_manager = c
-  let c.plugin_root_dir = expand('$HOME/.vim/addons', 1)
-  if !EnsureVamIsOnDisk(c.plugin_root_dir)
-    echohl ErrorMsg | echomsg "No VAM found!" | echohl NONE
-    return
-  endif
-  let &rtp.=(empty(&rtp)?'':',').c.plugin_root_dir.'/vim-addon-manager'
-  " Tell VAM which plugins to fetch & load:
-  call vam#ActivateAddons(a:addons, {'auto_install' : 1})
-endfun
-
-" Ensure VAM and its addons
-call SetupVAM(addonList)
+call plug#begin('~/.vim/plugged')
+Plug 'craigemery/vim-autotag' " update entries in tag files on saves
+Plug 'kien/ctrlp.vim' " [open] files: '<Leader>o' and buffer: '<Leader>b' navigation
+Plug 'Lokaltog/vim-easymotion' " jump around ('<number>w', etc.): '<Leader>j'
+Plug 'tpope/vim-fugitive' " git commands: ':G'...
+Plug 'vim-scripts/Go-Syntax' " syntax file for Golang
+Plug 'sjl/gundo.vim' " visual undo tree: '<Leader>u'
+Plug 'davidhalter/jedi-vim' " Python code editing
+Plug 'Shutnik/jshint2.vim' " JavaScript IDE (hints and lint)
+Plug 'edsono/vim-matchit' " extended % matching
+Plug 'plasticboy/vim-markdown' " Markdown support
+Plug 'alfredodeza/pytest.vim' " support for py.test
+Plug 'fs111/pydoc.vim' " python documentation viewer
+Plug 'ervandew/supertab' " tab completion
+Plug 'tpope/vim-surround' " change surrounding a->b: 'csab' add surrounding ...: 'ysiw'...
+Plug 'scrooloose/syntastic' " automatic syntax checking
+Plug 'majutsushi/tagbar' " display the current tags: '<Leader>T'
+Plug 'vim-scripts/taglist.vim' " display the current tags: '<Leader>t'
+Plug 'scrooloose/nerdcommenter' " toggle comments: '<Leader>c<space>'
+Plug 'scrooloose/nerdtree' " file system directory: '<Leader>d'
+Plug 'Chiel92/vim-autoformat' " use external formatting programs to arrange code
+Plug 'pangloss/vim-javascript' " JavaScript syntax
+Plug 'jcfaria/Vim-R-plugin' " R IDE
+Plug 'matze/vim-tex-fold' " LaTeX document folding
+Plug 'derekwyatt/vim-scala' " Scala syntax
+Plug 'megaannum/vimside' " Scala IDE
+Plug 'itchyny/lightline.vim' " statusbar beauty
+" Plug 'mattn/emmet-vim' " abbreviation expansion with '<C-y>
+" Plug 'Rip-Rip/clang_complete' " Autocompleteion for C, C++, ObjC, and ObjC++ - ONLY FOR :Py2!
+call plug#end()
 
 " BASIC CONFIGURATION
 " ===================
@@ -100,9 +64,11 @@ set visualbell " stop dinging
 set shortmess=atI " short (a), truncate file (t), and no intro (I) messages
 set matchtime=5 " 10ths/sec to jump to matching brackets
 set nonumber " show/hide line numbers
-au Filetype * set colorcolumn=99 " highlight the ideal textwidth to use
+au Filetype * set colorcolumn=99 " highlight the last column to use for ideal textwidth
 au FileType text,rst,mkd set colorcolumn=0 " unless it is plain text
 
+" Set colorcolumn border color
+hi ColorColumn ctermbg=lightgrey guibg=lightgrey
 " Un-nref parenthesis highlights so the cursor can be seen
 hi MatchParen cterm=bold ctermbg=none ctermfg=magenta
 
@@ -153,7 +119,7 @@ set wildmode=list:longest " and show every possible completion
 " [fileencoding](fileformat){filetype}
 " tagname_if_set syntastic_flag_if_relevant
 " [byteval_under_cursor][line_number,virtual_col_number][percentage_in_file]
-set statusline=%n:%f%m%r%h%w\ [%{&fenc==\"\"?&enc:&fenc}](%{&ff}){%Y}\ %{Tlist_Get_Tagname_By_Line()}\ %{SyntasticStatuslineFlag()}\ %=[0x\%02.2B][%03l,%02v][%02p%%]
+set statusline=%n:%f%m%r%h%w\ [%{&fenc==\"\"?&enc:&fenc}](%{&ff}){%Y}\ %{Tlist_Get_Tagname_By_Line()}\ %{SyntasticStatuslineFlag()}\ %=[0x\%02.5B][%03l,%02v][%02p%%]
 set laststatus=2 " show the statusline: 2=always
 
 " Tab and indention handling
@@ -305,6 +271,137 @@ let g:clang_library_path='/Applications/Xcode.app/Contents/Developer/Toolchains/
 let g:clang_complete_macros = 1
 let g:clang_complete_patterns = 1
 
+" Lightline
+" ---------
+
+let g:lightline = {
+			\ 'active': {
+			\		'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ], ['ctrlpmark'] ],
+			\   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'characterencoding' ] ],
+			\ },
+			\ 'component': { 'characterencoding': '%02.5B' },
+      \ 'component_function': {
+      \   'fugitive': 'MyFugitive',
+      \   'filename': 'MyFilename',
+      \   'fileformat': 'MyFileformat',
+      \   'filetype': 'MyFiletype',
+      \   'fileencoding': 'MyFileencoding',
+      \   'mode': 'MyMode',
+      \   'ctrlpmark': 'CtrlPMark',
+      \ },
+      \ 'component_expand': {
+      \   'syntastic': 'SyntasticStatuslineFlag',
+      \ },
+      \ 'component_type': {
+      \   'syntastic': 'error',
+      \ },
+      \ 'subseparator': { 'left': '>', 'right': '<' }
+      \ }
+
+function! MyModified()
+  return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+endfunction
+
+function! MyReadonly()
+  return &ft !~? 'help' && &readonly ? '🔒 ' : ''
+endfunction
+
+function! MyFilename()
+  let fname = expand('%:t')
+  return fname == 'ControlP' ? g:lightline.ctrlp_item :
+        \ fname == '__Tagbar__' ? g:lightline.fname :
+        \ fname =~ '__Gundo\|NERD_tree' ? '' :
+        \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
+        \ &ft == 'unite' ? unite#get_status_string() :
+        \ &ft == 'vimshell' ? vimshell#get_status_string() :
+        \ ('' != MyReadonly() ? MyReadonly() . ' ' : '') .
+        \ ('' != fname ? fname : '[No Name]') .
+        \ ('' != MyModified() ? ' ' . MyModified() : '')
+endfunction
+
+function! MyFugitive()
+  try
+    if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
+      let mark = '*'
+      let _ = fugitive#head()
+      return strlen(_) ? _.mark : ''
+    endif
+  catch
+  endtry
+  return ''
+endfunction
+
+function! MyFileformat()
+  return winwidth(0) > 70 ? &fileformat : ''
+endfunction
+
+function! MyFiletype()
+  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+endfunction
+
+function! MyFileencoding()
+  return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
+endfunction
+
+function! MyMode()
+  let fname = expand('%:t')
+  return fname == '__Tagbar__' ? 'Tagbar' :
+        \ fname == 'ControlP' ? 'CtrlP' :
+        \ fname == '__Gundo__' ? 'Gundo' :
+        \ fname == '__Gundo_Preview__' ? 'Gundo Preview' :
+        \ fname =~ 'NERD_tree' ? 'NERDTree' :
+        \ &ft == 'unite' ? 'Unite' :
+        \ &ft == 'vimfiler' ? 'VimFiler' :
+        \ &ft == 'vimshell' ? 'VimShell' :
+        \ winwidth(0) > 60 ? lightline#mode() : ''
+endfunction
+
+function! CtrlPMark()
+  if expand('%:t') =~ 'ControlP'
+    call lightline#link('iR'[g:lightline.ctrlp_regex])
+    return lightline#concatenate([g:lightline.ctrlp_prev, g:lightline.ctrlp_item
+          \ , g:lightline.ctrlp_next], 0)
+  else
+    return ''
+  endif
+endfunction
+
+let g:ctrlp_status_func = {
+  \ 'main': 'CtrlPStatusFunc_1',
+  \ 'prog': 'CtrlPStatusFunc_2',
+  \ }
+
+function! CtrlPStatusFunc_1(focus, byfname, regex, prev, item, next, marked)
+  let g:lightline.ctrlp_regex = a:regex
+  let g:lightline.ctrlp_prev = a:prev
+  let g:lightline.ctrlp_item = a:item
+  let g:lightline.ctrlp_next = a:next
+  return lightline#statusline(0)
+endfunction
+
+function! CtrlPStatusFunc_2(str)
+  return lightline#statusline(0)
+endfunction
+
+let g:tagbar_status_func = 'TagbarStatusFunc'
+
+function! TagbarStatusFunc(current, sort, fname, ...) abort
+    let g:lightline.fname = a:fname
+  return lightline#statusline(0)
+endfunction
+
+augroup AutoSyntastic
+  autocmd!
+  autocmd BufWritePost *.c,*.cpp call s:syntastic()
+augroup END
+function! s:syntastic()
+  SyntasticCheck
+  call lightline#update()
+endfunction
+
+let g:unite_force_overwrite_statusline = 0
+let g:vimfiler_force_overwrite_statusline = 0
+let g:vimshell_force_overwrite_statusline = 0
 
 " CScope
 " ------
