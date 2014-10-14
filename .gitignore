@@ -1,6 +1,7 @@
 .*
 *.pyc
 *.class
-/addons
+/autoload/plug.vim
+/plugged
 /backup
 /tmp
