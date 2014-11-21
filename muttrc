@@ -1,0 +1,78 @@
+## Accounts
+account-hook . "unset imap_user; unset imap_pass; unset tunnel"
+account-hook "imaps://florian.leitner@imap.gmail.com/" "\
+             set imap_user = florian.leitner@gmail.com"
+account-hook "imaps://fleitner.upm@imap.gmail.com/" "\
+              set imap_user = fleitner.upm@gmail.com"
+
+# florian.leitner
+set folder         = imaps://florian.leitner@imap.gmail.com/
+mailboxes          = +INBOX =[Gmail]/Drafts =[Gmail]/'Sent Mail' =[Gmail]/Spam =[Gmail]/Trash
+set spoolfile      = +INBOX
+folder-hook        imaps://florian.leitner@imap.gmail.com/ "\
+    set folder     = imaps://florian.leitner@imap.gmail.com/ \
+        spoolfile  = +INBOX \
+        postponed  = +[Gmail]/Drafts \
+        record     = +[Gmail]/'Sent Mail' \
+        mbox       = +[Gmail]/'All Mail' \
+        realname   = 'Florian Leitner' \
+        from       = 'florian.leitner@gmail.com' \
+				hostname   = 'gmail.com' \
+        smtp_url   = smtps://florian.leitner@smtp.gmail.com"
+
+# fleitner.upm
+set folder         = imaps://fleitner.upm@imap.gmail.com/
+mailboxes          = +INBOX =[Gmail]/Drafts =[Gmail]/'Sent Mail' =[Gmail]/Spam =[Gmail]/Trash
+set spoolfile      = +INBOX
+folder-hook        imaps://fleitner.upm@imap.gmail.com/ "\
+    set folder     = imaps://fleitner.upm@imap.gmail.com/ \
+        spoolfile  = +INBOX \
+        postponed  = +[Gmail]/Drafts \
+        record     = +[Gmail]/'Sent Mail' \
+        mbox       = +[Gmail]/'All Mail' \
+        realname   = 'Florian Leitner' \
+        from       = 'florian.leitner@upm.es' \
+				signature  = '~/.plan' \
+				hostname   = 'gmail.com' \
+        smtp_url   = smtps://fleitner.upm@smtp.gmail.com"
+folder-hook        imaps://fleitner.upm@imap.gmail.com/ "\
+		send-hook .	   'my_hdr Reply-To: Florian Leitner <fleitner.upm@gmail.com>'"
+
+## Macros
+# jump to mailbox number 6 (fleitner.upm inbox)
+macro index A "y6<return><return>"  "Jump to fleitner.upm INBOX"
+# jump to mailbox number 12 (florian.leitner inbox)
+macro index B "y12<return><return>"  "Jump to florian.leitner INBOX"
+# to delete more than 1 message, just mark them with "t" key and then do "d" on them
+macro index,pager d ";s+[Gmail]/Trash<enter><enter>" "Move to Gmail's Trash"
+# delete message, but from pager (opened email)
+macro pager d "s+[Gmail]/Trash<enter><enter>"  "Move to Gmail's Trash"
+# archive messages, only from pager
+macro pager y "s+[Gmail]/All Mail<enter><enter>"  "Archive message (All Mail)"
+# undelete messages
+macro index,pager u ";s+INBOX<enter><enter>"  "Move to Gmail's INBOX (unarchive)"
+
+## Settings
+# Check for mail every minute for current IMAP mailbox every 1 min
+set timeout = 60
+# Check for new mail in ALL mailboxes every 2.5 min
+set mail_check = 150
+# keep imap connection alive by polling intermittently (time in seconds)
+set imap_keepalive = 300
+# allow mutt to open new imap connection automatically
+unset imap_passive
+# Store message headers locally to speed things up.
+# If cache is a folder, Mutt will create sub cache folders for each account
+# which may speeds things even more up.
+set header_cache = ~/.cache/mutt
+# Store messages locally to speed things up, like searching message bodies.
+# Can be the same folder as header_cache.
+# This will cost important disk usage according to your e-mail amount.
+set message_cachedir = "~/.cache/mutt"
+# sort mail by threads
+set sort = threads
+# and sort threads by date
+set sort_aux = last-date-received
+# GMail SSL settings
+set ssl_force_tls = yes
+unset ssl_starttls
