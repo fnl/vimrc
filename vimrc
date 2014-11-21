@@ -64,7 +64,8 @@ set shortmess=atI " short (a), truncate file (t), and no intro (I) messages
 set matchtime=5 " 10ths/sec to jump to matching brackets
 set nonumber " show/hide line numbers
 au Filetype * set colorcolumn=99 " highlight the last column to use for ideal textwidth
-au FileType text,rst,mkd set colorcolumn=0 " unless it is plain text
+au FileType text,mail,rst,mkd,tex set colorcolumn=0 " unless it is plain text
+au FileType text,mail,rst,mkd,tex set spell " in which case, spelling correction should be used
 
 " Set colorcolumn border color
 hi ColorColumn ctermbg=lightgrey guibg=lightgrey
@@ -96,7 +97,7 @@ endif
 
 " Let vim switch to paste mode, disabling all kinds of smartness and just
 " paste a whole buffer of text instead of regular insert behaviour
-set pastetoggle=§
+set pastetoggle=<F12>
 
 " Syntax highlighting and filetype-dependent indenting
 filetype on
@@ -118,7 +119,7 @@ set wildmode=list:longest " and show every possible completion
 " [fileencoding](fileformat){filetype}
 " tagname_if_set syntastic_flag_if_relevant
 " [byteval_under_cursor][line_number,virtual_col_number][percentage_in_file]
-set statusline=%n:%f%m%r%h%w\ [%{&fenc==\"\"?&enc:&fenc}](%{&ff}){%Y}\ %{Tlist_Get_Tagname_By_Line()}\ %{SyntasticStatuslineFlag()}\ %=[0x\%02.5B][%03l,%02v][%02p%%]
+set statusline=%n:%f%m%r%h%w\ [%{&spelllang}.%{&fenc==\"\"?&enc:&fenc}](%{&ff}){%Y}\ %{Tlist_Get_Tagname_By_Line()}\ %{SyntasticStatuslineFlag()}\ %=[0x\%02.5B][%03l,%02v][%02p%%]
 set laststatus=2 " show the statusline: 2=always
 
 " Tab and indention handling
@@ -406,6 +407,15 @@ let javascript_ignore_javaScriptdoc = 0
 
 " disable save, as using this breaks syntastic
 let jshint2_save = 0
+
+" Vim-LaTeX
+" ---------
+
+" always show filename when grepping
+set grepprg=grep\ -nH\ $*
+
+" always use tex as filetype
+let g:tex_flavor='latex'
 
 " KEYMAPPINGS
 " ===========
