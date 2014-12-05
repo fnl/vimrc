@@ -1,0 +1,81 @@
+#!/bin/bash
+
+. /lib/lsb/init-functions
+
+DESC="motion daemon"
+DAEMON="/home/fnl/work/bin/motion_saver"
+NAME=$(basename $DAEMON)
+PIDFILE=/tmp/motion_saver.pid
+SCRIPTNAME=$(basename $0)
+
+[ -x "$DAEMON" ] || exit -1 
+
+do_start() {
+        echo -n "Starting motion_saver: "
+				start-stop-daemon --start --background --quiet --pidfile $PIDFILE --exec $DAEMON || return 1
+}
+
+do_stop() {
+        echo -n "Stopping motion_saver: "
+				start-stop-daemon --stop --quiet --pidfile $PIDFILE --name $NAME
+				RETVAL="$?"
+				[ "$RETVAL" = 2 ] && return 2
+				start-stop-daemon --stop --quiet --name $NAME
+				[ "$RETVAL" = 2 ] && return 2
+        rm -f $PIDFILE
+        return "$RETVAL"
+}
+
+case "$1" in
+  start)
+		[ "$VERBOSE" != no ] && log_daemon_msg "Starting $DESC" "$NAME"
+		do_start
+		case "$?" in
+			0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+			2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+		esac
+	;;
+  stop)
+		[ "$VERBOSE" != no ] && log_daemon_msg "Stopping $DESC" "$NAME"
+		do_stop
+		case "$?" in
+			0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+			2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+		esac
+	;;
+  status)
+		#status_of_proc "$DAEMON" "$NAME" && exit 0 || exit $?
+		start-stop-daemon --status --pidfile $PIDFILE
+		case "$?" in
+			0) [ "$VERBOSE" != no ] && echo "$DESC running";;
+			*) [ "$VERBOSE" != no ] && echo "$DESC not running";;  
+		esac
+	;;
+  #reload)
+	#  log_daemon_msg "Reloading $DESC" "$NAME"
+	#  do_reload
+	#  log_end_msg $?
+	#;;
+  restart)
+		log_daemon_msg "Restarting $DESC" "$NAME"
+		do_stop
+		case "$?" in
+			0|1)
+				do_start
+				case "$?" in
+					0) log_end_msg 0 ;;
+					1) log_end_msg 1 ;; # Old process is still running
+					*) log_end_msg 1 ;; # Failed to start
+				esac
+			;;
+			*)
+				# Failed to stop
+				log_end_msg 1
+			;;
+		esac
+	;;
+  *)
+		echo "Usage: $SCRIPTNAME {start|stop|status|restart}" >&2
+		exit 3
+	;;
+esac
