@@ -62,3 +62,17 @@ set sort_aux = last-date-received
 # SSL settings
 set ssl_force_tls = yes
 set ssl_starttls = yes
+# reformat HTLM using mailcap
+auto_view text/html
+# set terminal title
+set my_init=`/bin/echo -en "\033]0;mutt\007" >/proc/$PPID/fd/1`
+
+## Google Contacts
+# requires goobook to be installed:
+# pip install goobook
+# goobook config-template > ~/.goobookrc
+# chmod 600 ~/.goobookrc
+# vi ~/.goobookrc
+set query_command="goobook query '%s'"
+bind editor <Tab> complete-query
+macro index,pager a "<pipe-message>goobook add<return>" "add the sender address to Google contacts"
