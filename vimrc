@@ -55,7 +55,7 @@ call plug#end()
 set listchars=tab:→⋅,trail:⋅,eol:¬,extends:➧,nbsp:∙ " invisibles definitions
 set scrolloff=3 " start vertical scrolling a bit earlier
 set sidescrolloff=3 " scroll at n colums before the side margin in nowrap mode
-set wrap " (do not) wrap lines
+set wrap linebreak nolist " (do not) wrap lines, only using a display-based wrap
 set undolevels=1000 " tons of undos
 set showmatch " jump to matching parens when inserting
 set history=100 " a bit more history
@@ -66,6 +66,10 @@ set nonumber " show/hide line numbers
 au Filetype * set colorcolumn=99 " highlight the last column to use for ideal textwidth
 au FileType text,mail,rst,mkd,tex set colorcolumn=0 " unless it is plain text
 au FileType text,mail,rst,mkd,tex set spell " in which case, spelling correction should be used
+" sensible text wrapping
+" use 'gq' to do the wrapping
+set textwidth=0
+set wrapmargin=0
 
 " Set colorcolumn border color
 hi ColorColumn ctermbg=lightgrey guibg=lightgrey
@@ -97,7 +101,7 @@ endif
 
 " Let vim switch to paste mode, disabling all kinds of smartness and just
 " paste a whole buffer of text instead of regular insert behaviour
-set pastetoggle=<F12>
+set pastetoggle=<F10>
 
 " Syntax highlighting and filetype-dependent indenting
 filetype on
