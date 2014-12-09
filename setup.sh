@@ -1,5 +1,6 @@
 #!/bin/sh
 dir=`dirname $0`
+echo ".vim content directory: $dir"
 
 # vim Plug
 echo "setting up Plug autoload"
@@ -9,6 +10,9 @@ curl -fLo $dir/autoload/plug.vim \
 
 # configuration files
 echo "linking configuration files from $dir/* to ~/.\\1"
+mkdir ~/.i3
+ln -s $dir/i3config ~/.i3/config
+ln -s $dir/i3status.conf ~/.i3status.conf
 ln -s $dir/bashrc ~/.bash_profile
 ln -s $dir/gvimrc ~/.gvimrc
 ln -s $dir/inputrc ~/.inputrc
