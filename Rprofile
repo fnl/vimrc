@@ -1,4 +1,4 @@
-options("repos"=c(CRAN="http://cran.es.r-project.org/"))
+options("repos"=c(CRAN="http://cran.es.r-project.org/", RSTUDIO="http://cran.rstudio.com/"))
 options(tab.width=2)
 options(stringsAsFactors = FALSE) # text mining ahoy!
 
@@ -9,8 +9,9 @@ options(stringsAsFactors = FALSE) # text mining ahoy!
 .env$n <- function(df) matrix(names(df)) 
 
 # Single character shortcuts for summary() and head().
-.env$s <- base::summary
 .env$h <- utils::head
+.env$n <- base::names
+.env$s <- base::summary
 # ht==headtail, i.e., show the first and last 10 items of an object
 .env$ht <- function(d) rbind(head(d,10),tail(d,10))
 
