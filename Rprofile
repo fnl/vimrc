@@ -1,4 +1,5 @@
 options("repos"=c(CRAN="http://cran.es.r-project.org/", RSTUDIO="http://cran.rstudio.com/"))
+options(max.print=100) # stop spamming the console
 options(tab.width=2)
 options(stringsAsFactors = FALSE) # text mining ahoy!
 
