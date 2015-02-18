@@ -16,6 +16,7 @@ ln -s $dir/Rprofile ~/.Rprofile
 ln -s $dir/screenrc ~/.screenrc
 ln -s $dir/vimrc ~/.vimrc
 ln -s $dir/distributionrc ~/.distributionrc
+ln -s $dir/gitconfig ~/.gitconfig
 
 # scripts and binaries
 mkdir -p ~/bin
