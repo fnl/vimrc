@@ -52,6 +52,7 @@ call plug#end()
 " BASIC CONFIGURATION
 " ===================
 
+colorscheme default " works best... :P
 set listchars=tab:→⋅,trail:⋅,eol:¬,extends:➧,nbsp:∙ " invisibles definitions
 set scrolloff=3 " start vertical scrolling a bit earlier
 set sidescrolloff=3 " scroll at n colums before the side margin in nowrap mode
@@ -89,10 +90,6 @@ hi SpellLocal cterm=underline ctermbg=none
 " insertion, and over indentations:
 set backspace=eol,start,indent
 
-" Make vimdiff play nice on dark background
-if &diff
-	colorscheme evening
-endif
 
 " Let vim switch to paste mode, disabling all kinds of smartness and just
 " paste a whole buffer of text instead of regular insert behaviour
@@ -140,7 +137,7 @@ set foldmethod=syntax " fold based on... indent, marker, or syntax
 au FileType python setlocal foldmethod=indent
 set foldlevel=0 " default fold level (20 is max level for indent)
 set foldminlines=2 " number of lines up to which not to fold
-set foldnestmax=5 " fold max depth (20 is max for indent)
+set foldnestmax=0 " fold max depth (20 is max for indent)
 
 " Swap and backup settings
 set backup " (do not) make backups
