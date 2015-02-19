@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[ -e /tmp/motion_saver.pid ] && echo "already running" && exit 1
+[ -e /tmp/motion_saver.pid ] && echo "motion-saver already running" && exit 1
 echo "$$" > /tmp/motion_saver.pid
 
 function onScreenLock {
