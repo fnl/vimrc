@@ -46,6 +46,8 @@ Plug 'matze/vim-tex-fold' " LaTeX document folding
 Plug 'derekwyatt/vim-scala' " Scala syntax
 Plug 'megaannum/vimside' " Scala IDE
 Plug 'justmao945/vim-clang' " C++ code completion
+Plug 'tpope/vim-unimpaired' " quickfix q/arglist a/loclist l/taglist t navigation
+Plug 'nelstrom/vim-qargs' " adds the Qargs command to replace the arglist with quickfix files
 " Plug 'mattn/emmet-vim' " abbreviation expansion with '<C-y>
 " Plug 'Rip-Rip/clang_complete' " Autocompleteion for C, C++, ObjC, and ObjC++ - ONLY FOR :Py2!
 call plug#end()
@@ -53,7 +55,6 @@ call plug#end()
 " BASIC CONFIGURATION
 " ===================
 
-colorscheme default " works best... :P
 set listchars=tab:→⋅,trail:⋅,eol:¬,extends:➧,nbsp:∙ " invisibles definitions
 set scrolloff=3 " start vertical scrolling a bit earlier
 set sidescrolloff=3 " scroll at n colums before the side margin in nowrap mode
@@ -66,15 +67,16 @@ set shortmess=atI " short (a), truncate file (t), and no intro (I) messages
 set matchtime=5 " 10ths/sec to jump to matching brackets
 set nonumber " show/hide line numbers
 au Filetype * set colorcolumn=99 " highlight the last column to use for ideal textwidth
-au FileType text,mail,rst,mkd,tex set colorcolumn=0 " unless it is plain text
-au FileType text,mail,rst,mkd,tex set spell " in which case, spelling correction should be used
+au FileType text,mail,rst,mkd,tex setlocal colorcolumn=0 " unless it is plain text
 " sensible text wrapping
 " use 'gq' to do the wrapping
 set textwidth=0
 set wrapmargin=0
 
+" Override/color settings
+"colorscheme default " works best... :P
 " Set colorcolumn border color
-hi ColorColumn ctermbg=lightgrey guibg=lightgrey
+hi ColorColumn ctermbg=LightGrey guibg=LightGrey
 " Un-nref parenthesis highlights so the cursor can be seen
 hi MatchParen cterm=bold ctermbg=none ctermfg=magenta
 
@@ -86,7 +88,8 @@ set smartcase " ...but only if there is no capital letter present
 hi Search cterm=none ctermfg=black ctermbg=yellow
 
 " Enable spell checking in text files
-au FileType text setlocal spell spelllang=en_us " enable spellchecking
+au FileType text,mail,rst,mkd,tex setlocal spell spelllang=en_us 
+au FileType help setlocal nospell " unless it's a help file
 hi SpellBad cterm=underline ctermbg=none
 hi SpellCap cterm=underline ctermbg=none
 hi SpellRare cterm=underline ctermbg=none
@@ -95,7 +98,6 @@ hi SpellLocal cterm=underline ctermbg=none
 " Allow <BkSpc> to delete line breaks, beyond the start of the current
 " insertion, and over indentations:
 set backspace=eol,start,indent
-
 
 " Let vim switch to paste mode, disabling all kinds of smartness and just
 " paste a whole buffer of text instead of regular insert behaviour
@@ -526,10 +528,6 @@ nmap <silent> <Leader><Leader> :nohlsearch<CR>
 " quick make commands and moving through errors
 " NB: use :cp, :cn, :cw  for previous, next, and close window
 nmap <Leader>m :make<CR>
-
-" moving around the loclist
-nmap <Leader>] :lnext<CR>
-nmap <Leader>[ :lprevious<CR>
 
 " toggle [h]idden ("list") characters (tab, trail, eol)
 nmap <silent> <Leader>h :set nolist!<CR>
