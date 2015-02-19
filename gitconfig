@@ -1,0 +1,5 @@
+[user]
+	name = Florian Leitner
+	email = florian.leitner@gmail.com
+[push]
+	default = simple
