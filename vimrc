@@ -45,6 +45,7 @@ Plug 'jcfaria/Vim-R-plugin' " R IDE
 Plug 'matze/vim-tex-fold' " LaTeX document folding
 Plug 'derekwyatt/vim-scala' " Scala syntax
 Plug 'megaannum/vimside' " Scala IDE
+Plug 'justmao945/vim-clang' " C++ code completion
 " Plug 'mattn/emmet-vim' " abbreviation expansion with '<C-y>
 " Plug 'Rip-Rip/clang_complete' " Autocompleteion for C, C++, ObjC, and ObjC++ - ONLY FOR :Py2!
 call plug#end()
@@ -505,6 +506,10 @@ nmap <silent> <Leader>T :TagbarToggle<CR>
 " TagList
 " toggle the plugin ("[t]aglist")
 nmap <silent> <Leader>t :TlistToggle<CR>
+
+" Vim-clang
+let g:clang_c_options = '-std=gnu11'
+let g:clang_cpp_options = '-std=c++11 -stdlib=libc++'
 
 " Custom (Leader) Keymappings
 " ---------------------------
