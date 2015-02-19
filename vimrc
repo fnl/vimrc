@@ -138,7 +138,7 @@ au FileType text setlocal tabstop=8 noautoindent
 au FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab
 
 " Code folding
-set foldenable
+set nofoldenable
 set foldmarker={,} " when foldmethod marker is used
 set foldmethod=syntax " fold based on... indent, marker, or syntax
 " note that Python seems to work best with indent
