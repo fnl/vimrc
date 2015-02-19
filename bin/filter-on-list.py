@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 filter-on-list.py COL rows.tsv filter.list -x
 
@@ -6,17 +6,15 @@ Filter rows in a TSV file (tab-separted values) with a value in column COL
 that matches a term in the filter list (a plain-text, newline separated file).
 
 COL     column number in rows.tsv to filter
--x      select matching lines (instead of filtering them)
+-x      remove matching lines (instead of selecting them)
 """
-from __future__ import print_function
-
 import sys
 
 __author__ = "Florian Leitner <florian.leitner@gmail.com>"  # no rights reserved
 
 
 if not 3 < len(sys.argv) < 6 or "-h" in sys.argv or "--help" in sys.argv:
-    print >> sys.stderr, __doc__
+    print(__doc__, file=sys.stderr)
     sys.exit(1)
 
 col = int(sys.argv[1]) - 1
