@@ -269,11 +269,11 @@ let g:formatprg_args_python = "-a --max-line-length 99 -"
 " --------------
 
 "let g:clang_auto_select = 1
-let g:clang_complete_copen = 1
-let g:clang_use_library = 1
-let g:clang_library_path='/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/'
-let g:clang_complete_macros = 1
-let g:clang_complete_patterns = 1
+"let g:clang_complete_copen = 1
+"let g:clang_use_library = 1
+"let g:clang_library_path='/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/'
+"let g:clang_complete_macros = 1
+"let g:clang_complete_patterns = 1
 
 " CScope
 " ------
