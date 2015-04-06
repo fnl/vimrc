@@ -41,3 +41,6 @@ attach(.env)
 .Last <- function() {
 	cat("\nClosing R session at ", date(), "\n")
 }
+
+# calculate the mode
+mode <- function (x) { ux <- unique(x); ux[which.max(table(match(x, ux)))] }
