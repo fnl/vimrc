@@ -177,6 +177,9 @@ untag() { sed -e 's/<[^>]*>//g' "$@"; }
 # show the last modified files
 lt() { ls -ltrha "$@" | tail; }
 
+# show the largest files
+lS() { ls -lSrha "$@" | tail; }
+
 # grep the ps shortcut
 psgrep() { ps aux | tee >(head -1>&2) | grep -v " grep $@" | grep "$@" -i --color=auto; }
 
