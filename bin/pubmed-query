@@ -6,7 +6,7 @@ QUERY=`echo "$@" | tr " " +`
 
 echo "$QUERY" 1>&2
 
-wget "$URL?db=PubMed&retmax=99&term=$QUERY" -O - \
+wget "$URL?db=PubMed&retmax=999&term=$QUERY" -O - \
 	| grep "^<Id>" \
 	| sed -E 's|</?Id>||g' \
 	| cut -f3
