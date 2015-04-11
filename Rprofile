@@ -2,6 +2,7 @@ options("repos"=c(CRAN="http://cran.es.r-project.org/", RSTUDIO="http://cran.rst
 options(max.print=100) # stop spamming the console
 options(tab.width=2)
 options(stringsAsFactors = FALSE) # text mining ahoy!
+options(warn=2)
 
 # Create an invisible environment for all functions so they don't clutter your workspace.
 .env <- new.env()
