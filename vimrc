@@ -45,11 +45,13 @@ Plug 'jcfaria/Vim-R-plugin' " R IDE
 Plug 'matze/vim-tex-fold' " LaTeX document folding
 Plug 'derekwyatt/vim-scala' " Scala syntax
 Plug 'megaannum/vimside' " Scala IDE
-Plug 'justmao945/vim-clang' " C++ code completion
 Plug 'tpope/vim-unimpaired' " quickfix q/arglist a/loclist l/taglist t navigation
 Plug 'nelstrom/vim-qargs' " adds the Qargs command to replace the arglist with quickfix files
-" Plug 'mattn/emmet-vim' " abbreviation expansion with '<C-y>
+Plug 'akhaku/vim-java-unused-imports' " remove unused Java imports with :UnusedImports...
+" Plug 'justmao945/vim-clang' " C++ code completion
 " Plug 'Rip-Rip/clang_complete' " Autocompleteion for C, C++, ObjC, and ObjC++ - ONLY FOR :Py2!
+Plug 'myint/clang-complete' " Autocompleteion for C, C++, ObjC, and ObjC++ - for both :Py2 and :Py3
+" Plug 'mattn/emmet-vim' " abbreviation expansion with '<C-y>
 call plug#end()
 
 " BASIC CONFIGURATION
@@ -66,7 +68,7 @@ set visualbell " stop dinging
 set shortmess=atI " short (a), truncate file (t), and no intro (I) messages
 set matchtime=5 " 10ths/sec to jump to matching brackets
 set nonumber " show/hide line numbers
-au Filetype * set colorcolumn=99 " highlight the last column to use for ideal textwidth
+" au Filetype * set colorcolumn=99 " highlight the last column to use for ideal textwidth
 au FileType text,mail,rst,mkd,tex setlocal colorcolumn=0 " unless it is plain text
 " sensible text wrapping
 " use 'gq' to do the wrapping
@@ -271,7 +273,17 @@ let g:formatprg_args_python = "-a --max-line-length 99 -"
 "let g:clang_auto_select = 1
 let g:clang_complete_copen = 1
 let g:clang_use_library = 1
-let g:clang_library_path='/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/'
+let g:clang_debug = 1
+if has("unix")
+	let s:uname = system("uname -s")
+	if s:uname == "Darwin"
+		let g:clang_library_path='/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/'
+	else
+		let g:clang_library_path='/usr/lib/llvm-3.5/lib'
+	endif
+else " has("win32") || has("win16")
+	let g:clang_library_path='please configure your vimrc for this OS, Florian'
+endif
 let g:clang_complete_macros = 1
 let g:clang_complete_patterns = 1
 
@@ -393,6 +405,9 @@ let g:syntastic_loc_list_height = 5
 " Python-specific setup
 let g:syntastic_python_checkers = ['flake8', 'pep257']
 let g:syntastic_python_pep257_args = '--ignore=D102,D205,D400'
+" C++11 setup
+let g:syntastic_cpp_compiler = 'clang++'
+let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
 
 " Vim-JavaScript
 " --------------
