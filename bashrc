@@ -136,6 +136,16 @@ showline() { awk 'NR == '$1' { print; exit }' "$2"; }
 # count and rank the unqiue lines in a file
 uniqcount() { sort "$@" | uniq -c | sort -rn | sed 's/^ *//' | sed 's/ /	/'; }
 
+# elasticsearch commands (with echo to ensure a newline is printed)
+esdelete() { local url=$1; shift; curl -XDELETE "$ELASTICSEARCH/$url" "$@"; echo; }
+esdeleteh() { local url=$1; shift; curl -i -XDELETE "$ELASTICSEARCH/$url" "$@"; echo; }
+esget() { local url=$1; shift; curl "$ELASTICSEARCH/$url" "$@"; echo; }
+eshead() { local url=$1; shift; curl -I "$ELASTICSEARCH/$url"; echo $@; }
+espost() { local url=$1; shift; curl -XPOST "$ELASTICSEARCH/$url" "$@"; echo; }
+esposth() { local url=$1; shift; curl -i -XPOST "$ELASTICSEARCH/$url" "$@"; echo; }
+esput() { local url=$1; shift; curl -XPUT "$ELASTICSEARCH/$url" "$@"; echo; }
+esputh() { local url=$1; shift; curl -i -XPUT "$ELASTICSEARCH/$url" "$@"; echo; }
+
 # count and rank the unique fields from a cut
 cutcount() { cut "$@" | sort | uniq -c | sort -rn | sed 's/^ *//' | sed 's/ /	/'; }
 
@@ -166,6 +176,9 @@ untag() { sed -e 's/<[^>]*>//g' "$@"; }
 
 # show the last modified files
 lt() { ls -ltrha "$@" | tail; }
+
+# show the largest files
+lS() { ls -lSrha "$@" | tail; }
 
 # grep the ps shortcut
 psgrep() { ps aux | tee >(head -1>&2) | grep -v " grep $@" | grep "$@" -i --color=auto; }
