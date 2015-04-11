@@ -1,8 +1,5 @@
 #!/bin/bash
 
-[ -e /tmp/motion_saver.pid ] && echo "motion-saver already running" && exit 1
-echo "$$" > /tmp/motion_saver.pid
-
 function onScreenLock {
     motion 2> /dev/null
 }
