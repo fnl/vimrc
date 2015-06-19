@@ -20,7 +20,7 @@ options(stringsAsFactors = FALSE) # text mining ahoy!
 # Returns a logical vector TRUE for elements of X not in Y
 .env$"%nin%" <- function(x, y) !(x %in% y) 
 
- Read data on clipboard.
+# Read data on clipboard.
 .env$read.clipboard <- function(...) {
 	ismac <- Sys.info()[1] == "Darwin"
 	if (!ismac) read.table(file="clipboard", ...)
