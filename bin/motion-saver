@@ -1,11 +1,11 @@
 #!/bin/bash
 
 function onScreenLock {
-    motion 2> /dev/null
+    motion
 }
 
 function onScreenUnlock {
-    /etc/init.d/motion stop 1> /dev/null
+		kill -9 `cat /home/fnl/.motion/pid`
 }
 
 dbus-monitor --session "type='signal',interface='org.gnome.ScreenSaver'" |
