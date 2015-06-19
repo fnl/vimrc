@@ -45,19 +45,26 @@ then debian_chroot=$(cat /etc/debian_chroot)
 fi
 
 # check for a color terminal to set a color prompt
+# echo $TERM
 case "$TERM" in
   xterm-color) color_prompt=yes;;
   xterm-256color) color_prompt=yes;;
   screen-256color) color_prompt=yes;;
+	xterm) if [ "$COLORTERM" == "gnome-terminal" ]
+		then color_prompt=yes;
+		else echo colorless xterm detected;
+		fi;;
+	*) echo are you really running a colorless $TERM or a gnome-terminal?;;
 esac
 
 # uncomment for a forced colored prompt
-#force_color_prompt=yes
+force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]
 then
   if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null
-  then color_prompt=yes
+  then color_prompt=yes;
+		echo forced color term despite TERM=\"$TERM\" setting;
     # We have color support; assume it's compliant with Ecma-48
     # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
     # a case would tend to support setf rather than setaf.)
@@ -75,7 +82,7 @@ magenta=35
 cyan=36
 white=37
 hostname=`hostname -s`
-if [ $hostname = ackbar ]
+if [ $hostname = avila ]
 then color=$magenta
 elif [ $hostname = mba ]
 then color=$cyan
