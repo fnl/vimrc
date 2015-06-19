@@ -52,6 +52,7 @@ Plug 'rust-lang/rust.vim' " Rust file detection and syntax highlighting
 " Plug 'justmao945/vim-clang' " C++ code completion
 " Plug 'Rip-Rip/clang_complete' " Autocompleteion for C, C++, ObjC, and ObjC++ - ONLY FOR :Py2!
 Plug 'myint/clang-complete' " Autocompleteion for C, C++, ObjC, and ObjC++ - for both :Py2 and :Py3
+Plug 'peterhoeg/vim-qml' " QML syntax highlighting
 " Plug 'mattn/emmet-vim' " abbreviation expansion with '<C-y>
 call plug#end()
 
@@ -276,8 +277,7 @@ let g:clang_complete_copen = 1
 let g:clang_use_library = 1
 let g:clang_debug = 1
 if has("unix")
-	let s:uname = system("uname -s")
-	if s:uname == "Darwin"
+	if (system('uname') =~ "Darwin")
 		let g:clang_library_path='/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/'
 	else
 		let g:clang_library_path='/usr/lib/llvm-3.6/lib'
