@@ -48,6 +48,7 @@ Plug 'megaannum/vimside' " Scala IDE
 Plug 'tpope/vim-unimpaired' " quickfix q/arglist a/loclist l/taglist t navigation
 Plug 'nelstrom/vim-qargs' " adds the Qargs command to replace the arglist with quickfix files
 Plug 'akhaku/vim-java-unused-imports' " remove unused Java imports with :UnusedImports...
+Plug 'rust-lang/rust.vim' " Rust file detection and syntax highlighting
 " Plug 'justmao945/vim-clang' " C++ code completion
 " Plug 'Rip-Rip/clang_complete' " Autocompleteion for C, C++, ObjC, and ObjC++ - ONLY FOR :Py2!
 Plug 'myint/clang-complete' " Autocompleteion for C, C++, ObjC, and ObjC++ - for both :Py2 and :Py3
@@ -279,7 +280,7 @@ if has("unix")
 	if s:uname == "Darwin"
 		let g:clang_library_path='/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/'
 	else
-		let g:clang_library_path='/usr/lib/llvm-3.5/lib'
+		let g:clang_library_path='/usr/lib/llvm-3.6/lib'
 	endif
 else " has("win32") || has("win16")
 	let g:clang_library_path='please configure your vimrc for this OS, Florian'
