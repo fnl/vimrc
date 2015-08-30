@@ -60,7 +60,7 @@ esac
 # uncomment for a forced colored prompt
 force_color_prompt=yes
 
-if [ -n "$force_color_prompt" ]
+if [ -n "$force_color_prompt" ] && [ "$color_prompt" != "yes" ]
 then
   if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null
   then color_prompt=yes;
