@@ -29,7 +29,7 @@ if len(sys.argv) and sys.argv[0].startswith("--col"):
     col = sys.argv.pop(0)
 
     if '=' in col and not sys.argv:
-        col = int(col[col.find('=')+1:])
+        col = int(col[col.find('=') + 1:])
     elif sys.argv:
         col = int(sys.argv.pop(0))
     else:
@@ -37,10 +37,15 @@ if len(sys.argv) and sys.argv[0].startswith("--col"):
 
 col -= 1
 errors = 0
+count = 0
 print('mapping input...', file=sys.stderr)
 
 for line in fileinput.input():
+    count += 1
     items = line.strip().split('\t')
+
+    if count % 100 == 0:
+        print('.', end='', file=sys.stderr)
 
     try:
         items[col] = mappings[items[col]]
