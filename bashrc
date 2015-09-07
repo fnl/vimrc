@@ -140,6 +140,12 @@ longestline() { awk '{ print length, $0}' "$1" | sort -nr | head -1; }
 # show line number X in file Y
 showline() { awk 'NR == '$1' { print; exit }' "$2"; }
 
+# show the column number of each column in a TSV file with a title row
+numbercolumns() { head -1 "$@" | tr '\t' '\n' | nl; }
+
+# show the column number of each column in a CSV file with a title row
+numbercsvcolumns() { head -1 "$@" | tr ',' '\n' | nl; }
+
 # count and rank the unqiue lines in a file
 uniqcount() { sort "$@" | uniq -c | sort -rn | sed 's/^ *//' | sed 's/ /	/'; }
 
