@@ -82,9 +82,9 @@ magenta=35
 cyan=36
 white=37
 hostname=`hostname -s`
-if [ $hostname = avila ]
+if [ $hostname = catalytics ]
 then color=$magenta
-elif [ $hostname = mba ]
+elif [ $hostname = cerberus ]
 then color=$cyan
 else color=$blue
 fi
