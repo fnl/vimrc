@@ -1,5 +1,5 @@
 #!/bin/sh
-dir=`dirname $0`
+dir=`pwd`
 echo ".vim content directory: $dir"
 
 # vim Plug
@@ -7,6 +7,10 @@ echo "setting up Plug autoload"
 mkdir -p $dir/autoload
 curl -fLo $dir/autoload/plug.vim \
      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+# vim backup and tmp files
+mkdir $dir/backup
+mkdir $dir/tmp
 
 # configuration files
 echo "linking configuration files from $dir/* to ~/.\\1"
@@ -24,19 +28,20 @@ ln -s $dir/screenrc ~/.screenrc
 ln -s $dir/vimrc ~/.vimrc
 ln -s $dir/distributionrc ~/.distributionrc
 ln -s $dir/gitconfig ~/.gitconfig
-cp -s $dir/signature ~/.plan
+cp $dir/signature ~/.plan
 
 # scripts and binaries
-echo "linking scripts and binaries from $dir to ~/bin"
-mkdir -p ~/bin
-ln -s $dir/bin/* ~/bin/
-ln -s $dir/distribution/distribution ~/bin/
-ln -s $dir/distribution/distribution ~/bin/barchart
-ln -s $dir/z/z.sh ~/bin/z
+echo "linking scripts and binaries from $dir to ~/$WORKSPACE/bin"
+WORKSPACE=Workspace
+mkdir -p ~/$WORKSPACE/bin
+ln -s $dir/bin/* ~/$WORKSPACE/bin/
+ln -s $dir/distribution/distribution ~/$WORKSPACE/bin/
+ln -s $dir/distribution/distribution ~/$WORKSPACE/bin/barchart
+ln -s $dir/z/z.sh ~/$WORKSPACE/bin/z
 
-echo "linking man pages from $dir to ~/man"
-mkdir -p ~/man/man.1
-ln -s $dir/z/z.1 ~/man/man.1/
+echo "linking man pages from $dir to ~/$WORKSPACE/man"
+mkdir -p ~/$WORKSPACE/man/man.1
+ln -s $dir/z/z.1 ~/$WORKSPACE/man/man.1/
 
 # individual environment
 echo "touching local bash configuration files"
