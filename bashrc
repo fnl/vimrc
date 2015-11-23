@@ -113,6 +113,8 @@ then
   then lscolor="--color"
   else lscolor="-G"
   fi
+elif [ "`uname`" == "Darwin" ]
+then lscolor="-G"
 else lscolor=
 fi
 unset dircolors
@@ -207,18 +209,6 @@ function ranger-cd {
 	rm -f -- "$tempfile"
 }
 
-# source local alias definitions
-[ -f ~/.bash_aliases ] && . ~/.bash_aliases
-
-# source local environment variables
-[ -f ~/.bash_environment ] && . ~/.bash_environment
-
-# source local shell settings
-[ -f ~/.bash_local ] && . ~/.bash_local
-
-# set up z - jump around
-[ -f ~/.vim/z/z.sh ] && . ~/.vim/z/z.sh
-
 # ls convenience: l, ll and la
 # use GNU ls in preference over "default" ls (Mac OSX)
 [ -x /usr/local/bin/gls ] && alias l="gls $lscolor " || alias l="ls $lscolor"
@@ -234,3 +224,15 @@ alias vi='vim' # always use vim
 alias curl-json='curl -H"Content-Type: application/json;charset=utf-8"'
 alias curl-post='curl -X POST'
 alias curl-post-json='curl -X POST -H"Content-Type: application/json;charset=utf-8"'
+
+# source local alias definitions
+[ -f ~/.bash_aliases ] && . ~/.bash_aliases
+
+# source local environment variables
+[ -f ~/.bash_environment ] && . ~/.bash_environment
+
+# source local shell settings
+[ -f ~/.bash_local ] && . ~/.bash_local
+
+# set up z - jump around
+[ -f ~/.vim/z/z.sh ] && . ~/.vim/z/z.sh
