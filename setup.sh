@@ -1,6 +1,12 @@
 #!/bin/sh
-dir=`pwd`
-echo ".vim content directory: $dir"
+
+dir=~/.vim
+WORKSPACE=Workspace
+
+echo "dir=$dir"
+
+# get and install distribution
+git submodule update --init --recursive
 
 # vim Plug
 echo "setting up Plug autoload"
@@ -14,9 +20,9 @@ mkdir $dir/tmp
 
 # configuration files
 echo "linking configuration files from $dir/* to ~/.\\1"
-mkdir ~/.i3
-ln -s $dir/i3config ~/.i3/config
-ln -s $dir/i3status.conf ~/.i3status.conf
+#mkdir ~/.i3
+#ln -s $dir/i3config ~/.i3/config
+#ln -s $dir/i3status.conf ~/.i3status.conf
 ln -s $dir/bashrc ~/.bash_profile
 ln -s $dir/gvimrc ~/.gvimrc
 ln -s $dir/inputrc ~/.inputrc
@@ -32,7 +38,6 @@ cp $dir/signature ~/.plan
 
 # scripts and binaries
 echo "linking scripts and binaries from $dir to ~/$WORKSPACE/bin"
-WORKSPACE=Workspace
 mkdir -p ~/$WORKSPACE/bin
 ln -s $dir/bin/* ~/$WORKSPACE/bin/
 ln -s $dir/distribution/distribution ~/$WORKSPACE/bin/

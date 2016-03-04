@@ -120,12 +120,12 @@ fi
 unset dircolors
 
 # enable programmable completion features
-#if [ -f /etc/eash_completion ] && ! shopt -oq posix
-#then . /etc/bash_completion
-#elif [ -f /usr/local/etc/bash_completion ] && ! shopt -oq posix
-#then . /usr/local/etc/bash_completion
-#else echo "bash completion disabled"
-#fi
+if [ -f /etc/eash_completion ] && ! shopt -oq posix
+then . /etc/bash_completion
+elif [ -f /usr/local/etc/bash_completion ] && ! shopt -oq posix
+then . /usr/local/etc/bash_completion
+else echo "bash completion disabled"
+fi
 
 # use vim as editor
 export EDITOR=vim
@@ -236,3 +236,5 @@ alias curl-post-json='curl -X POST -H"Content-Type: application/json;charset=utf
 
 # set up z - jump around
 [ -f ~/.vim/z/z.sh ] && . ~/.vim/z/z.sh
+
+test -e ${HOME}/.iterm2_shell_integration.bash && source ${HOME}/.iterm2_shell_integration.bash

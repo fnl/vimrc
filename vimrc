@@ -26,7 +26,7 @@ Plug 'Lokaltog/vim-easymotion' " jump around ('<number>w', etc.): '<Leader>j'
 Plug 'tpope/vim-fugitive' " git commands: ':G'...
 Plug 'vim-scripts/Go-Syntax' " syntax file for Golang
 Plug 'sjl/gundo.vim' " visual undo tree: '<Leader>u'
-Plug 'davidhalter/jedi-vim' " Python code editing
+Plug 'davidhalter/jedi-vim' " Python code editing; '<Leader>p[agur]'
 Plug 'Shutnik/jshint2.vim' " JavaScript IDE (hints and lint)
 Plug 'edsono/vim-matchit' " extended % matching
 Plug 'plasticboy/vim-markdown' " Markdown support
@@ -49,6 +49,7 @@ Plug 'tpope/vim-unimpaired' " quickfix q/arglist a/loclist l/taglist t navigatio
 Plug 'nelstrom/vim-qargs' " adds the Qargs command to replace the arglist with quickfix files
 Plug 'akhaku/vim-java-unused-imports' " remove unused Java imports with :UnusedImports...
 Plug 'rust-lang/rust.vim' " Rust file detection and syntax highlighting
+Plug 'chrisbra/csv.vim' " CSV file formatting for vim
 " Plug 'justmao945/vim-clang' " C++ code completion
 " Plug 'Rip-Rip/clang_complete' " Autocompleteion for C, C++, ObjC, and ObjC++ - ONLY FOR :Py2!
 Plug 'myint/clang-complete' " Autocompleteion for C, C++, ObjC, and ObjC++ - for both :Py2 and :Py3
@@ -78,7 +79,7 @@ set textwidth=0
 set wrapmargin=0
 
 " Override/color settings
-"colorscheme default " works best... :P
+colorscheme default
 " Set colorcolumn border color
 hi ColorColumn ctermbg=LightGrey guibg=LightGrey
 " Un-nref parenthesis highlights so the cursor can be seen
@@ -318,7 +319,7 @@ let g:gundo_preview_bottom = 1
 " ----
 
 let g:jedi#use_tabs_not_buffers = 0
-let g:jedi#popup_on_dot = 0
+" let g:jedi#popup_on_dot = 0
 
 " MatchIt
 " -------
@@ -409,6 +410,10 @@ let g:syntastic_python_pep257_args = '--ignore=D102,D205,D400'
 " C++11 setup
 let g:syntastic_cpp_compiler = 'clang++'
 let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
+" disable HTML/XML
+let g:syntastic_mode_map={ 'mode': 'active',
+                         \  'active_filetypes': [],
+                         \ 'passive_filetypes': ['html', 'xml', 'json'] }
 
 " Vim-JavaScript
 " --------------
@@ -451,8 +456,8 @@ let g:tex_flavor='latex'
 " M -> menu
 " n -> line numbers
 " o -> open file
-" r -> renaming
-" p -> python
+" r -> renaming (not jedi)
+" p -> python commands... (pt... -> py.test commands)
 " s -> syntastic
 " t -> taglist
 " T -> Tagbar
@@ -533,6 +538,7 @@ let g:clang_cpp_options = '-std=c++11 -stdlib=libc++'
 " ---------------------------
 
 " rename stuff (see custom function Rename())
+" note that Jedi rename is <Leader>pr (all Python commands start with p)
 nmap <Leader>r "zyiw:call Rename()<cr>mx:silent! norm gd<cr>[{V%:s/<C-R>//<c-r>z/g<cr>`x
 
 " [c]hange vim's working dir to the current buffer's file's dir
