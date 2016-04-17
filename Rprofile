@@ -1,8 +1,8 @@
-options("repos"=c(CRAN="http://cran.es.r-project.org/", RSTUDIO="http://cran.rstudio.com/"))
+options("repos"=c(CRAN="https://ftp.cixug.es/CRAN/", RSTUDIO="http://cran.rstudio.com/"))
 options(max.print=100) # stop spamming the console
 options(tab.width=2)
-options(stringsAsFactors = FALSE) # text mining ahoy!
-options(warn=2)
+# options(stringsAsFactors = FALSE) # text mining ahoy!
+# options(warn=2) # convert warning to errors
 
 # Create an invisible environment for all functions so they don't clutter your workspace.
 .env <- new.env()
@@ -30,18 +30,8 @@ options(warn=2)
 # Open Finder to the current directory on mac
 .env$Finder <- function(...) if (Sys.info()[1] == "Darwin") system("open .")
 
+# calculate the mode
+.env$mode <- function (x) { ux <- unique(x); ux[which.max(table(match(x, ux)))] }
+
 # attach the newly created functions
 attach(.env)
-
-# .First() run at the start of every R session.
-.First <- function() {
-	cat("\nStarted R session at ", date(), "\n")
-}
- 
-# .Last() run at the end of the session
-.Last <- function() {
-	cat("\nClosing R session at ", date(), "\n")
-}
-
-# calculate the mode
-mode <- function (x) { ux <- unique(x); ux[which.max(table(match(x, ux)))] }
