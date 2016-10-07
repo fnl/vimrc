@@ -41,7 +41,7 @@ Plug 'scrooloose/nerdcommenter' " toggle comments: '<Leader>c<space>'
 Plug 'scrooloose/nerdtree' " file system directory: '<Leader>d'
 Plug 'Chiel92/vim-autoformat' " use external formatting programs to arrange code
 Plug 'pangloss/vim-javascript' " JavaScript syntax
-Plug 'jcfaria/Vim-R-plugin' " R IDE
+Plug 'jalvesaq/Nvim-R' " R IDE https://github.com/jalvesaq/Nvim-R
 Plug 'matze/vim-tex-fold' " LaTeX document folding
 Plug 'derekwyatt/vim-scala' " Scala syntax
 Plug 'megaannum/vimside' " Scala IDE
