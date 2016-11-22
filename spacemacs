@@ -259,7 +259,15 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place you code here."
-  )
+	(setq-default
+	 dotspacemacs-configuration-layers
+	 '(
+	   (scala :variables scala-auto-insert-asterisk-in-comments t)
+		 (scala :variables scala-enable-eldoc-mode t)
+		 (osx :variables osx-use-option-as-meta nil)
+		)
+	)
+)
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
