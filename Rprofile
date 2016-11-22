@@ -31,7 +31,7 @@ options(tab.width=2)
 .env$Finder <- function(...) if (Sys.info()[1] == "Darwin") system("open .")
 
 # calculate the mode
-.env$mode <- function (x) { ux <- unique(x); ux[which.max(table(match(x, ux)))] }
+.env$mode.average <- function (x) { ux <- unique(x); ux[which.max(table(match(x, ux)))] }
 
 # attach the newly created functions
 attach(.env)
