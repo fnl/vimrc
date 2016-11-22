@@ -45,19 +45,26 @@ then debian_chroot=$(cat /etc/debian_chroot)
 fi
 
 # check for a color terminal to set a color prompt
+# echo $TERM
 case "$TERM" in
   xterm-color) color_prompt=yes;;
   xterm-256color) color_prompt=yes;;
   screen-256color) color_prompt=yes;;
+	xterm) if [ "$COLORTERM" == "gnome-terminal" ]
+		then color_prompt=yes;
+		else echo colorless xterm detected;
+		fi;;
+	*) echo are you really running a colorless $TERM or a gnome-terminal?;;
 esac
 
 # uncomment for a forced colored prompt
-#force_color_prompt=yes
+force_color_prompt=yes
 
-if [ -n "$force_color_prompt" ]
+if [ -n "$force_color_prompt" ] && [ "$color_prompt" != "yes" ]
 then
   if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null
-  then color_prompt=yes
+  then color_prompt=yes;
+		echo forced color term despite TERM=\"$TERM\" setting;
     # We have color support; assume it's compliant with Ecma-48
     # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
     # a case would tend to support setf rather than setaf.)
@@ -75,9 +82,9 @@ magenta=35
 cyan=36
 white=37
 hostname=`hostname -s`
-if [ $hostname = ackbar ]
+if [ $hostname = catalytics ]
 then color=$magenta
-elif [ $hostname = mba ]
+elif [ $hostname = cerberus ]
 then color=$cyan
 else color=$blue
 fi
@@ -106,6 +113,8 @@ then
   then lscolor="--color"
   else lscolor="-G"
   fi
+elif [ "`uname`" == "Darwin" ]
+then lscolor="-G"
 else lscolor=
 fi
 unset dircolors
@@ -132,6 +141,12 @@ longestline() { awk '{ print length, $0}' "$1" | sort -nr | head -1; }
 
 # show line number X in file Y
 showline() { awk 'NR == '$1' { print; exit }' "$2"; }
+
+# show the column number of each column in a TSV file with a title row
+numcols() { head -1 "$@" | tr '\t' '\n' | nl; }
+
+# show the column number of each column in a CSV file with a title row
+numcsvcols() { head -1 "$@" | tr ',' '\n' | nl; }
 
 # count and rank the unqiue lines in a file
 uniqcount() { sort "$@" | uniq -c | sort -rn | sed 's/^ *//' | sed 's/ /	/'; }
@@ -194,18 +209,6 @@ function ranger-cd {
 	rm -f -- "$tempfile"
 }
 
-# source local alias definitions
-[ -f ~/.bash_aliases ] && . ~/.bash_aliases
-
-# source local environment variables
-[ -f ~/.bash_environment ] && . ~/.bash_environment
-
-# source local shell settings
-[ -f ~/.bash_local ] && . ~/.bash_local
-
-# set up z - jump around
-[ -f ~/.vim/z/z.sh ] && . ~/.vim/z/z.sh
-
 # ls convenience: l, ll and la
 # use GNU ls in preference over "default" ls (Mac OSX)
 [ -x /usr/local/bin/gls ] && alias l="gls $lscolor " || alias l="ls $lscolor"
@@ -221,3 +224,17 @@ alias vi='vim' # always use vim
 alias curl-json='curl -H"Content-Type: application/json;charset=utf-8"'
 alias curl-post='curl -X POST'
 alias curl-post-json='curl -X POST -H"Content-Type: application/json;charset=utf-8"'
+
+# source local alias definitions
+[ -f ~/.bash_aliases ] && . ~/.bash_aliases
+
+# source local environment variables
+[ -f ~/.bash_environment ] && . ~/.bash_environment
+
+# source local shell settings
+[ -f ~/.bash_local ] && . ~/.bash_local
+
+# set up z - jump around
+[ -f ~/.vim/z/z.sh ] && . ~/.vim/z/z.sh
+
+test -e ${HOME}/.iterm2_shell_integration.bash && source ${HOME}/.iterm2_shell_integration.bash

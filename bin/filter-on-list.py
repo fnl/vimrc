@@ -18,12 +18,19 @@ if not 3 < len(sys.argv) < 6 or "-h" in sys.argv or "--help" in sys.argv:
     sys.exit(1)
 
 col = int(sys.argv[1]) - 1
-filter_list = [i.strip() for i in open(sys.argv[3])]
+filter_list = {i.strip() for i in open(sys.argv[3])}
 
 if len(sys.argv) == 4:
     cond = lambda i: i[col] in filter_list
 else:
     cond = lambda i: i[col] not in filter_list
 
-for i in filter(cond, [i.strip().split('\t') for i in open(sys.argv[2])]):
-    print('\t'.join(i))
+
+def row_gen(stream):
+    for row in stream:
+        yield row.strip().split('\t')
+
+
+with open(sys.argv[2]) as stream:
+    for i in filter(cond, row_gen(stream)):
+        print('\t'.join(i))

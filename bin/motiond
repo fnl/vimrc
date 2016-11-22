@@ -3,20 +3,20 @@
 . /lib/lsb/init-functions
 
 DESC="motion daemon"
-DAEMON="/home/fnl/work/bin/motion_saver"
+DAEMON="/home/fnl/work/bin/motion-saver"
 NAME=$(basename $DAEMON)
-PIDFILE=/tmp/motion_saver.pid
+PIDFILE=/tmp/motion-saver.pid
 SCRIPTNAME=$(basename $0)
 
 [ -x "$DAEMON" ] || exit -1 
 
 do_start() {
-        echo -n "Starting motion_saver: "
+        echo -n "Starting: "
 				start-stop-daemon --start --background --quiet --pidfile $PIDFILE --exec $DAEMON || return 1
 }
 
 do_stop() {
-        echo -n "Stopping motion_saver: "
+        echo -n "Stopping: "
 				start-stop-daemon --stop --quiet --pidfile $PIDFILE --name $NAME
 				RETVAL="$?"
 				[ "$RETVAL" = 2 ] && return 2
