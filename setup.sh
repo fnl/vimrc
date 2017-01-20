@@ -1,7 +1,7 @@
 #!/bin/sh
 
 dir=~/.vim
-WORKSPACE=Workspace
+WORKSPACE=
 
 echo "dir=$dir"
 
