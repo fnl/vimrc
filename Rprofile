@@ -1,8 +1,8 @@
 options("repos"=c(CRAN="https://ftp.cixug.es/CRAN/", RSTUDIO="http://cran.rstudio.com/"))
 options(max.print=100) # stop spamming the console
 options(tab.width=2)
-options(stringsAsFactors = FALSE) # text mining ahoy!
-#options(warn=2)
+# options(stringsAsFactors = FALSE) # text mining ahoy!
+# options(warn=2) # convert warning to errors
 
 # Create an invisible environment for all functions so they don't clutter your workspace.
 .env <- new.env()
@@ -30,8 +30,8 @@ options(stringsAsFactors = FALSE) # text mining ahoy!
 # Open Finder to the current directory on mac
 .env$Finder <- function(...) if (Sys.info()[1] == "Darwin") system("open .")
 
+# calculate the mode
+.env$mode.average <- function (x) { ux <- unique(x); ux[which.max(table(match(x, ux)))] }
+
 # attach the newly created functions
 attach(.env)
-
-# calculate the mode
-mode <- function (x) { ux <- unique(x); ux[which.max(table(match(x, ux)))] }
