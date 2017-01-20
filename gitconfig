@@ -3,3 +3,5 @@
 	email = florian.leitner@gmail.com
 [push]
 	default = simple
+[credential]
+	helper = cache --timeout=3600
