@@ -120,7 +120,7 @@ fi
 unset dircolors
 
 # enable programmable completion features
-if [ -f /etc/eash_completion ] && ! shopt -oq posix
+if [ -f /etc/bash_completion ] && ! shopt -oq posix
 then . /etc/bash_completion
 elif [ -f /usr/local/etc/bash_completion ] && ! shopt -oq posix
 then . /usr/local/etc/bash_completion
