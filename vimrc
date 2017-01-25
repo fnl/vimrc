@@ -135,12 +135,13 @@ set laststatus=2 " show the statusline: 2=always
 set autoindent " indent file by default
 set copyindent " copy the previous indentation when autoindenting
 set tabstop=2 " number of spaces to use to display tabs
-set noexpandtab " (do not) replace (expand) tabs with spaces
+set expandtab " (do not) replace (expand) tabs with spaces
 set softtabstop=2 " number of spaces to delete/insert when editing expanded tabs
 set shiftwidth=2 " number of spaces to manipulate for reindent ops (<< and >>)
 " special cases
 au FileType text setlocal tabstop=8 noautoindent
 au FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab
+au FileType python3 setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab
 
 " Code folding
 set nofoldenable
@@ -192,6 +193,19 @@ func Eatspace()
 endfunc
 " for example:
 " iabbr <silent> if if ()<Left><C-R>=Eatspace()<CR>
+
+" Incrementing all numbers in a column selection by their previous value
+" http://vim.wikia.com/wiki/Making_a_list_of_numbers
+
+function! Incr()
+  let a = line('.') - line("'<")
+  let c = virtcol("'<")
+  if a > 0
+    execute 'normal! '.c.'|'.a."\<C-a>"
+  endif
+  normal `<
+endfunction
+vnoremap <C-a> :call Incr()<CR>
 
 " makeprg
 " -------
