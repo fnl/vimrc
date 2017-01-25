@@ -35,12 +35,9 @@ ln -s $dir/octaverc ~/.octaverc
 ln -s $dir/screenrc ~/.screenrc
 ln -s $dir/spacemacs ~/.spacemacs
 ln -s $dir/vimrc ~/.vimrc
-<<<<<<< HEAD
 ln -s $dir/distributionrc ~/.distributionrc
 ln -s $dir/gitconfig ~/.gitconfig
 ln -s $dir/tmux.conf ~/.tmux.conf
-=======
->>>>>>> fe2fdc78f7000b966415ecece1b83847e16c6154
 cp $dir/signature ~/.plan
 
 # scripts and binaries
