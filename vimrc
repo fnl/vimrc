@@ -505,7 +505,7 @@ map <Leader>u :GundoToggle<CR>
 
 " Jedi
 let g:jedi#goto_assignments_command = "<Leader>pa"
-let g:jedi#goto_definitions_command = "<Leader>pg"
+let g:jedi#goto_definitions_command = "<Leader>pd"
 let g:jedi#usages_command = "<Leader>pu"
 let g:jedi#rename_command = "<Leader>pr"
 

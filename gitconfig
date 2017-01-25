@@ -1,5 +1,6 @@
 [user]
 	name = Florian Leitner
+	email = me@fnl.es
 [push]
 	default = simple
 [http]
@@ -15,3 +16,5 @@
 	trustExitCode = true
 [commit]
 	template = /Users/fnl/.stCommitMsg
+[credential]
+	helper = cache --timeout=3600
