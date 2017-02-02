@@ -50,6 +50,7 @@ case "$TERM" in
   xterm-color) color_prompt=yes;;
   xterm-256color) color_prompt=yes;;
   screen-256color) color_prompt=yes;;
+  screen) color_prompt=yes;;
 	xterm) if [ "$COLORTERM" == "gnome-terminal" ]
 		then color_prompt=yes;
 		else echo colorless xterm detected;
