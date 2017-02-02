@@ -35,6 +35,7 @@ Plug 'fs111/pydoc.vim' " python documentation viewer
 Plug 'ervandew/supertab' " tab completion
 Plug 'tpope/vim-surround' " change surrounding a->b: 'csab' add surrounding ...: 'ysiw'...
 Plug 'scrooloose/syntastic' " automatic syntax checking
+" Plug 'w0rp/ale' " asynchronous lint engine (alt for syntastic)
 Plug 'majutsushi/tagbar' " display the current tags: '<Leader>T'
 Plug 'vim-scripts/taglist.vim' " display the current tags: '<Leader>t'
 Plug 'scrooloose/nerdcommenter' " toggle comments: '<Leader>c<space>'
@@ -55,6 +56,7 @@ Plug 'chrisbra/csv.vim' " CSV file formatting for vim
 Plug 'myint/clang-complete' " Autocompleteion for C, C++, ObjC, and ObjC++ - for both :Py2 and :Py3
 Plug 'peterhoeg/vim-qml' " QML syntax highlighting
 " Plug 'mattn/emmet-vim' " abbreviation expansion with '<C-y>
+" Plug 'skywind3000/asyncrun.vim' " use :AysncRun CMD and :AsyncRun! CMD (no autoscroll) in Vim 8+
 call plug#end()
 
 " BASIC CONFIGURATION
@@ -129,6 +131,7 @@ set wildmode=list:longest " and show every possible completion
 " tagname_if_set syntastic_flag_if_relevant
 " [byteval_under_cursor][line_number,virtual_col_number][percentage_in_file]
 set statusline=%n:%f%m%r%h%w\ [%{&spelllang}.%{&fenc==\"\"?&enc:&fenc}](%{&ff}){%Y}\ %{Tlist_Get_Tagname_By_Line()}\ %{SyntasticStatuslineFlag()}\ %=[0x\%02.5B][%03l,%02v][%02p%%]
+" set statusline=%n:%f%m%r%h%w\ [%{&spelllang}.%{&fenc==\"\"?&enc:&fenc}](%{&ff}){%Y}\ %{Tlist_Get_Tagname_By_Line()}\ %{ALEGetStatusLine()}\ %=[0x\%02.5B][%03l,%02v][%02p%%]
 set laststatus=2 " show the statusline: 2=always
 
 " Tab and indention handling
@@ -141,7 +144,6 @@ set shiftwidth=2 " number of spaces to manipulate for reindent ops (<< and >>)
 " special cases
 au FileType text setlocal tabstop=8 noautoindent
 au FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab
-au FileType python3 setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab
 
 " Code folding
 set nofoldenable
@@ -207,6 +209,35 @@ function! Incr()
 endfunction
 vnoremap <C-a> :call Incr()<CR>
 
+" Toggling the quickfix and location windows
+function! GetBufferList()
+  redir =>buflist
+  silent! ls!
+  redir END
+  return buflist
+endfunction
+
+function! ToggleList(bufname, pfx)
+  let buflist = GetBufferList()
+  for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
+    if bufwinnr(bufnum) != -1
+      exec(a:pfx.'close')
+      return
+    endif
+  endfor
+  if a:pfx == 'l' && len(getloclist(0)) == 0
+      echohl ErrorMsg
+      echo "Location List is Empty."
+      return
+  endif
+  let winnr = winnr()
+  exec(a:pfx.'open')
+  if winnr() != winnr
+    wincmd p
+  endif
+endfunction
+
+
 " makeprg
 " -------
 
@@ -241,7 +272,6 @@ au FileType python setlocal define=^\s*\\(def\\\\|class\\)
 
 " common expansions of Python special methods and keywords
 au FileType python iabb cl class
-au FileType python iabb fr from
 au FileType python iabb im import
 au FileType python iabb la lambda
 au FileType python iabb s. self.<C-R>=Eatspace()<CR>
@@ -421,6 +451,7 @@ let g:syntastic_loc_list_height = 5
 " Python-specific setup
 let g:syntastic_python_checkers = ['flake8', 'pep257']
 let g:syntastic_python_pep257_args = '--ignore=D102,D205,D400'
+let g:syntastic_python_flake8_args = '--ignore=E501'
 " C++11 setup
 let g:syntastic_cpp_compiler = 'clang++'
 let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
@@ -466,12 +497,14 @@ let g:tex_flavor='latex'
 " d -> directory tree
 " h -> hidden characters
 " j -> jump
+" l -> toggle location window
 " m -> :make
 " M -> menu
 " n -> line numbers
 " o -> open file
 " r -> renaming (not jedi)
 " p -> python commands... (pt... -> py.test commands)
+" q -> toggle quickfix window
 " s -> syntastic
 " t -> taglist
 " T -> Tagbar
@@ -481,7 +514,17 @@ let g:tex_flavor='latex'
 " Add-On Keymappings
 " ------------------
 
-" Auotformat
+" ALE (async Syntastic)
+set nocompatible
+filetype off
+let &runtimepath.=',~/.vim/plugged/ale'
+filetype plugin on
+let g:ale_python_flake8_args = '--ignore=E501'
+let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
+" to see the errors, open the location window (<leader>l)
+" to walk over them, use the next/previous commands (:lnext and :lprevious)
+
+" Autoformat
 noremap <Leader>a :Autoformat<CR><CR>
 
 " CtrlP
@@ -551,6 +594,11 @@ let g:clang_cpp_options = '-std=c++11 -stdlib=libc++'
 " Custom (Leader) Keymappings
 " ---------------------------
 
+" toggle location and quickfix windows
+nmap <silent> <Leader>l :call ToggleList("Location List", 'l')<CR>
+" walk along locations with :lne :lpr
+nmap <silent> <Leader>q :call ToggleList("Quickfix List", 'c')<CR>
+
 " rename stuff (see custom function Rename())
 " note that Jedi rename is <Leader>pr (all Python commands start with p)
 nmap <Leader>r "zyiw:call Rename()<cr>mx:silent! norm gd<cr>[{V%:s/<C-R>//<c-r>z/g<cr>`x
@@ -572,8 +620,9 @@ nmap <silent> <Leader>h :set nolist!<CR>
 nmap <silent> <Leader>n :set nonumber!<CR>
 
 " run python and pytest
-autocmd FileType python nmap <Leader>pp :!python %<CR>
-autocmd FileType python nmap <Leader>ptt :!py.test -s --doctest-modules %<CR>
+au FileType python nmap <Leader>pp :!python %<CR>
+au FileType python nmap <Leader>ptt :!py.test -s --doctest-modules %<CR>
+
 
 " Changed Default Keymappings
 " ---------------------------
