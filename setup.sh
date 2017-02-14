@@ -17,6 +17,7 @@ curl -fLo $dir/autoload/plug.vim \
 # vim backup and tmp files
 mkdir $dir/backup
 mkdir $dir/tmp
+mkdir $dir/tmux
 
 # configuration files
 echo "linking configuration files from $dir/* to ~/.\\1"
