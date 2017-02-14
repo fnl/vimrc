@@ -9,7 +9,7 @@ defscrollback 100000
 # fix blocking of screen (Bug #600999)
 defnonblock on
 # Set the caption on the bottom line
-caption always "%{= kw}%-w%{= BW}%n %t%{-}%+w %-= @%H - %LD %d %LM - %c"
+caption always "%{= kw}%-w%{= BW}%n %t%{-}%+w %{= KW} %-= @%H - %LD %d %LM - %c"
 # clean up "residual" text from less/more/vim/nano/...
 altscreen on
 # ensure screens start with 1, not 0
