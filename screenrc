@@ -5,7 +5,7 @@ vbell on
 # replace ctrl-A with...
 escape ^Gg
 # set a big scrolling buffer
-defscrollback 10000
+defscrollback 100000
 # fix blocking of screen (Bug #600999)
 defnonblock on
 # Set the caption on the bottom line
