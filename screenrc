@@ -17,3 +17,5 @@ bind c screen 1
 bind ^c screen 1
 bind 0 select 10                                                            
 screen 1
+# scrollback problems: turn on scrollbars
+termcapinfo xterm* ti@:te@
