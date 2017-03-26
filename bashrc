@@ -144,7 +144,7 @@ longestline() { awk '{ print length, $0}' "$1" | sort -nr | head -1; }
 showline() { awk 'NR == '$1' { print; exit }' "$2"; }
 
 # show the column number of each column in a TSV file with a title row
-numcols() { head -1 "$@" | tr '\t' '\n' | nl; }
+numtsvcols() { head -1 "$@" | tr '\t' '\n' | nl; }
 
 # show the column number of each column in a CSV file with a title row
 numcsvcols() { head -1 "$@" | tr ',' '\n' | nl; }
@@ -238,4 +238,4 @@ alias curl-post-json='curl -X POST -H"Content-Type: application/json;charset=utf
 # set up z - jump around
 [ -f ~/.vim/z/z.sh ] && . ~/.vim/z/z.sh
 
-#test -e ${HOME}/.iterm2_shell_integration.bash && source ${HOME}/.iterm2_shell_integration.bash
+test -e ${HOME}/.iterm2_shell_integration.bash && source ${HOME}/.iterm2_shell_integration.bash
