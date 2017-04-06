@@ -66,10 +66,12 @@ call plug#end()
 " BASIC CONFIGURATION
 " ===================
 
-set listchars=tab:→⋅,trail:⋅,eol:¬,extends:➧,nbsp:∙ " invisibles definitions
+set listchars=tab:→⋅,trail:⋅,eol:¬,extends:➧,precedes:←,nbsp:∙ " invisibles definitions
 set scrolloff=3 " start vertical scrolling a bit earlier
 set sidescrolloff=3 " scroll at n colums before the side margin in nowrap mode
-set wrap linebreak nolist " (do not) wrap lines, only using a display-based wrap
+set nowrap nolist " (do not) wrap lines, (not) using a display-based wrap
+au FileType text set wrap linebreak " wrap whole words in text files
+au FileType cpp set nowrap " never wrap c++ and make sure to use sensible lengths
 set undolevels=1000 " tons of undos
 set showmatch " jump to matching parens when inserting
 set history=100 " a bit more history
