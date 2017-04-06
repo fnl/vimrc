@@ -21,7 +21,8 @@ set hidden " change buffers w/o saving - essential
 
 call plug#begin('~/.vim/plugged')
 Plug 'craigemery/vim-autotag' " update entries in tag files on saves
-Plug 'kien/ctrlp.vim' " [open] files: '<Leader>o' and buffer: '<Leader>b' navigation
+" Plug 'kien/ctrlp.vim' " [open] files: '<Leader>o' and buffer: '<Leader>b' navigation
+Plug 'Shougo/denite.nvim' " ctrl-p eveolved (twice...)
 Plug 'Lokaltog/vim-easymotion' " jump around ('<number>w', etc.): '<Leader>j'
 Plug 'tpope/vim-fugitive' " git commands: ':G'...
 Plug 'vim-scripts/Go-Syntax' " syntax file for Golang
@@ -35,7 +36,7 @@ Plug 'fs111/pydoc.vim' " python documentation viewer
 Plug 'ervandew/supertab' " tab completion
 Plug 'tpope/vim-surround' " change surrounding a->b: 'csab' add surrounding ...: 'ysiw'...
 Plug 'scrooloose/syntastic' " automatic syntax checking
-" Plug 'w0rp/ale' " ALE: asynchronous lint engine (alt for syntastic)
+Plug 'w0rp/ale' " ALE: asynchronous lint engine (alt for syntastic)
 Plug 'majutsushi/tagbar' " display the current tags: '<Leader>T'
 Plug 'vim-scripts/taglist.vim' " display the current tags: '<Leader>t'
 Plug 'scrooloose/nerdcommenter' " toggle comments: '<Leader>c<space>'
@@ -56,7 +57,10 @@ Plug 'chrisbra/csv.vim' " CSV file formatting for vim
 Plug 'myint/clang-complete' " Autocompleteion for C, C++, ObjC, and ObjC++ - for both :Py2 and :Py3
 Plug 'peterhoeg/vim-qml' " QML syntax highlighting
 " Plug 'mattn/emmet-vim' " abbreviation expansion with '<C-y>
-" Plug 'skywind3000/asyncrun.vim' " use :AysncRun CMD and :AsyncRun! CMD (no autoscroll) in Vim 8+
+Plug 'skywind3000/asyncrun.vim' " use :AysncRun CMD and :AsyncRun! CMD (no autoscroll) in Vim 8+
+Plug 'sjl/badwolf' " colorscheme
+Plug 'vim-airline/vim-airline' " statusline
+Plug 'vim-airline/vim-airline-themes' " statusline
 call plug#end()
 
 " BASIC CONFIGURATION
@@ -83,7 +87,8 @@ set textwidth=0
 set wrapmargin=0
 
 " Override/color settings
-colorscheme default
+colorscheme badwolf
+set background=dark
 " Set colorcolumn border color
 hi ColorColumn ctermbg=LightGrey guibg=LightGrey
 " Un-nref parenthesis highlights so the cursor can be seen
@@ -97,7 +102,7 @@ set smartcase " ...but only if there is no capital letter present
 hi Search cterm=none ctermfg=black ctermbg=yellow
 
 " Enable spell checking in text files
-au FileType text,mail,rst,mkd,tex setlocal spell spelllang=en_us 
+au FileType text,mail,rst,mkd,tex setlocal spell spelllang=en_us
 au FileType help setlocal nospell " unless it's a help file
 hi SpellBad cterm=underline ctermbg=none
 hi SpellCap cterm=underline ctermbg=none
@@ -192,8 +197,8 @@ endfunction
 
 " Remove spaces left of cursor
 func Eatspace()
-	let c = nr2char(getchar(0))
-	return (c =~ '\s') ? '' : c
+  let c = nr2char(getchar(0))
+  return (c =~ '\s') ? '' : c
 endfunc
 " for example:
 " iabbr <silent> if if ()<Left><C-R>=Eatspace()<CR>
@@ -209,6 +214,9 @@ function! Incr()
   endif
   normal `<
 endfunction
+" create a column with all the same starting number
+" highlight the column with C-v
+" press C-a to increment all highlighted numbers
 vnoremap <C-a> :call Incr()<CR>
 
 " Toggling the quickfix and location windows
@@ -277,7 +285,7 @@ au FileType python iabb cl class
 au FileType python iabb im import
 au FileType python iabb la lambda
 au FileType python iabb s. self.<C-R>=Eatspace()<CR>
-au FileType python iabb ifmain if __name__ == '__main__':<C-R>=Eatspace()<CR><CR>
+au FileType python iabb ifmain if __name__ == '__main__':<C-R>=Eatspace()<CR>
 au FileType python iabb definit def __init__(self,):<Left><Left>
 au FileType python iabb defnew def __new__(cls,):<Left><Left>
 au FileType python iabb defdel def __del__(self):<C-R>=Eatspace()<CR><CR>
@@ -324,13 +332,13 @@ let g:clang_complete_copen = 1
 let g:clang_use_library = 1
 let g:clang_debug = 1
 if has("unix")
-	if (system('uname') =~ "Darwin")
-		let g:clang_library_path='/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/'
-	else
-		let g:clang_library_path='/usr/lib/llvm-3.6/lib'
-	endif
+  if (system('uname') =~ "Darwin")
+    let g:clang_library_path='/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/'
+  else
+    let g:clang_library_path='/usr/lib/llvm-3.6/lib'
+  endif
 else " has("win32") || has("win16")
-	let g:clang_library_path='please configure your vimrc for this OS, Florian'
+  let g:clang_library_path='please configure your vimrc for this OS, Florian'
 endif
 let g:clang_complete_macros = 1
 let g:clang_complete_patterns = 1
@@ -532,9 +540,11 @@ noremap <Leader>a :Autoformat<CR><CR>
 
 " CtrlP
 " open the CtrlP file commandline ("[o]pen file")
-nmap <silent> <Leader>o :CtrlP<CR>
+" nmap <silent> <Leader>o :CtrlP<CR>
+nmap <silent> <Leader>o :Denite file_rec<CR>
 " open the CtrlP buffer commandline ("open [b]uffer")
-nmap <silent> <Leader>b :CtrlPBuffer<CR>
+" nmap <silent> <Leader>b :CtrlPBuffer<CR>
+nmap <silent> <Leader>b :Denite buffer<CR>
 
 " EasyMotion
 " find characters (jump)
@@ -593,6 +603,13 @@ nmap <silent> <Leader>t :TlistToggle<CR>
 " Vim-clang
 let g:clang_c_options = '-std=gnu11'
 let g:clang_cpp_options = '-std=c++11 -stdlib=libc++'
+
+" Airline-vim
+" light theme
+let g:airline_theme='badwolf'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+
 
 " Custom (Leader) Keymappings
 " ---------------------------
