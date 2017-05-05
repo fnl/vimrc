@@ -1,0 +1,12 @@
+/* (c) ${COMPANY_NAME} 2017. All rights reserved.
+ *
+ * Reproduction of, dissemination of, modifications to or creation of
+ * derivative works from this source code, whether in source or binary
+ * forms, by any means and in any form or manner, is expressly prohibited,
+ * except with the prior written permission of ${COMPANY_NAME}.
+ *
+ * THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
+ * KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * This notice may not be removed from the software by any user thereof. */
