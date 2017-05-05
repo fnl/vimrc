@@ -20,47 +20,59 @@ set hidden " change buffers w/o saving - essential
 "        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 call plug#begin('~/.vim/plugged')
-Plug 'craigemery/vim-autotag' " update entries in tag files on saves
-" Plug 'kien/ctrlp.vim' " [open] files: '<Leader>o' and buffer: '<Leader>b' navigation
+
+" General purpose
+"Plug 'kien/ctrlp.vim' " [open] files: '<Leader>o' and buffer: '<Leader>b' navigation
 Plug 'Shougo/denite.nvim' " ctrl-p eveolved (twice...)
-Plug 'Lokaltog/vim-easymotion' " jump around ('<number>w', etc.): '<Leader>j'
-Plug 'tpope/vim-fugitive' " git commands: ':G'...
-Plug 'vim-scripts/Go-Syntax' " syntax file for Golang
+Plug 'easymotion/vim-easymotion' " jump around ('<number>w', etc.): '<Leader>j'
+Plug 'craigemery/vim-autotag' " update entries in tag files on saves
 Plug 'sjl/gundo.vim' " visual undo tree: '<Leader>u'
-Plug 'davidhalter/jedi-vim' " Python code editing; '<Leader>p[agur]'
-Plug 'Shutnik/jshint2.vim' " JavaScript IDE (hints and lint)
-Plug 'edsono/vim-matchit' " extended % matching
-Plug 'plasticboy/vim-markdown' " Markdown support
-Plug 'alfredodeza/pytest.vim' " support for py.test
-Plug 'fs111/pydoc.vim' " python documentation viewer
-Plug 'ervandew/supertab' " tab completion
+"Plug 'edsono/vim-matchit' " extended % matching
+"Plug 'ervandew/supertab' " tab completion
 Plug 'tpope/vim-surround' " change surrounding a->b: 'csab' add surrounding ...: 'ysiw'...
-Plug 'scrooloose/syntastic' " automatic syntax checking
-Plug 'w0rp/ale' " ALE: asynchronous lint engine (alt for syntastic)
 Plug 'majutsushi/tagbar' " display the current tags: '<Leader>T'
 Plug 'vim-scripts/taglist.vim' " display the current tags: '<Leader>t'
 Plug 'scrooloose/nerdcommenter' " toggle comments: '<Leader>c<space>'
 Plug 'scrooloose/nerdtree' " file system directory: '<Leader>d'
 Plug 'Chiel92/vim-autoformat' " use external formatting programs to arrange code
-Plug 'pangloss/vim-javascript' " JavaScript syntax
-Plug 'jalvesaq/Nvim-R' " R IDE https://github.com/jalvesaq/Nvim-R
-Plug 'matze/vim-tex-fold' " LaTeX document folding
-Plug 'derekwyatt/vim-scala' " Scala syntax
-Plug 'megaannum/vimside' " Scala IDE
-Plug 'tpope/vim-unimpaired' " quickfix q/arglist a/loclist l/taglist t navigation
+Plug 'tpope/vim-unimpaired' " quickfix q/arglist a/loclist l/taglist t navigation: ]q [q ]a [a ...
+" unimpared: [e ]e to exchange lines; ]<spc> [<spc> to add empty lines;
+" [f ]f next/previous file in directory
 Plug 'nelstrom/vim-qargs' " adds the Qargs command to replace the arglist with quickfix files
-Plug 'akhaku/vim-java-unused-imports' " remove unused Java imports with :UnusedImports...
-Plug 'rust-lang/rust.vim' " Rust file detection and syntax highlighting
-Plug 'chrisbra/csv.vim' " CSV file formatting for vim
-" Plug 'justmao945/vim-clang' " C++ code completion
-" Plug 'Rip-Rip/clang_complete' " Autocompleteion for C, C++, ObjC, and ObjC++ - ONLY FOR :Py2!
-Plug 'myint/clang-complete' " Autocompleteion for C, C++, ObjC, and ObjC++ - for both :Py2 and :Py3
-Plug 'peterhoeg/vim-qml' " QML syntax highlighting
-" Plug 'mattn/emmet-vim' " abbreviation expansion with '<C-y>
+"Plug 'mattn/emmet-vim' " abbreviation expansion with '<C-y>
 Plug 'skywind3000/asyncrun.vim' " use :AysncRun CMD and :AsyncRun! CMD (no autoscroll) in Vim 8+
 Plug 'sjl/badwolf' " colorscheme
 Plug 'vim-airline/vim-airline' " statusline
 Plug 'vim-airline/vim-airline-themes' " statusline
+
+" Tools
+Plug 'tpope/vim-fugitive' " git commands: ':G'...
+"Plug 'scrooloose/syntastic' " automatic syntax checking
+"Plug 'w0rp/ale' " ALE: asynchronous lint engine (alt for syntastic)
+Plug 'Valloric/YouCompleteMe' " finally has :Py3 support! Yay, Googlers coming to their senses!
+
+" Markdown/ReST/LaTeX/CSV/...
+Plug 'plasticboy/vim-markdown' " Markdown support
+Plug 'matze/vim-tex-fold' " LaTeX document folding
+Plug 'chrisbra/csv.vim' " CSV file formatting for vim
+
+" Programming Languages
+"Plug 'vim-scripts/Go-Syntax' " syntax file for Golang
+Plug 'fatih/vim-go' " development for Golang
+Plug 'davidhalter/jedi-vim' " Python code editing; '<Leader>p[agur]'
+Plug 'alfredodeza/pytest.vim' " support for py.test
+Plug 'fs111/pydoc.vim' " python documentation viewer
+"Plug 'justmao945/vim-clang' " C++ code completion
+"Plug 'Rip-Rip/clang_complete' " Autocompleteion for C, C++, ObjC, and ObjC++ - ONLY FOR :Py2!
+"Plug 'myint/clang-complete' " Autocompleteion for C, C++, ObjC, and ObjC++ - for both :Py2 and :Py3
+Plug 'peterhoeg/vim-qml' " QML syntax highlighting
+Plug 'akhaku/vim-java-unused-imports' " remove unused Java imports with :UnusedImports...
+Plug 'derekwyatt/vim-scala' " Scala syntax
+Plug 'megaannum/vimside' " Scala IDE
+Plug 'jalvesaq/Nvim-R' " R IDE https://github.com/jalvesaq/Nvim-R
+"Plug 'Shutnik/jshint2.vim' " JavaScript IDE (hints and lint)
+Plug 'pangloss/vim-javascript' " JavaScript syntax
+Plug 'rust-lang/rust.vim' " Rust file detection and syntax highlighting
 call plug#end()
 
 " BASIC CONFIGURATION
@@ -497,6 +509,18 @@ set grepprg=grep\ -nH\ $*
 " always use tex as filetype
 let g:tex_flavor='latex'
 
+" YouCompleteMe
+" -------------
+
+" Dynamically choose the right Python to use
+let g:ycm_python_binary_path = 'python'
+" Gutter signs
+let g:ycm_enable_diagnostic_signs = 1
+" Diagnostic high-lighting
+let g:ycm_enable_diagnostic_highlighting = 1
+" Default YCM extra conf
+let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_extra_conf.py'
+
 " KEYMAPPINGS
 " ===========
 
@@ -680,3 +704,4 @@ nmap <silent> <Up> <C-W>-
 nmap <silent> <Down> <C-W>+
 nmap <silent> <Left> <C-W>>
 nmap <silent> <Right> <C-W>;<
+
