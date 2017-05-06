@@ -35,8 +35,10 @@ Plug 'alfredodeza/pytest.vim' " support for py.test
 Plug 'fs111/pydoc.vim' " python documentation viewer
 Plug 'ervandew/supertab' " tab completion
 Plug 'tpope/vim-surround' " change surrounding a->b: 'csab' add surrounding ...: 'ysiw'...
-Plug 'scrooloose/syntastic' " automatic syntax checking
-Plug 'w0rp/ale' " ALE: asynchronous lint engine (alt for syntastic)
+" Plug 'scrooloose/syntastic' " automatic syntax checking
+" Plug 'w0rp/ale' " ALE: asynchronous lint engine (alt for syntastic)
+Plug 'Valloric/YouCompleteMe' " YCM
+Plug 'rdnetto/YCM-Generator', {'branch': 'stable'}
 Plug 'majutsushi/tagbar' " display the current tags: '<Leader>T'
 Plug 'vim-scripts/taglist.vim' " display the current tags: '<Leader>t'
 Plug 'scrooloose/nerdcommenter' " toggle comments: '<Leader>c<space>'
@@ -465,6 +467,8 @@ let g:syntastic_python_flake8_args = '--ignore=E501'
 " C++11 setup
 let g:syntastic_cpp_compiler = 'clang++'
 let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
+let g:syntastic_c_include_dirs = [ '../include', 'include' ]
+let g:syntastic_debug = 1
 " disable HTML/XML
 let g:syntastic_mode_map={ 'mode': 'active',
                          \  'active_filetypes': [],
@@ -532,6 +536,7 @@ filetype plugin on
 let g:ale_python_flake8_args = '--ignore=E501'
 let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
 let g:ale_sign_column_always = 1
+let g:ale_cpp_clang_options = '-std=c++14 -Wall -I.'
 " to see the errors, open the location window (<leader>l)
 " to walk over them, use the next/previous commands (:lnext and :lprevious)
 
