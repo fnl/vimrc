@@ -13,5 +13,4 @@ if has("gui_running")
 	"au GUIEnter * set fullscreen
 endif
 let Tlist_Show_Menu=1 " show tags in a menu
-colorscheme macvim
 "set clipboard=unnamed " use the Mac-internal clipboard
