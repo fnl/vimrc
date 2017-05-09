@@ -35,7 +35,7 @@ Plug 'vim-scripts/taglist.vim' " display the current tags: '<Leader>t'
 Plug 'scrooloose/nerdcommenter' " toggle comments: '<Leader>c<space>'
 Plug 'scrooloose/nerdtree' " file system directory: '<Leader>d'
 Plug 'Chiel92/vim-autoformat' " use external formatting programs to arrange code
-Plug 'tpope/vim-unimpaired' " quickfix q/arglist a/loclist l/taglist t navigation: ]q [q ]a [a ...
+Plug 'tpope/vim-unimpaired' " quickfix q, arglist a, bufferlist b, loclist l, taglist t navigation: ]q [q ]a [a ...
 " unimpared: [e ]e to exchange lines; ]<spc> [<spc> to add empty lines;
 " [f ]f next/previous file in directory
 Plug 'nelstrom/vim-qargs' " adds the Qargs command to replace the arglist with quickfix files
@@ -45,10 +45,9 @@ Plug 'sjl/badwolf' " colorscheme
 Plug 'vim-airline/vim-airline' " statusline
 Plug 'vim-airline/vim-airline-themes' " statusline
 
-" Tools
+" Dev Tools
 Plug 'tpope/vim-fugitive' " git commands: ':G'...
-"Plug 'scrooloose/syntastic' " automatic syntax checking
-"Plug 'w0rp/ale' " ALE: asynchronous lint engine (alt for syntastic)
+Plug 'w0rp/ale' " ALE: asynchronous lint engine (alt for syntastic)
 Plug 'Valloric/YouCompleteMe' " finally has :Py3 support! Yay, Googlers coming to their senses!
 
 " Markdown/ReST/LaTeX/CSV/...
@@ -56,15 +55,12 @@ Plug 'plasticboy/vim-markdown' " Markdown support
 Plug 'matze/vim-tex-fold' " LaTeX document folding
 Plug 'chrisbra/csv.vim' " CSV file formatting for vim
 
-" Programming Languages
+" Programming Languages (except YCM completion)
 "Plug 'vim-scripts/Go-Syntax' " syntax file for Golang
 Plug 'fatih/vim-go' " development for Golang
 Plug 'davidhalter/jedi-vim' " Python code editing; '<Leader>p[agur]'
 Plug 'alfredodeza/pytest.vim' " support for py.test
 Plug 'fs111/pydoc.vim' " python documentation viewer
-"Plug 'justmao945/vim-clang' " C++ code completion
-"Plug 'Rip-Rip/clang_complete' " Autocompleteion for C, C++, ObjC, and ObjC++ - ONLY FOR :Py2!
-"Plug 'myint/clang-complete' " Autocompleteion for C, C++, ObjC, and ObjC++ - for both :Py2 and :Py3
 Plug 'peterhoeg/vim-qml' " QML syntax highlighting
 Plug 'akhaku/vim-java-unused-imports' " remove unused Java imports with :UnusedImports...
 Plug 'derekwyatt/vim-scala' " Scala syntax
@@ -149,8 +145,7 @@ set wildmode=list:longest " and show every possible completion
 " [fileencoding](fileformat){filetype}
 " tagname_if_set syntastic_flag_if_relevant
 " [byteval_under_cursor][line_number,virtual_col_number][percentage_in_file]
-set statusline=%n:%f%m%r%h%w\ [%{&spelllang}.%{&fenc==\"\"?&enc:&fenc}](%{&ff}){%Y}\ %{Tlist_Get_Tagname_By_Line()}\ %{SyntasticStatuslineFlag()}\ %=[0x\%02.5B][%03l,%02v][%02p%%]
-" set statusline=%n:%f%m%r%h%w\ [%{&spelllang}.%{&fenc==\"\"?&enc:&fenc}](%{&ff}){%Y}\ %{Tlist_Get_Tagname_By_Line()}\ %{ALEGetStatusLine()}\ %=[0x\%02.5B][%03l,%02v][%02p%%]
+set statusline=%n:%f%m%r%h%w\ [%{&spelllang}.%{&fenc==\"\"?&enc:&fenc}](%{&ff}){%Y}\ %{Tlist_Get_Tagname_By_Line()}\ %{ALEGetStatusLine()}\ %=[0x\%02.5B][%03l,%02v][%02p%%]
 set laststatus=2 " show the statusline: 2=always
 
 " Tab and indention handling
@@ -556,6 +551,7 @@ filetype plugin on
 let g:ale_python_flake8_args = '--ignore=E501'
 let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
 let g:ale_sign_column_always = 1
+" let g:ale_open_list = 1 " open the loclist
 " to see the errors, open the location window (<leader>l)
 " to walk over them, use the next/previous commands (:lnext and :lprevious)
 
