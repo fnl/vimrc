@@ -49,6 +49,7 @@ Plug 'vim-airline/vim-airline-themes' " statusline
 Plug 'tpope/vim-fugitive' " git commands: ':G'...
 Plug 'w0rp/ale' " ALE: asynchronous lint engine (alt for syntastic)
 Plug 'Valloric/YouCompleteMe' " finally has :Py3 support! Yay, Googlers coming to their senses!
+Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'} " YCM config generator
 
 " Markdown/ReST/LaTeX/CSV/...
 Plug 'plasticboy/vim-markdown' " Markdown support
@@ -472,6 +473,8 @@ let g:syntastic_python_flake8_args = '--ignore=E501'
 " C++11 setup
 let g:syntastic_cpp_compiler = 'clang++'
 let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
+let g:syntastic_c_include_dirs = [ '../include', 'include' ]
+let g:syntastic_debug = 1
 " disable HTML/XML
 let g:syntastic_mode_map={ 'mode': 'active',
                          \  'active_filetypes': [],
@@ -551,7 +554,8 @@ filetype plugin on
 let g:ale_python_flake8_args = '--ignore=E501'
 let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
 let g:ale_sign_column_always = 1
-" let g:ale_open_list = 1 " open the loclist
+let g:ale_cpp_clang_options = '-std=c++14 -Wall -I.'
+" let g:ale_open_list = 1 " always open the loclist
 " to see the errors, open the location window (<leader>l)
 " to walk over them, use the next/previous commands (:lnext and :lprevious)
 
