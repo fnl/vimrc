@@ -2,3 +2,7 @@
 	default = simple
 [user]
 	name = Florian Leitner
+[core]
+	autocrlf = input
+[branch]
+	autosetuprebase = remote
