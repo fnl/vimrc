@@ -2,7 +2,7 @@
 " A VIM CONFIGURATION
 " ===================
 "
-" by Florian Leitner <florian.leitner@gmail.com>
+" by Florian Leitner <leitner@datacatalytics.com>
 "
 " Should be used in conjunction with an accompanying setup.sh file.
 
@@ -586,6 +586,7 @@ map <Leader>u :GundoToggle<CR>
 " Jedi
 let g:jedi#goto_assignments_command = "<Leader>pa"
 let g:jedi#goto_definitions_command = "<Leader>pd"
+let g:jedi#goto_command = "<Leader>pg"
 let g:jedi#usages_command = "<Leader>pu"
 let g:jedi#rename_command = "<Leader>pr"
 
