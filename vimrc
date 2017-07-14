@@ -44,6 +44,7 @@ Plug 'skywind3000/asyncrun.vim' " use :AysncRun CMD and :AsyncRun! CMD (no autos
 Plug 'sjl/badwolf' " colorscheme
 Plug 'vim-airline/vim-airline' " statusline
 Plug 'vim-airline/vim-airline-themes' " statusline
+Plug 'johngrib/vim-game-code-break' " relax
 
 " Dev Tools
 Plug 'tpope/vim-fugitive' " git commands: ':G'...
@@ -177,22 +178,22 @@ set directory=~/.vim/tmp " swap files dir
 
 " Higlight the cursorline after a jump,
 " but deactivate highlight on move
-function s:Cursor_Moved()
-  let cur_pos = winline()
-  if g:last_pos == 0
-    set cul
-    let g:last_pos = cur_pos
-    return
-  endif
-  let diff = g:last_pos - cur_pos
-  if diff > 1 || diff < -1
-    set cul
-  else
-    set nocul
-  endif
-  let g:last_pos = cur_pos
-endfunction
-autocmd CursorMoved,CursorMovedI * call s:Cursor_Moved()
+"function s:Cursor_Moved()
+"  let cur_pos = winline()
+"  if g:last_pos == 0
+"    set cul
+"    let g:last_pos = cur_pos
+"    return
+"  endif
+"  let diff = g:last_pos - cur_pos
+"  if diff > 1 || diff < -1
+"    set cul
+"  else
+"    set nocul
+"  endif
+"  let g:last_pos = cur_pos
+"endfunction
+"autocmd CursorMoved,CursorMovedI * call s:Cursor_Moved()
 let g:last_pos = 0
 
 " Scoped variable renaming
@@ -204,10 +205,10 @@ function! Rename()
 endfunction
 
 " Remove spaces left of cursor
-func Eatspace()
-  let c = nr2char(getchar(0))
-  return (c =~ '\s') ? '' : c
-endfunc
+"func Eatspace()
+"  let c = nr2char(getchar(0))
+"  return (c =~ '\s') ? '' : c
+"endfunc
 " for example:
 " iabbr <silent> if if ()<Left><C-R>=Eatspace()<CR>
 
