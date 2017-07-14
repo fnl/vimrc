@@ -26,6 +26,8 @@ echo "linking configuration files from $dir/* to ~/.\\1"
 #ln -s $dir/i3status.conf ~/.i3status.conf
 ln -s $dir/Rprofile ~/.Rprofile
 ln -s $dir/bashrc ~/.bash_profile
+ln -s $dir/bash_completion ~/.bash_completion
+ln -s $dir/bash_completion.d ~/.bash_completion.d
 ln -s $dir/distributionrc ~/.distributionrc
 ln -s $dir/gitconfig ~/.gitconfig
 ln -s $dir/gvimrc ~/.gvimrc
