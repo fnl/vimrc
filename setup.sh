@@ -50,10 +50,12 @@ ln -s $dir/bin/* ~/$WORKSPACE/bin/
 ln -s $dir/distribution/distribution ~/$WORKSPACE/bin/
 ln -s $dir/distribution/distribution ~/$WORKSPACE/bin/barchart
 ln -s $dir/z/z.sh ~/$WORKSPACE/bin/z
+ln -s $dir/aria2/bin/aria2c ~/$WORKSPACE/bin/aria2c
 
 echo "linking man pages from $dir to ~/$WORKSPACE/man"
-mkdir -p ~/$WORKSPACE/man/man.1
-ln -s $dir/z/z.1 ~/$WORKSPACE/man/man.1/
+mkdir -p ~/$WORKSPACE/man/man1
+ln -s $dir/z/z.1 ~/$WORKSPACE/man/man1/
+ln -s $dir/aria2/share/man/man1/aria2c.1 ~/$WORKSPACE/man/man1/
 
 # individual environment
 echo "touching local bash configuration files"
