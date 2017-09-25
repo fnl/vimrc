@@ -66,7 +66,7 @@ Plug 'fs111/pydoc.vim' " python documentation viewer
 Plug 'peterhoeg/vim-qml' " QML syntax highlighting
 Plug 'akhaku/vim-java-unused-imports' " remove unused Java imports with :UnusedImports...
 Plug 'derekwyatt/vim-scala' " Scala syntax
-Plug 'megaannum/vimside' " Scala IDE
+"Plug 'megaannum/vimside' " Scala IDE using ENSIME
 Plug 'jalvesaq/Nvim-R' " R IDE https://github.com/jalvesaq/Nvim-R
 "Plug 'Shutnik/jshint2.vim' " JavaScript IDE (hints and lint)
 Plug 'pangloss/vim-javascript' " JavaScript syntax
