@@ -17,7 +17,6 @@ curl -fLo $dir/autoload/plug.vim \
 # vim backup and tmp files
 mkdir $dir/backup
 mkdir $dir/tmp
-mkdir $dir/tmux
 
 # configuration files
 echo "linking configuration files from $dir/* to ~/.\\1"
@@ -28,19 +27,15 @@ ln -s $dir/Rprofile ~/.Rprofile
 ln -s $dir/bashrc ~/.bash_profile
 ln -s $dir/bash_completion ~/.bash_completion
 ln -s $dir/bash_completion.d ~/.bash_completion.d
+ln -s $dir/condarc ~/.condarc
 ln -s $dir/distributionrc ~/.distributionrc
 ln -s $dir/gitconfig ~/.gitconfig
 ln -s $dir/gvimrc ~/.gvimrc
 ln -s $dir/inputrc ~/.inputrc
 ln -s $dir/jshintrc ~/.jshintrc
-ln -s $dir/muttrc ~/.muttrc
 ln -s $dir/octaverc ~/.octaverc
 ln -s $dir/screenrc ~/.screenrc
-ln -s $dir/spacemacs ~/.spacemacs
 ln -s $dir/vimrc ~/.vimrc
-ln -s $dir/distributionrc ~/.distributionrc
-ln -s $dir/gitconfig ~/.gitconfig
-ln -s $dir/tmux.conf ~/.tmux.conf
 cp $dir/signature ~/.plan
 
 # scripts and binaries
