@@ -6,3 +6,5 @@
 	autocrlf = input
 [branch]
 	autosetuprebase = remote
+[alias]
+	graph = log --all --graph --oneline
