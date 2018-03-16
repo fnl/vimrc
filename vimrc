@@ -49,7 +49,7 @@ Plug 'johngrib/vim-game-code-break' " relax
 " Dev Tools
 Plug 'tpope/vim-fugitive' " git commands: ':G'...
 Plug 'w0rp/ale' " ALE: asynchronous lint engine (alt for syntastic)
-Plug 'Valloric/YouCompleteMe' " finally has :Py3 support! Yay, Googlers coming to their senses!
+Plug 'Valloric/YouCompleteMe' " finally has :Py3 support! Yay, Googlers coming to their senses!; C++, Java, Go, Python, Rust
 Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'} " YCM config generator
 
 " Markdown/ReST/LaTeX/CSV/...
@@ -512,7 +512,7 @@ let g:tex_flavor='latex'
 " -------------
 
 " Dynamically choose the right Python to use
-let g:ycm_python_binary_path = 'python'
+let g:ycm_python_binary_path = 'python3'
 " Gutter signs
 let g:ycm_enable_diagnostic_signs = 1
 " Diagnostic high-lighting
@@ -559,6 +559,9 @@ let g:ale_cpp_clang_options = '-std=c++14 -Wall -I.'
 " let g:ale_open_list = 1 " always open the loclist
 " to see the errors, open the location window (<leader>l)
 " to walk over them, use the next/previous commands (:lnext and :lprevious)
+let g:ale_linters = {
+\   'xml': [''],
+\}
 
 " Autoformat
 noremap <Leader>a :Autoformat<CR><CR>
