@@ -8,3 +8,7 @@
 	autosetuprebase = remote
 [alias]
 	graph = log --all --graph --oneline
+	lc = log-compact
+[gitreview]
+	remote = origin
+	username = Florian Leitner
