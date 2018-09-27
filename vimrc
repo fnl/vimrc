@@ -23,7 +23,8 @@ call plug#begin('~/.vim/plugged')
 
 " General purpose
 "Plug 'kien/ctrlp.vim' " [open] files: '<Leader>o' and buffer: '<Leader>b' navigation
-Plug 'Shougo/denite.nvim' " ctrl-p eveolved (twice...)
+"Plug 'Shougo/denite.nvim' " ctrl-p eveolved (twice...)
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " FuzzyFinder list query UI
 Plug 'easymotion/vim-easymotion' " jump around ('<number>w', etc.): '<Leader>j'
 Plug 'craigemery/vim-autotag' " update entries in tag files on saves
 Plug 'sjl/gundo.vim' " visual undo tree: '<Leader>u'
@@ -95,14 +96,6 @@ au FileType text,mail,rst,mkd,tex setlocal colorcolumn=0 " unless it is plain te
 " use 'gq' to do the wrapping
 set textwidth=0
 set wrapmargin=0
-
-" Override/color settings
-colorscheme badwolf
-set background=dark
-" Set colorcolumn border color
-hi ColorColumn ctermbg=LightGrey guibg=LightGrey
-" Un-nref parenthesis highlights so the cursor can be seen
-hi MatchParen cterm=bold ctermbg=none ctermfg=magenta
 
 " Un-nerf searche and associated highlights
 set incsearch " highlight search phrases
@@ -566,13 +559,14 @@ let g:ale_linters = {
 " Autoformat
 noremap <Leader>a :Autoformat<CR><CR>
 
-" CtrlP
+" CtrlP/Denite/FZF
 " open the CtrlP file commandline ("[o]pen file")
 " nmap <silent> <Leader>o :CtrlP<CR>
-nmap <silent> <Leader>o :Denite file_rec<CR>
+"nmap <silent> <Leader>o :Denite file_rec<CR>
 " open the CtrlP buffer commandline ("open [b]uffer")
 " nmap <silent> <Leader>b :CtrlPBuffer<CR>
-nmap <silent> <Leader>b :Denite buffer<CR>
+"nmap <silent> <Leader>b :Denite buffer<CR>
+nmap <silent> <Leader>o :FZF<CR>
 
 " EasyMotion
 " find characters (jump)
@@ -673,6 +667,18 @@ au FileType python nmap <Leader>pp :!python %<CR>
 au FileType python nmap <Leader>ptt :!py.test -s --doctest-modules %<CR>
 
 
+" Override/color settings
+" -----------------------
+
+colorscheme badwolf
+set background=dark
+" Set colorcolumn border color
+hi ColorColumn ctermbg=LightGrey guibg=LightGrey
+" Un-nref parenthesis highlights so the cursor can be seen
+hi MatchParen cterm=bold ctermbg=none ctermfg=magenta
+" Ensure the gutter to the left used by YCM & friends is visible
+hi SignColumn ctermbg=DarkGrey guibg=DarkGrey
+
 " Changed Default Keymappings
 " ---------------------------
 
@@ -709,4 +715,3 @@ nmap <silent> <Up> <C-W>-
 nmap <silent> <Down> <C-W>+
 nmap <silent> <Left> <C-W>>
 nmap <silent> <Right> <C-W>;<
-

@@ -238,5 +238,7 @@ alias curl-post-json='curl -X POST -H"Content-Type: application/json;charset=utf
 # set up z - jump around
 [ -f ~/.vim/z/z.sh ] && . ~/.vim/z/z.sh
 
-# to install, do: ` curl -L https://iterm2.com/misc/install_shell_integration.sh | bash `
-test -e ${HOME}/.iterm2_shell_integration.bash && source ${HOME}/.iterm2_shell_integration.bash
+# set up FuzzyFinder - search all
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
