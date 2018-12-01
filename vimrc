@@ -49,13 +49,12 @@ Plug 'johngrib/vim-game-code-break' " relax
 " Dev Tools
 Plug 'tpope/vim-fugitive' " git commands: ':G'...
 Plug 'w0rp/ale' " ALE: asynchronous lint engine (alt for syntastic)
-Plug 'Valloric/YouCompleteMe' " finally has :Py3 support! Yay, Googlers coming to their senses!; C++, Java, Go, Python, Rust
-Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'} " YCM config generator
 
 " Markdown/ReST/LaTeX/CSV/...
 Plug 'plasticboy/vim-markdown' " Markdown support
 Plug 'matze/vim-tex-fold' " LaTeX document folding
-Plug 'chrisbra/csv.vim' " CSV file formatting for vim
+"Plug 'chrisbra/csv.vim' " CSV file formatting for vim
+Plug 'mechatroner/rainbow_csv' " SQL query functionality for structured data
 
 " Programming Languages (except YCM completion)
 "Plug 'vim-scripts/Go-Syntax' " syntax file for Golang
@@ -256,6 +255,11 @@ function! ToggleList(bufname, pfx)
   endif
 endfunction
 
+
+" fuzzyfinder
+" -----------
+
+set rtp+=/usr/local/opt/fzf
 
 " makeprg
 " -------
