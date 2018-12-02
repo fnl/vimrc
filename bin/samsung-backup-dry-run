@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+# test-backup data to my USB drive ("fnl")
+rsync --verbose --dry-run --recursive --update --delete --links --copy-links --keep-dirlinks --hard-links --safe-links --perms --times --stats --exclude '.DS_Store' --exclude '._*' --exclude '.metadata_never_index' ~/Documents/ /Volumes/Samsung\ USB | grep -v "^[A-ce-z].*/$"

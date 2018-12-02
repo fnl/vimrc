@@ -33,7 +33,7 @@ ln -s $dir/gitconfig ~/.gitconfig
 ln -s $dir/gvimrc ~/.gvimrc
 ln -s $dir/inputrc ~/.inputrc
 ln -s $dir/jshintrc ~/.jshintrc
-ln -s $dir/octaverc ~/.octaverc
+#ln -s $dir/octaverc ~/.octaverc
 ln -s $dir/screenrc ~/.screenrc
 ln -s $dir/vimrc ~/.vimrc
 cp $dir/signature ~/.plan
@@ -46,6 +46,13 @@ ln -s $dir/distribution/distribution ~/$WORKSPACE/bin/
 ln -s $dir/distribution/distribution ~/$WORKSPACE/bin/barchart
 ln -s $dir/z/z.sh ~/$WORKSPACE/bin/z
 ln -s $dir/aria2/bin/aria2c ~/$WORKSPACE/bin/aria2c
+
+# install powerline fonts
+git clone https://github.com/powerline/fonts.git --depth=1
+cd fonts
+./install.sh
+cd ..
+rm -rf fonts
 
 echo "linking man pages from $dir to ~/$WORKSPACE/man"
 mkdir -p ~/$WORKSPACE/man/man1
