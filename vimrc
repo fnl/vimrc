@@ -20,56 +20,49 @@ set hidden " change buffers w/o saving - essential
 "        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 call plug#begin('~/.vim/plugged')
-
 " General purpose
-"Plug 'kien/ctrlp.vim' " [open] files: '<Leader>o' and buffer: '<Leader>b' navigation
-"Plug 'Shougo/denite.nvim' " ctrl-p eveolved (twice...)
+Plug 'kien/ctrlp.vim' " [open] files: '<Leader>o' and buffer: '<Leader>b' navigation
+"Plug 'Shougo/denite.nvim' " ctrl-p eveolved (twice...) - but requires vim 8
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " FuzzyFinder list query UI
-Plug 'easymotion/vim-easymotion' " jump around ('<number>w', etc.): '<Leader>j'
+Plug 'easymotion/vim-easymotion' " jump around ('<number>w', etc.): '<Leader><Leader>[sfFtTjkbBwWeE]|ge'
 Plug 'craigemery/vim-autotag' " update entries in tag files on saves
-Plug 'sjl/gundo.vim' " visual undo tree: '<Leader>u'
 "Plug 'edsono/vim-matchit' " extended % matching
 "Plug 'ervandew/supertab' " tab completion
-Plug 'tpope/vim-surround' " change surrounding a->b: 'csab' add surrounding ...: 'ysiw'...
-Plug 'majutsushi/tagbar' " display the current tags: '<Leader>T'
-Plug 'vim-scripts/taglist.vim' " display the current tags: '<Leader>t'
+Plug 'tpope/vim-surround' " change surrounding a->b: 'csab'; add surrounding ...: 'ysiw'...
+"Plug 'xolox/vim-easytags' " Automated tag generation in vim with exuberant ctags^
+Plug 'majutsushi/tagbar' " display the current tags: '<Leader>t'
 Plug 'scrooloose/nerdcommenter' " toggle comments: '<Leader>c<space>'
 Plug 'scrooloose/nerdtree' " file system directory: '<Leader>d'
 Plug 'Chiel92/vim-autoformat' " use external formatting programs to arrange code
 Plug 'tpope/vim-unimpaired' " quickfix q, arglist a, bufferlist b, loclist l, taglist t navigation: ]q [q ]a [a ...
 " unimpared: [e ]e to exchange lines; ]<spc> [<spc> to add empty lines;
 " [f ]f next/previous file in directory
-Plug 'nelstrom/vim-qargs' " adds the Qargs command to replace the arglist with quickfix files
-"Plug 'mattn/emmet-vim' " abbreviation expansion with '<C-y>
-Plug 'skywind3000/asyncrun.vim' " use :AysncRun CMD and :AsyncRun! CMD (no autoscroll) in Vim 8+
+"Plug 'nelstrom/vim-qargs' " adds the Qargs command to replace the arglist with quickfix files
+"Plug 'skywind3000/asyncrun.vim' " use :AysncRun CMD and :AsyncRun! CMD (no autoscroll) in Vim 8+
 Plug 'sjl/badwolf' " colorscheme
 Plug 'vim-airline/vim-airline' " statusline
 Plug 'vim-airline/vim-airline-themes' " statusline
-Plug 'johngrib/vim-game-code-break' " relax
 
 " Dev Tools
 Plug 'tpope/vim-fugitive' " git commands: ':G'...
-Plug 'w0rp/ale' " ALE: asynchronous lint engine (alt for syntastic)
+Plug 'w0rp/ale' " ALE: asynchronous lint engine (alt for syntastic) - but requires Vim 8+
 
-" Markdown/ReST/LaTeX/CSV/...
+" HTML/Markdown/ReST/LaTeX/CSV/...
+Plug 'mattn/emmet-vim' " abbreviation expansion with '<C-y>
 Plug 'plasticboy/vim-markdown' " Markdown support
 Plug 'matze/vim-tex-fold' " LaTeX document folding
 "Plug 'chrisbra/csv.vim' " CSV file formatting for vim
 Plug 'mechatroner/rainbow_csv' " SQL query functionality for structured data
 
 " Programming Languages (except YCM completion)
-"Plug 'vim-scripts/Go-Syntax' " syntax file for Golang
 Plug 'fatih/vim-go' " development for Golang
 Plug 'davidhalter/jedi-vim' " Python code editing; '<Leader>p[agur]'
 Plug 'alfredodeza/pytest.vim' " support for py.test
 Plug 'fs111/pydoc.vim' " python documentation viewer
 Plug 'peterhoeg/vim-qml' " QML syntax highlighting
-Plug 'akhaku/vim-java-unused-imports' " remove unused Java imports with :UnusedImports...
 Plug 'derekwyatt/vim-scala' " Scala syntax
-"Plug 'megaannum/vimside' " Scala IDE using ENSIME
-Plug 'jalvesaq/Nvim-R' " R IDE https://github.com/jalvesaq/Nvim-R
 "Plug 'Shutnik/jshint2.vim' " JavaScript IDE (hints and lint)
-Plug 'pangloss/vim-javascript' " JavaScript syntax
+"Plug 'pangloss/vim-javascript' " JavaScript syntax
 Plug 'rust-lang/rust.vim' " Rust file detection and syntax highlighting
 call plug#end()
 
@@ -249,11 +242,6 @@ function! ToggleList(bufname, pfx)
 endfunction
 
 
-" fuzzyfinder
-" -----------
-
-set rtp+=/usr/local/opt/fzf
-
 " makeprg
 " -------
 
@@ -324,56 +312,42 @@ au FileType python iabb defcontains def __contains__(self, item):<C-R>=Eatspace(
 " ADD-ON CONFIGURATIONS
 " =====================
 
+" Airline-vim
+" -----------
+
+" light theme
+let g:airline_theme='badwolf'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+
+" ALE (async Syntastic)
+" ---------------------
+
+set nocompatible
+filetype off
+let &runtimepath.=',~/.vim/plugged/ale'
+filetype plugin on
+let g:ale_python_flake8_args = '--ignore=E501'
+let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
+let g:ale_sign_column_always = 1
+let g:ale_cpp_clang_options = '-std=c++14 -Wall -I.'
+" let g:ale_open_list = 1 " always open the loclist
+" to see the errors, open the location window (<leader>l)
+" to walk over them, use the next/previous commands (:lnext and :lprevious)
+let g:ale_linters = {
+\   'xml': [''],
+\}
+
 " AutoFormat
 " ----------
 
 let g:autoformat_verbosemode = 1
 let g:formatprg_args_python = "-a --max-line-length 99 -"
 
-" clang_complete
-" --------------
+" fuzzyfinder
+" -----------
 
-"let g:clang_auto_select = 1
-let g:clang_complete_copen = 1
-let g:clang_use_library = 1
-let g:clang_debug = 1
-if has("unix")
-  if (system('uname') =~ "Darwin")
-    let g:clang_library_path='/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/'
-  else
-    let g:clang_library_path='/usr/lib/llvm-3.6/lib'
-  endif
-else " has("win32") || has("win16")
-  let g:clang_library_path='please configure your vimrc for this OS, Florian'
-endif
-let g:clang_complete_macros = 1
-let g:clang_complete_patterns = 1
-
-" CScope
-" ------
-
-if has("cscope")
-    set csprg=cscope
-    set csto=0
-    au FileType c,h set cst
-    au FileType cpp,hpp set cst
-    set nocsverb
-    " add any database in current directory
-    if filereadable("cscope.out")
-        cs add cscope.out
-        " else add database pointed to by environment
-    elseif $CSCOPE_DB != ""
-        cs add $CSCOPE_DB
-    endif
-endif
-
-" Gundo
-" -----
-
-let g:gundo_width = 30
-let g:gundo_preview_height = 20
-let g:gundo_close_on_revert = 1
-let g:gundo_preview_bottom = 1
+set rtp+=/usr/local/opt/fzf
 
 " Jedi
 " ----
@@ -385,7 +359,7 @@ let g:jedi#use_tabs_not_buffers = 0
 " -------
 
 " enable extended % matching (if/elsif/else/end) and SGML tags
-runtime macros/matchit.vim
+"runtime macros/matchit.vim
 
 " NERDtree
 " --------
@@ -403,31 +377,7 @@ let g:pydoc_window_lines=0.25
 " --------
 
 " use context-dependent completion style
-let g:SuperTabDefaultCompletionType="context"
-
-" TagList
-" -------
-
-" python3 language
-let s:tlist_def_python_settings = 'python3;c:class;m:member;f:function'
-" highlight tag in list after n seconds (default: 4)
-let TlistHighlightTag=2
-" focus taglist on toggle
-let Tlist_GainFocus_On_ToggleOpen=1
-" show only the tags for one file (navigate files via NERDTree)
-let Tlist_Show_One_File=1
-" update the taglist on file modifications
-let Tlist_Auto_Update=1
-" display the taglist to the right
-let Tlist_Use_Right_Window=0
-" hide the fold columns
-let Tlist_Enable_Fold_Column=0
-" do not change the terminal window width
-let Tlist_Inc_Winwidth=0
-" close the taglist after selecting
-let Tlist_Close_On_Select=1
-" close vim if taglist is the only window and buffer
-let Tlist_Exit_OnlyWindow=1
+"let g:SuperTabDefaultCompletionType="context"
 
 " TagBar
 " ------
@@ -448,74 +398,62 @@ let g:tagbar_iconchars = ['▸', '▾']
 " Syntastic
 " ---------
 
-" aggregate errors from multiple checkers
-let g:syntastic_aggregate_errors = 1
-" automatically open location window
-let g:syntastic_auto_loc_list=1
-" show current error in command window
-let g:syntastic_echo_current_error = 1
-" populate loclist with errors
-let g:syntastic_always_populate_loc_list = 1
-" dis/en-able on open file
-let g:syntastic_check_on_open = 1
-" dis/en-able on write
-let g:syntastic_check_on_wq = 0
-" dis/en-able left column signs
-let g:syntastic_enable_signs = 0
-" set location list window height
-let g:syntastic_loc_list_height = 5
-" Python-specific setup
-let g:syntastic_python_checkers = ['flake8', 'pep257']
-let g:syntastic_python_pep257_args = '--ignore=D102,D205,D400'
-let g:syntastic_python_flake8_args = '--ignore=E501'
-" C++11 setup
-let g:syntastic_cpp_compiler = 'clang++'
-let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
-let g:syntastic_c_include_dirs = [ '../include', 'include' ]
-let g:syntastic_debug = 1
-" disable HTML/XML
-let g:syntastic_mode_map={ 'mode': 'active',
-                         \  'active_filetypes': [],
-                         \ 'passive_filetypes': ['html', 'xml', 'json'] }
+"" aggregate errors from multiple checkers
+"let g:syntastic_aggregate_errors = 1
+"" automatically open location window
+"let g:syntastic_auto_loc_list=1
+"" show current error in command window
+"let g:syntastic_echo_current_error = 1
+"" populate loclist with errors
+"let g:syntastic_always_populate_loc_list = 1
+"" dis/en-able on open file
+"let g:syntastic_check_on_open = 1
+"" dis/en-able on write
+"let g:syntastic_check_on_wq = 0
+"" dis/en-able left column signs
+"let g:syntastic_enable_signs = 0
+"" set location list window height
+"let g:syntastic_loc_list_height = 5
+"" Python-specific setup
+"let g:syntastic_python_checkers = ['flake8', 'pep257']
+"let g:syntastic_python_pep257_args = '--ignore=D102,D205,D400'
+"let g:syntastic_python_flake8_args = '--ignore=E501'
+"" C++11 setup
+"let g:syntastic_cpp_compiler = 'clang++'
+"let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
+"let g:syntastic_c_include_dirs = [ '../include', 'include' ]
+"let g:syntastic_debug = 1
+"" disable HTML/XML
+"let g:syntastic_mode_map={ 'mode': 'active',
+"                         \  'active_filetypes': [],
+"                         \ 'passive_filetypes': ['html', 'xml', 'json'] }
 
 " Vim-JavaScript
 " --------------
 
-" Enable HTML/CSS syntax highlighting in your JavaScript files.
-let javascript_enable_domhtmlcss = 1
-" Enable JavaScript code folding.
-let b:javascript_fold = 1
-" Enable concealing characters. For example, function is replaced with ƒ.
-let g:javascript_conceal = 1
-" Disable JSDoc syntax highlighting.
-let javascript_ignore_javaScriptdoc = 0
+"" Enable HTML/CSS syntax highlighting in your JavaScript files.
+"let javascript_enable_domhtmlcss = 1
+"" Enable JavaScript code folding.
+"let b:javascript_fold = 1
+"" Enable concealing characters. For example, function is replaced with ƒ.
+"let g:javascript_conceal = 1
+"" Disable JSDoc syntax highlighting.
+"let javascript_ignore_javaScriptdoc = 0
 
 " Vim-JSHint2
 " -----------
 
 " disable save, as using this breaks syntastic
-let jshint2_save = 0
+"let jshint2_save = 0
 
 " Vim-LaTeX
 " ---------
 
 " always show filename when grepping
-set grepprg=grep\ -nH\ $*
+"set grepprg=grep\ -nH\ $*
 
 " always use tex as filetype
 let g:tex_flavor='latex'
-
-" YouCompleteMe
-" -------------
-
-" Dynamically choose the right Python to use
-let g:ycm_python_binary_path = 'python3'
-" Gutter signs
-let g:ycm_enable_diagnostic_signs = 1
-" Diagnostic high-lighting
-let g:ycm_enable_diagnostic_highlighting = 1
-" Default YCM extra conf
-let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_extra_conf.py'
 
 " KEYMAPPINGS
 " ===========
@@ -525,8 +463,8 @@ let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_extra_conf.py'
 " b -> switch to buffer
 " c -> NERD Commenter
 " d -> directory tree
+" g -> goto (easymotion)
 " h -> hidden characters
-" j -> jump
 " l -> toggle location window
 " m -> :make
 " M -> menu
@@ -536,29 +474,12 @@ let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_extra_conf.py'
 " p -> python commands... (pt... -> py.test commands)
 " q -> toggle quickfix window
 " s -> syntastic
-" t -> taglist
-" T -> Tagbar
-" u -> undo window toggle
+" t -> Tagbar
 " [,] -> moving around the loclist
+" BS -> undo highlight search
 
 " Add-On Keymappings
 " ------------------
-
-" ALE (async Syntastic)
-set nocompatible
-filetype off
-let &runtimepath.=',~/.vim/plugged/ale'
-filetype plugin on
-let g:ale_python_flake8_args = '--ignore=E501'
-let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
-let g:ale_sign_column_always = 1
-let g:ale_cpp_clang_options = '-std=c++14 -Wall -I.'
-" let g:ale_open_list = 1 " always open the loclist
-" to see the errors, open the location window (<leader>l)
-" to walk over them, use the next/previous commands (:lnext and :lprevious)
-let g:ale_linters = {
-\   'xml': [''],
-\}
 
 " Autoformat
 noremap <Leader>a :Autoformat<CR><CR>
@@ -568,22 +489,17 @@ noremap <Leader>a :Autoformat<CR><CR>
 " nmap <silent> <Leader>o :CtrlP<CR>
 "nmap <silent> <Leader>o :Denite file_rec<CR>
 " open the CtrlP buffer commandline ("open [b]uffer")
-" nmap <silent> <Leader>b :CtrlPBuffer<CR>
-"nmap <silent> <Leader>b :Denite buffer<CR>
+nmap <silent> <Leader>b :CtrlPBuffer<CR>
+"nmap <silent> <eader>b :Denite buffer<CR>
 nmap <silent> <Leader>o :FZF<CR>
 
 " EasyMotion
 " find characters (jump)
-let g:EasyMotion_leader_key = '<Leader>j'
 
 " Forms (disable)
 let g:menu_map_keys=1
 nmap <Leader>M :call forms#menu#MakeMenu('n')<CR>
 vmap <Leader>M :call forms#menu#MakeMenu('v')<CR>
-
-" Gundo
-" open revision history
-map <Leader>u :GundoToggle<CR>
 
 " Jedi
 let g:jedi#goto_assignments_command = "<Leader>pa"
@@ -612,37 +528,22 @@ au FileType python nmap <Leader>ptq <Esc>:Pytest clear<CR>
 
 " Syntastic
 " toggle [s]yntastic plugin mode
-nmap <silent> <Leader>ss :SyntasticToggleMode<CR>
+"nmap <silent> <Leader>ss :SyntasticToggleMode<CR>
 " syntax [c]heck with Syntasstic plugin
-nmap <Leader>sc :SyntasticCheck<CR>
+"nmap <Leader>sc :SyntasticCheck<CR>
 " show Syntastic [e]rror messages
 " (could be done with :lopen too)
-nmap <Leader>se :Errors<CR>
+"nmap <Leader>se :Errors<CR>
 
 " TagBar
 " toggle the plugin ("[T]agbar")
-nmap <silent> <Leader>T :TagbarToggle<CR>
-
-" TagList
-" toggle the plugin ("[t]aglist")
-nmap <silent> <Leader>t :TlistToggle<CR>
-
-" Vim-clang
-let g:clang_c_options = '-std=gnu11'
-let g:clang_cpp_options = '-std=c++11 -stdlib=libc++'
-
-" Airline-vim
-" light theme
-let g:airline_theme='badwolf'
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 1
+nmap <silent> <Leader>t :TagbarToggle<CR>
 
 
 " Custom (Leader) Keymappings
 " ---------------------------
 
 " toggle location and quickfix windows
-nmap <silent> <Leader>l :call ToggleList("Location List", 'l')<CR>
 " walk along locations with :lne :lpr
 nmap <silent> <Leader>q :call ToggleList("Quickfix List", 'c')<CR>
 
@@ -654,7 +555,7 @@ nmap <Leader>r "zyiw:call Rename()<cr>mx:silent! norm gd<cr>[{V%:s/<C-R>//<c-r>z
 nmap <Leader>cwd :lcd %:p:h<CR>
 
 " clear serach highlights
-nmap <silent> <Leader><Leader> :nohlsearch<CR>
+nmap <silent> <Leader><BS> :nohlsearch<CR>
 
 " quick make commands and moving through errors
 " NB: use :cp, :cn, :cw  for previous, next, and close window
