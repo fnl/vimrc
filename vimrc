@@ -53,6 +53,7 @@ Plug 'plasticboy/vim-markdown' " Markdown support
 Plug 'matze/vim-tex-fold' " LaTeX document folding
 "Plug 'chrisbra/csv.vim' " CSV file formatting for vim
 Plug 'mechatroner/rainbow_csv' " SQL query functionality for structured data
+Plug 'elzr/vim-json' " Handling JSON files and code folding support
 
 " Programming Languages (except YCM completion)
 Plug 'fatih/vim-go' " development for Golang
@@ -154,7 +155,7 @@ set foldmethod=syntax " fold based on... indent, marker, or syntax
 au FileType python setlocal foldmethod=indent
 set foldlevel=0 " default fold level (20 is max level for indent)
 set foldminlines=2 " number of lines up to which not to fold
-set foldnestmax=0 " fold max depth (20 is max for indent)
+set foldnestmax=20 " fold max depth (20 is max for indent)
 
 " Swap and backup settings
 set backup " (do not) make backups
