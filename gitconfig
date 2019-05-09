@@ -7,7 +7,7 @@
 [branch]
 	autosetuprebase = remote
 [alias]
-	graph = log --all --graph --oneline
+	graph = log --all --graph --decorate --abbrev-commit --format=format:'%C(bold blue)%h%C(reset) @ %ai by %C(bold green)%an%C(reset): %s %C(bold yellow)%d%C(reset)' # --simplify-by-decoration
 	lc = log-compact
 [gitreview]
 	remote = origin
