@@ -1,4 +1,3 @@
 channels:
-  - conda-forge
   - defaults
 ssl_verify: true
