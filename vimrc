@@ -447,6 +447,13 @@ let g:tagbar_iconchars = ['▸', '▾']
 " disable save, as using this breaks syntastic
 "let jshint2_save = 0
 
+" vim-json
+" --------
+
+" Do not hide the single and double quotes
+let g:vim_json_syntax_conceal = 0
+
+
 " Vim-LaTeX
 " ---------
 
