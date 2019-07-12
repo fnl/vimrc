@@ -45,7 +45,7 @@ Plug 'vim-airline/vim-airline-themes' " statusline
 
 " Dev Tools
 Plug 'tpope/vim-fugitive' " git commands: ':Git [cmd] [args]'... e.g. ':Git add %'
-Plug 'w0rp/ale' " ALE: asynchronous lint engine (alt for syntastic) - but requires Vim 8+
+"Plug 'w0rp/ale' " ALE: asynchronous lint engine (alt for syntastic) - but requires Vim 8+
 
 " HTML/Markdown/ReST/LaTeX/CSV/...
 Plug 'mattn/emmet-vim' " abbreviation expansion with '<C-y>
@@ -133,7 +133,8 @@ set wildmode=list:longest " and show every possible completion
 " [fileencoding](fileformat){filetype}
 " tagname_if_set syntastic_flag_if_relevant
 " [byteval_under_cursor][line_number,virtual_col_number][percentage_in_file]
-set statusline=%n:%f%m%r%h%w\ [%{&spelllang}.%{&fenc==\"\"?&enc:&fenc}](%{&ff}){%Y}\ %{Tlist_Get_Tagname_By_Line()}\ %{ALEGetStatusLine()}\ %{FugitiveStatusline()}\ %=[0x\%02.5B][%03l,%02v][%02p%%]
+set statusline=%n:%f%m%r%h%w\ [%{&spelllang}.%{&fenc==\"\"?&enc:&fenc}](%{&ff}){%Y}\ %{Tlist_Get_Tagname_By_Line()}\ %{FugitiveStatusline()}\ %=[0x\%02.5B][%03l,%02v][%02p%%]
+"set statusline=%n:%f%m%r%h%w\ [%{&spelllang}.%{&fenc==\"\"?&enc:&fenc}](%{&ff}){%Y}\ %{Tlist_Get_Tagname_By_Line()}\ %{ALEGetStatusLine()}\ %=[0x\%02.5B][%03l,%02v][%02p%%]
 set laststatus=2 " show the statusline: 2=always
 
 " Tab and indention handling
@@ -271,6 +272,7 @@ syntax on
 
 " python.vim
 let g:python_highlight_all = 1
+let g:pymode_python = 'python3'
 
 " navigating source code (stolen from pymode)
 au FileType python setlocal define=^\s*\\(def\\\\|class\\)
@@ -493,13 +495,13 @@ let g:tex_flavor='latex'
 noremap <Leader>a :Autoformat<CR><CR>
 
 " CtrlP/Denite/FZF
-" open the CtrlP file commandline ("[o]pen file")
-" nmap <silent> <Leader>o :CtrlP<CR>
+" open the file commandline ("[o]pen file")
+"nmap <silent> <Leader>o :CtrlP<CR>
 "nmap <silent> <Leader>o :Denite file_rec<CR>
-" open the CtrlP buffer commandline ("open [b]uffer")
+nmap <silent> <Leader>o :FZF<CR>
+" open the buffer commandline ("open [b]uffer")
 nmap <silent> <Leader>b :CtrlPBuffer<CR>
 "nmap <silent> <eader>b :Denite buffer<CR>
-nmap <silent> <Leader>o :FZF<CR>
 
 " EasyMotion
 " find characters (jump)
