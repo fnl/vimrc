@@ -22,7 +22,7 @@ set hidden " change buffers w/o saving - essential
 call plug#begin('~/.vim/plugged')
 " General purpose
 Plug 'kien/ctrlp.vim' " [open] files: '<Leader>o' and buffer: '<Leader>b' navigation
-"Plug 'Shougo/denite.nvim' " ctrl-p eveolved (twice...) - but requires vim 8
+"Plug 'Shougo/denite.nvim' " ctrl-p eveolved (twice...) - but requires Vim 8+
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " FuzzyFinder list query UI
 Plug 'easymotion/vim-easymotion' " jump around ('<number>w', etc.): '<Leader><Leader>[sfFtTjkbBwWeE]|ge'
 Plug 'craigemery/vim-autotag' " update entries in tag files on saves
@@ -38,14 +38,14 @@ Plug 'tpope/vim-unimpaired' " quickfix q, arglist a, bufferlist b, loclist l, ta
 " unimpared: [e ]e to exchange lines; ]<spc> [<spc> to add empty lines;
 " [f ]f next/previous file in directory
 "Plug 'nelstrom/vim-qargs' " adds the Qargs command to replace the arglist with quickfix files
-"Plug 'skywind3000/asyncrun.vim' " use :AysncRun CMD and :AsyncRun! CMD (no autoscroll) in Vim 8+
+Plug 'skywind3000/asyncrun.vim' " use :AysncRun CMD and :AsyncRun! CMD (no autoscroll) in Vim 8+
 Plug 'sjl/badwolf' " colorscheme
 Plug 'vim-airline/vim-airline' " statusline
 Plug 'vim-airline/vim-airline-themes' " statusline
 
 " Dev Tools
 Plug 'tpope/vim-fugitive' " git commands: ':Git [cmd] [args]'... e.g. ':Git add %'
-"Plug 'w0rp/ale' " ALE: asynchronous lint engine (alt for syntastic) - but requires Vim 8+
+Plug 'w0rp/ale' " ALE: asynchronous lint engine (alt for syntastic) - but requires Vim 8+
 
 " HTML/Markdown/ReST/LaTeX/CSV/...
 Plug 'mattn/emmet-vim' " abbreviation expansion with '<C-y>
