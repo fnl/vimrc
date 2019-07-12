@@ -39,6 +39,8 @@ Plug 'tpope/vim-unimpaired' " quickfix q, arglist a, bufferlist b, loclist l, ta
 " [f ]f next/previous file in directory
 "Plug 'nelstrom/vim-qargs' " adds the Qargs command to replace the arglist with quickfix files
 Plug 'skywind3000/asyncrun.vim' " use :AysncRun CMD and :AsyncRun! CMD (no autoscroll) in Vim 8+
+
+" Appearance
 Plug 'sjl/badwolf' " colorscheme
 Plug 'vim-airline/vim-airline' " statusline
 Plug 'vim-airline/vim-airline-themes' " statusline
