@@ -12,3 +12,5 @@
 [gitreview]
 	remote = origin
 	username = Florian Leitner
+[pull]
+	rebase = true
