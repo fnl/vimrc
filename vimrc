@@ -22,15 +22,15 @@ set hidden " change buffers w/o saving - essential
 call plug#begin('~/.vim/plugged')
 " General purpose
 Plug 'kien/ctrlp.vim' " [open] files: '<Leader>o' and buffer: '<Leader>b' navigation
-"Plug 'Shougo/denite.nvim' " ctrl-p eveolved (twice...) - but requires vim 8
+"Plug 'Shougo/denite.nvim' " ctrl-p eveolved (twice...) - but requires vim 8 and python3
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " FuzzyFinder list query UI
 Plug 'easymotion/vim-easymotion' " jump around ('<number>w', etc.): '<Leader><Leader>[sfFtTjkbBwWeE]|ge'
 Plug 'craigemery/vim-autotag' " update entries in tag files on saves
+Plug 'majutsushi/tagbar' " display the current tags: '<Leader>t'
+"Plug 'xolox/vim-easytags' " Automated tag generation in vim with exuberant ctags^
 "Plug 'edsono/vim-matchit' " extended % matching
 "Plug 'ervandew/supertab' " tab completion
 Plug 'tpope/vim-surround' " change surrounding a->b: 'csab'; add surrounding ...: 'ysiw'...
-"Plug 'xolox/vim-easytags' " Automated tag generation in vim with exuberant ctags^
-Plug 'majutsushi/tagbar' " display the current tags: '<Leader>t'
 Plug 'scrooloose/nerdcommenter' " toggle comments: '<Leader>c<space>'
 Plug 'scrooloose/nerdtree' " file system directory: '<Leader>d'
 Plug 'Chiel92/vim-autoformat' " use external formatting programs to arrange code
@@ -45,7 +45,9 @@ Plug 'vim-airline/vim-airline-themes' " statusline
 
 " Dev Tools
 Plug 'tpope/vim-fugitive' " git commands: ':Git [cmd] [args]'... e.g. ':Git add %'
-Plug 'w0rp/ale' " ALE: asynchronous lint engine (alt for syntastic) - but requires Vim 8+
+Plug 'airblade/vim-gitgutter' " show changes in the gutter
+"Plug 'w0rp/ale' " ALE: asynchronous lint engine (alt for syntastic) - but requires Vim 8+
+Plug 'vim-syntastic/syntastic'
 
 " HTML/Markdown/ReST/LaTeX/CSV/...
 Plug 'mattn/emmet-vim' " abbreviation expansion with '<C-y>
@@ -133,7 +135,8 @@ set wildmode=list:longest " and show every possible completion
 " [fileencoding](fileformat){filetype}
 " tagname_if_set syntastic_flag_if_relevant
 " [byteval_under_cursor][line_number,virtual_col_number][percentage_in_file]
-set statusline=%n:%f%m%r%h%w\ [%{&spelllang}.%{&fenc==\"\"?&enc:&fenc}](%{&ff}){%Y}\ %{Tlist_Get_Tagname_By_Line()}\ %{ALEGetStatusLine()}\ %{FugitiveStatusline()}\ %=[0x\%02.5B][%03l,%02v][%02p%%]
+"set statusline=%n:%f%m%r%h%w\ [%{&spelllang}.%{&fenc==\"\"?&enc:&fenc}](%{&ff}){%Y}\ %{Tlist_Get_Tagname_By_Line()}\ %{ALEGetStatusLine()}\ %{FugitiveStatusline()}\ %=[0x\%02.5B][%03l,%02v][%02p%%]
+set statusline=%n:%f%m%r%h%w\ [%{&spelllang}.%{&fenc==\"\"?&enc:&fenc}](%{&ff}){%Y}\ %{Tlist_Get_Tagname_By_Line()}\ %{SyntasticStatuslineFlag()}\ %{FugitiveStatusline()}\ %=[0x\%02.5B][%03l,%02v][%02p%%]
 set laststatus=2 " show the statusline: 2=always
 
 " Tab and indention handling
@@ -400,34 +403,34 @@ let g:tagbar_iconchars = ['▸', '▾']
 " ---------
 
 "" aggregate errors from multiple checkers
-"let g:syntastic_aggregate_errors = 1
+let g:syntastic_aggregate_errors = 1
 "" automatically open location window
-"let g:syntastic_auto_loc_list=1
+let g:syntastic_auto_loc_list=1
 "" show current error in command window
-"let g:syntastic_echo_current_error = 1
+let g:syntastic_echo_current_error = 1
 "" populate loclist with errors
-"let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_always_populate_loc_list = 1
 "" dis/en-able on open file
-"let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_open = 1
 "" dis/en-able on write
-"let g:syntastic_check_on_wq = 0
+let g:syntastic_check_on_wq = 0
 "" dis/en-able left column signs
 "let g:syntastic_enable_signs = 0
 "" set location list window height
 "let g:syntastic_loc_list_height = 5
 "" Python-specific setup
-"let g:syntastic_python_checkers = ['flake8', 'pep257']
-"let g:syntastic_python_pep257_args = '--ignore=D102,D205,D400'
-"let g:syntastic_python_flake8_args = '--ignore=E501'
+let g:syntastic_python_checkers = ['flake8', 'pep257']
+let g:syntastic_python_pep257_args = '--ignore=D102,D205,D400'
+let g:syntastic_python_flake8_args = '--ignore=E501'
 "" C++11 setup
-"let g:syntastic_cpp_compiler = 'clang++'
-"let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
-"let g:syntastic_c_include_dirs = [ '../include', 'include' ]
+let g:syntastic_cpp_compiler = 'clang++'
+let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
+let g:syntastic_c_include_dirs = [ '../include', 'include' ]
 "let g:syntastic_debug = 1
 "" disable HTML/XML
-"let g:syntastic_mode_map={ 'mode': 'active',
-"                         \  'active_filetypes': [],
-"                         \ 'passive_filetypes': ['html', 'xml', 'json'] }
+let g:syntastic_mode_map={ 'mode': 'active',
+                         \  'active_filetypes': [],
+                         \ 'passive_filetypes': ['html', 'xml', 'json'] }
 
 " Vim-JavaScript
 " --------------
@@ -590,7 +593,7 @@ hi ColorColumn ctermbg=LightGrey guibg=LightGrey
 " Un-nref parenthesis highlights so the cursor can be seen
 hi MatchParen cterm=bold ctermbg=none ctermfg=magenta
 " Ensure the gutter to the left used by YCM & friends is visible
-hi SignColumn ctermbg=DarkGrey guibg=DarkGrey
+hi SignColumn ctermbg=Black guibg=Black
 
 " Changed Default Keymappings
 " ---------------------------
