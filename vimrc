@@ -28,6 +28,9 @@ vnoremap <BS> :<BS><BS><BS><BS><BS>%s/\s\+$//ge<CR>
 " Remap C-t (back) in help navigation to something intuitive
 au filetype help nnoremap <buffer> <C-[> <C-t>
 
+" Un-nref parenthesis highlights so the cursor can be seen
+hi MatchParen cterm=bold ctermbg=none ctermfg=magenta
+
 syntax enable
 
 " == SEARCH ==
@@ -45,9 +48,6 @@ set showmatch " Show matching brackets when text indicator is over them
 set laststatus=2 " Always show the status line
 set listchars=tab:→⋅,trail:⋅,eol:¬,extends:➧,precedes:←,nbsp:∙ " Invisibles definitions
 set showbreak=↯ " Invisible for wrapped lines
-
-" Un-nref parenthesis highlights so the cursor can be seen
-hi MatchParen cterm=bold ctermbg=none ctermfg=magenta
 
 " Status line config
 " %buffer_number:%file_name
