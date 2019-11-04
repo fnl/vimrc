@@ -12,5 +12,5 @@ if has("gui_running")
 	"set fuoptions=maxvert,maxhorz
 	"au GUIEnter * set fullscreen
 endif
-let Tlist_Show_Menu=1 " show tags in a menu
+"let Tlist_Show_Menu=1 " show tags in a menu
 "set clipboard=unnamed " use the Mac-internal clipboard
