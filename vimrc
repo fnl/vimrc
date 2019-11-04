@@ -23,11 +23,8 @@ cmap w!! w !sudo tee % > /dev/null
 " Delete all trailing whitespaces when using BS in visual mode
 vnoremap <BS> :<BS><BS><BS><BS><BS>%s/\s\+$//ge<CR>
 
-" Remap C-t (back) in help navigation to something intuitive
+" Remap C-t (back) in help navigation to something intuitive: C-[ matching C-]
 au filetype help nnoremap <buffer> <C-[> <C-t>
-
-" Un-nref parenthesis highlights so the cursor can be seen
-hi MatchParen cterm=bold ctermbg=none ctermfg=magenta
 
 syntax enable
 
