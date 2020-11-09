@@ -1,9 +1,7 @@
 " == FILES & BUFFERS ==
 
 set hidden " Change buffers w/o saving - essential
-
-" Enable filetype detection
-filetype on
+filetype on " Enable filetype detection
 
 " == UX ==
 
@@ -15,7 +13,7 @@ set visualbell " Stop dinging me
 
 " Command line completion
 set wildmenu " turn on enhanced command line completion with tab
-" but ignore files that are sure to be binaries
+" but ignore files that are sure to be binaries:
 set wildignore=*.dll,*.o,*.obj,*.pyc,*.pyo,*.jpg,*.gif,*.png,*.swp,*.class
 set wildmode=list:longest " and show every possible completion
 
