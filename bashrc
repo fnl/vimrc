@@ -123,9 +123,12 @@ unset dircolors
 # enable programmable completion features
 if [ -f /etc/bash_completion ] && ! shopt -oq posix
 then . /etc/bash_completion
-elif [ -f /usr/local/etc/bash_completion ] && ! shopt -oq posix
+fi
+if [ -f /usr/local/etc/bash_completion ] && ! shopt -oq posix
 then . /usr/local/etc/bash_completion
-else echo "bash completion disabled"
+fi
+if [ -f ~/.bash_completion ] 
+then . ~/.bash_completion
 fi
 
 # use vim as editor
