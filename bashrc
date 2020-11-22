@@ -26,6 +26,15 @@ shopt -s cmdhist
 # patterns which fail to match filenames during filename expansion result in an expansion error
 #shopt -s failglob
 
+branchname() {
+  a=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+  if [ -n "$a" ]; then
+    echo " [$a]"
+  else
+    echo ""
+  fi
+}
+
 # extended pattern matching features
 shopt -s extglob
 
@@ -91,8 +100,10 @@ else color=$blue
 fi
 if [ "$color_prompt" = yes ]
 #then PS1='\[\033[01;37m\]\!\[\033[00m\] \[\033[01;33m\]\u\[\033[00m\]@\[\033[01;'$color'm\]\h\[\033[00m\]:\[\033[01;36m\]\w\[\033[00m\] \$ '
-then PS1=' \[\033[01;33m\]\u\[\033[00m\]@\[\033[01;'$color'm\]\h\[\033[00m\]:\[\033[01;36m\]\w\[\033[00m\] \$ '
-else PS1=' \u@\h:\w \$ '
+#then PS1=' \[\033[01;33m\]\u\[\033[00m\]@\[\033[01;'$color'm\]\h\[\033[00m\]:\[\033[01;36m\]\w\[\033[00m\] \$ '
+then PS1=" \[\033[01;33m\]\u\[\033[00m\]@\[\033[01;"$color"m\]\h\[\033[00m\]:\[\033[01;36m\]\w\[\033[00m\]\$(branchname) \$ "
+#else PS1=' \u@\h:\w \$ '
+else PS1=" \u@\h:\w(branchname) \$ "
 #else PS1='\! \u@\h:\w \$ '
 fi
 unset hostname black red green yellow blue magenta cyan white
