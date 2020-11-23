@@ -2,6 +2,7 @@
 
 set hidden " Change buffers w/o saving - essential
 filetype on " Enable filetype detection
+set nofixendofline " Prevent vim from auto-adding newlines to files
 
 " == UX ==
 
