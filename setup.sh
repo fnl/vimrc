@@ -36,8 +36,11 @@ ln -s $dir/jshintrc ~/.jshintrc
 #ln -s $dir/octaverc ~/.octaverc
 ln -s $dir/screenrc ~/.screenrc
 ln -s $dir/vimrc ~/.vimrc
-ln -s $dir/tmux.conf ~/.tmux.conf
 cp $dir/signature ~/.plan
+
+# tmux setup
+ln -s $dir/tmux.conf ~/.tmux.conf
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 # scripts and binaries
 echo "linking scripts and binaries from $dir to ~/$WORKSPACE/bin"
