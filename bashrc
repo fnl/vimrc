@@ -167,14 +167,14 @@ numcsvcols() { head -1 "$@" | tr ',' '\n' | nl; }
 uniqcount() { sort "$@" | uniq -c | sort -rn | sed 's/^ *//' | sed 's/ /	/'; }
 
 # elasticsearch commands (with echo to ensure a newline is printed)
-esdelete() { local url=$1; shift; curl -XDELETE "$ELASTICSEARCH/$url" "$@"; echo; }
-esdeleteh() { local url=$1; shift; curl -i -XDELETE "$ELASTICSEARCH/$url" "$@"; echo; }
-esget() { local url=$1; shift; curl "$ELASTICSEARCH/$url" "$@"; echo; }
-eshead() { local url=$1; shift; curl -I "$ELASTICSEARCH/$url"; echo $@; }
-espost() { local url=$1; shift; curl -XPOST "$ELASTICSEARCH/$url" "$@"; echo; }
-esposth() { local url=$1; shift; curl -i -XPOST "$ELASTICSEARCH/$url" "$@"; echo; }
-esput() { local url=$1; shift; curl -XPUT "$ELASTICSEARCH/$url" "$@"; echo; }
-esputh() { local url=$1; shift; curl -i -XPUT "$ELASTICSEARCH/$url" "$@"; echo; }
+esDELETE() { local url=$1; shift; curl -XDELETE "$ELASTICSEARCH/$url" "$@"; echo; }
+esDELETEh() { local url=$1; shift; curl -i -XDELETE "$ELASTICSEARCH/$url" "$@"; echo; }
+esGET() { local url=$1; shift; curl --silent "$ELASTICSEARCH/$url?pretty" -H 'Content-Type: application/json' "$@"; echo; }
+esHEAD() { local url=$1; shift; curl -I "$ELASTICSEARCH/$url"; echo $@; }
+esPOST() { local url=$1; shift; curl -XPOST "$ELASTICSEARCH/$url" -H 'Content-Type: application/json' "$@"; echo; }
+esPOSTh() { local url=$1; shift; curl -i -XPOST "$ELASTICSEARCH/$url" "$@"; echo; }
+esPUT() { local url=$1; shift; curl -XPUT "$ELASTICSEARCH/$url" -H 'Content-Type: application/json' "$@"; echo; }
+esPUTh() { local url=$1; shift; curl -i -XPUT "$ELASTICSEARCH/$url" "$@"; echo; }
 
 # count and rank the unique fields from a cut
 cutcount() { cut "$@" | sort | uniq -c | sort -rn | sed 's/^ *//' | sed 's/ /	/'; }
