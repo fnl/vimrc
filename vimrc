@@ -27,6 +27,11 @@ vnoremap <BS> :<BS><BS><BS><BS><BS>%s/\s\+$//ge<CR>
 " Remap C-t (back) in help navigation to something intuitive: C-[ matching C-]
 au filetype help nnoremap <buffer> <C-[> <C-t>
 
+" Delete the last buffer by moving to the previous one
+" and then deleting the "alternate file" (#), to close a buffer without
+" eliminating the split window - using C-c
+nnoremap <C-c> :bp\|bd #<CR>
+
 syntax enable
 
 " == SEARCH ==
