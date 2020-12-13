@@ -8,7 +8,8 @@
 [branch]
 	autosetuprebase = remote
 [alias]
-	graph = log --all --graph --decorate --abbrev-commit --format=format:'%C(bold blue)%h%C(reset) @ %ai by %C(bold green)%an%C(reset): %s %C(bold yellow)%d%C(reset)' # --simplify-by-decoration
+	graph = log --all --graph --decorate --abbrev-commit --format=format:'%C(bold blue)%h%C(reset) @ %ai by %C(bold green)%an%C(reset): %s %C(bold yellow)%d%C(reset)' #--simplify-by-decoration
+	graphno = log --graph --pretty='format:%C(bold blue)%ci%C(reset) %h %C(bold green)%cn%C(reset): %s'
 	lc = log-compact
 [gitreview]
 	remote = origin
