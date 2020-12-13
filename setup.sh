@@ -18,12 +18,17 @@ curl -fLo $dir/autoload/plug.vim \
 mkdir $dir/backup
 mkdir $dir/tmp
 
+# oh-my-zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
 # configuration files
 echo "linking configuration files from $dir/* to ~/.\\1"
 #mkdir ~/.i3
 #ln -s $dir/i3config ~/.i3/config
 #ln -s $dir/i3status.conf ~/.i3status.conf
 ln -s $dir/Rprofile ~/.Rprofile
+ln -s $dir/zshrc ~/.zshrc
+ln -s $dir/p10k.zsh ~/.p10k.zsh
 ln -s $dir/bashrc ~/.bash_profile
 ln -s $dir/bash_completion ~/.bash_completion
 ln -s $dir/bash_completion.d ~/.bash_completion.d
