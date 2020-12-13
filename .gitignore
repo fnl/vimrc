@@ -1,8 +1,6 @@
 .*
 *.pyc
 *.class
-/autoload/plug.vim
-/plugged
 /backup
 /tmp
 /tmux

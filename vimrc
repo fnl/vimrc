@@ -4,6 +4,9 @@ set hidden " Change buffers w/o saving - essential
 filetype on " Enable filetype detection
 set nofixendofline " Prevent vim from auto-adding newlines to files
 
+silent !mkdir -p ~/.vim/backup
+set backupdir=~/.vim/backup
+
 " == UX ==
 
 set scrolloff=3 " Start vertical scrolling a bit earlier

@@ -8,24 +8,15 @@ echo "dir=$dir"
 # get and install distribution
 git submodule update --init --recursive
 
-# vim Plug
-echo "setting up Plug autoload"
-mkdir -p $dir/autoload
-curl -fLo $dir/autoload/plug.vim \
-     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
 # vim backup and tmp files
 mkdir $dir/backup
 mkdir $dir/tmp
 
-# oh-my-zsh
+# install oh-my-zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 # configuration files
 echo "linking configuration files from $dir/* to ~/.\\1"
-#mkdir ~/.i3
-#ln -s $dir/i3config ~/.i3/config
-#ln -s $dir/i3status.conf ~/.i3status.conf
 ln -s $dir/Rprofile ~/.Rprofile
 ln -s $dir/zshrc ~/.zshrc
 ln -s $dir/p10k.zsh ~/.p10k.zsh
@@ -38,7 +29,6 @@ ln -s $dir/gitconfig ~/.gitconfig
 ln -s $dir/gvimrc ~/.gvimrc
 ln -s $dir/inputrc ~/.inputrc
 ln -s $dir/jshintrc ~/.jshintrc
-#ln -s $dir/octaverc ~/.octaverc
 ln -s $dir/screenrc ~/.screenrc
 ln -s $dir/vimrc ~/.vimrc
 cp $dir/signature ~/.plan
