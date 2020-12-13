@@ -1,9 +1,11 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.  # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
+
+# Source the bash environment vars, if present
+[ -f ~/.bash_environment ] && source ~/.bash_environment
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -75,7 +77,7 @@ HIST_STAMPS="yyyy-mm-dd"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(aws dash fzf git github gitignore gulp history jenv man mvn npm nvm osx pip pyenv ripgrep tmux tmuxinator vim-interaction zsh-interactive-cd)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -86,32 +88,21 @@ source $ZSH/oh-my-zsh.sh
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
-#
-# Global aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-# ls convenience: l, ll and la
-# use GNU ls in preference over "default" ls (Mac OSX)
-[ -x /usr/local/bin/gls ] && alias l="gls $lscolor " || alias l="ls $lscolor"
+
+alias ls='ls --color'
+alias l='ls'
 alias ll='ls -lh'
 alias la='l -A'
 alias ..='cd ..'
 alias ...='cd ../..'
+
 alias vi='vim' # always use vim
+
+# curl with params
 alias curl-json='curl -H"Content-Type: application/json;charset=utf-8"'
 alias curl-post='curl -X POST'
 alias curl-post-json='curl -X POST -H"Content-Type: application/json;charset=utf-8"'
@@ -193,15 +184,11 @@ function ranger-cd {
 }
 alias rc="ranger-cd"
 
-# Use fuzzy finder if present
-[ -f ~/.bash_environment ] && source ~/.bash_environment
-
-# Use zoxide
+# Use zoxide or show an error that it is missing
 eval "$(zoxide init zsh)"
 
+# Use fuzzy finder or show and error
+source ~/.fzf.zsh
 
-# Use fuzzy finder if present
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# To customize the prompt, run `p10k configure` or edit ~/.p10k.zsh.
+source ~/.p10k.zsh
