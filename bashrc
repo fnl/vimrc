@@ -26,15 +26,6 @@ shopt -s cmdhist
 # patterns which fail to match filenames during filename expansion result in an expansion error
 #shopt -s failglob
 
-branchname() {
-  a=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
-  if [ -n "$a" ]; then
-    echo " [$a]"
-  else
-    echo ""
-  fi
-}
-
 # extended pattern matching features
 shopt -s extglob
 
@@ -147,6 +138,16 @@ export EDITOR=vim
 
 # use US locale and UTF-8 encoding by default
 export LC_ALL="en_US.UTF-8"
+
+# display git branch name
+branchname() {
+  a=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+  if [ -n "$a" ]; then
+    echo " [$a]"
+  else
+    echo ""
+  fi
+}
 
 # a simple terminal calculator
 calc() { awk "BEGIN{ print $* }"; }
