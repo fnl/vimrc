@@ -63,7 +63,7 @@ set statusline=%n:%f%m%r%h%w\ [%{&spelllang}.%{&fenc==\"\"?&enc:&fenc}](%{&ff}){
 " == SPELLING ==
 
 " Enable spell checking in text files
-au FileType text,mail,rst,mkd,tex setlocal spell spelllang=en_us
+au FileType text,mail,rst,mkd,markdown,tex setlocal spell spelllang=en_us
 au FileType help setlocal nospell " unless it's a help file
 hi SpellBad cterm=underline ctermbg=none
 hi SpellCap cterm=underline ctermbg=none
