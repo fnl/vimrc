@@ -4,9 +4,6 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Source the bash environment vars, if present
-[ -f ~/.bash_environment ] && source ~/.bash_environment
-
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -101,6 +98,7 @@ alias ..='cd ..'
 alias ...='cd ../..'
 
 alias vi='vim' # always use vim
+alias mvim="mvim --servername gvim" # vim-interaction support
 
 # curl with params
 alias curl-json='curl -H"Content-Type: application/json;charset=utf-8"'
@@ -192,3 +190,8 @@ source ~/.fzf.zsh
 
 # To customize the prompt, run `p10k configure` or edit ~/.p10k.zsh.
 source ~/.p10k.zsh
+
+# source local environment variables
+# using .zshenv for this has problems with "eval $(jenv init -)": command not found
+[ -f ~/.bash_environment ] && . ~/.bash_environment
+
