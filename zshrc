@@ -1,3 +1,6 @@
+# Enable first and last line to profile zsh startup
+#zmodload zsh/zprof
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.  # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
@@ -69,12 +72,14 @@ HIST_STAMPS="yyyy-mm-dd"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
+export NVM_LAZY_LOAD=true
+
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(aws dash fzf git github gitignore gulp history jenv man mvn npm nvm osx pip pyenv ripgrep tmux tmuxinator vim-interaction zsh-interactive-cd)
+plugins=(aws dash fzf git github gitignore gulp history jenv man mvn npm zsh-nvm osx pip pyenv ripgrep vim-interaction zsh-interactive-cd)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -195,3 +200,5 @@ source ~/.p10k.zsh
 # using .zshenv for this has problems with "eval $(jenv init -)": command not found
 [ -f ~/.bash_environment ] && . ~/.bash_environment
 
+# Profiling zsh startup - see first line
+#zprof
