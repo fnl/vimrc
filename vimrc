@@ -7,6 +7,8 @@ set nofixendofline " Prevent vim from auto-adding newlines to files
 silent !mkdir -p ~/.vim/backup
 set backupdir=~/.vim/backup
 
+set autowriteall " Save buffer on a plethora of commands, including qutting vim
+
 " == UX ==
 
 set scrolloff=3 " Start vertical scrolling a bit earlier
