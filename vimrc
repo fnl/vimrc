@@ -54,6 +54,7 @@ set showmatch " Show matching brackets when text indicator is over them
 set laststatus=2 " Always show the status line
 set listchars=tab:→⋅,trail:⋅,eol:¬,extends:➧,precedes:←,nbsp:∙ " Invisibles definitions
 set showbreak=↯ " Invisible for wrapped lines
+set linebreak " wrap at word boundaries (breakat), not within words, if possible
 
 " Status line config
 " %buffer_number:%file_name
