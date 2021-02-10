@@ -79,7 +79,8 @@ export NVM_LAZY_LOAD=true
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(aws dash fzf git github gitignore gulp history jenv man mvn npm zsh-nvm osx pip pyenv ripgrep vim-interaction zsh-interactive-cd)
+#plugins=(aws dash fzf git github gitignore gulp history jenv man mvn npm zsh-nvm osx pip pyenv ripgrep vim-interaction zsh-interactive-cd)
+plugins=(fzf git vim-interaction zsh-interactive-cd)
 
 source $ZSH/oh-my-zsh.sh
 
