@@ -16,6 +16,10 @@ mkdir $dir/tmp
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
+# tmux setup
+# mkdir -p ~/.tmux/plugins
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
 # configuration files
 echo "linking configuration files from $dir/* to ~/.\\1"
 ln -s $dir/Rprofile ~/.Rprofile
@@ -31,12 +35,9 @@ ln -s $dir/gvimrc ~/.gvimrc
 ln -s $dir/inputrc ~/.inputrc
 ln -s $dir/jshintrc ~/.jshintrc
 ln -s $dir/screenrc ~/.screenrc
+ln -s $dir/tmux.conf ~/.tmux.conf
 ln -s $dir/vimrc ~/.vimrc
 cp $dir/signature ~/.plan
-
-# tmux setup
-ln -s $dir/tmux.conf ~/.tmux.conf
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 # scripts and binaries
 echo "linking scripts and binaries from $dir to ~/$WORKSPACE/bin"
@@ -53,6 +54,7 @@ cd fonts
 ./install.sh
 cd ..
 rm -rf fonts
+# optional: install Nerd Fonts: https://www.nerdfonts.com/font-downloads
 
 echo "linking man pages from $dir to ~/$WORKSPACE/man"
 mkdir -p ~/$WORKSPACE/man/man1
