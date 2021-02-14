@@ -108,7 +108,7 @@ source $ZSH/oh-my-zsh.sh
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
-#alias ls='ls --color'
+alias ls='ls --color'
 alias l='ls'
 alias ll='ls -lh'
 alias la='l -A'
@@ -212,6 +212,8 @@ source ~/.fzf.zsh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+typeset -g POWERLEVEL9K_PYENV_FOREGROUND=220
+typeset -g POWERLEVEL9K_PYENV_BACKGROUND=025
 
 # run "nvm use" if there is a local .nvmrc
 autoload -U add-zsh-hook
