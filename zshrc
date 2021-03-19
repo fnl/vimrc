@@ -9,14 +9,14 @@ fi
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/fnl/.oh-my-zsh"
+export ZSH="/home/fnl/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-# ZSH_THEME="robbyrussell"
-ZSH_THEME="powerlevel10k/powerlevel10k"
+ZSH_THEME="robbyrussell"
+# ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -81,6 +81,7 @@ HIST_STAMPS="yyyy-mm-dd"
 # plugins=(nvm pyenv jenv)
 plugins=(vim-interaction)
 
+# load oh-my-zsh plugin
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -115,7 +116,6 @@ alias la='l -A'
 alias ..='cd ..'
 alias ...='cd ../..'
 
-alias vi='vim' # always use vim
 alias mvim="mvim --servername gvim" # vim-interaction support
 
 # curl with params
@@ -200,10 +200,6 @@ function ranger-cd {
 }
 alias rc="ranger-cd"
 
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
 # Use zoxide or show an error that it is missing
 eval "$(zoxide init zsh)"
 
@@ -211,9 +207,9 @@ eval "$(zoxide init zsh)"
 source ~/.fzf.zsh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-typeset -g POWERLEVEL9K_PYENV_FOREGROUND=220
-typeset -g POWERLEVEL9K_PYENV_BACKGROUND=025
+#[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+#typeset -g POWERLEVEL9K_PYENV_FOREGROUND=220
+#typeset -g POWERLEVEL9K_PYENV_BACKGROUND=025
 
 # run "nvm use" if there is a local .nvmrc
 autoload -U add-zsh-hook
@@ -237,6 +233,5 @@ load-nvmrc() {
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc
 
-# Use fuzzy finder or show and error
-source ~/.fzf.zsh
-
+export NVM_DIR="~/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
