@@ -15,8 +15,8 @@ export ZSH="/home/fnl/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
-# ZSH_THEME="powerlevel10k/powerlevel10k"
+# ZSH_THEME="robbyrussell"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -79,7 +79,7 @@ HIST_STAMPS="yyyy-mm-dd"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 # plugins=(nvm pyenv jenv)
-plugins=(vim-interaction)
+plugins=(zsh-nvm pyenv sdk zsh-sdkman vim-interaction)
 
 # load oh-my-zsh plugin
 source $ZSH/oh-my-zsh.sh
@@ -206,11 +206,6 @@ eval "$(zoxide init zsh)"
 # Use fuzzy finder or show and error
 source ~/.fzf.zsh
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-#[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-#typeset -g POWERLEVEL9K_PYENV_FOREGROUND=220
-#typeset -g POWERLEVEL9K_PYENV_BACKGROUND=025
-
 # run "nvm use" if there is a local .nvmrc
 autoload -U add-zsh-hook
 load-nvmrc() {
@@ -233,5 +228,12 @@ load-nvmrc() {
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc
 
-export NVM_DIR="~/.nvm"
+export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+typeset -g POWERLEVEL9K_PYENV_FOREGROUND=220
+typeset -g POWERLEVEL9K_PYENV_BACKGROUND=025
+
+source /home/fnl/.config/broot/launcher/bash/br
