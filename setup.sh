@@ -16,7 +16,7 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$
 
 # tmux setup
 # mkdir -p ~/.tmux/plugins
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+# git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 # configuration files
 echo "linking configuration files from $dir/* to ~/.\\1"
@@ -33,7 +33,7 @@ ln -s $dir/gvimrc ~/.gvimrc
 ln -s $dir/inputrc ~/.inputrc
 ln -s $dir/jshintrc ~/.jshintrc
 ln -s $dir/screenrc ~/.screenrc
-ln -s $dir/tmux.conf ~/.tmux.conf
+# ln -s $dir/tmux.conf ~/.tmux.conf
 ln -s $dir/vimrc ~/.vimrc
 cp $dir/signature ~/.plan
 
