@@ -8,9 +8,6 @@ fi
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-# Path to your oh-my-zsh installation.
-export ZSH="/home/fnl/.oh-my-zsh"
-
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -81,29 +78,11 @@ HIST_STAMPS="yyyy-mm-dd"
 # plugins=(nvm pyenv jenv)
 plugins=(zsh-nvm pyenv sdk zsh-sdkman vim-interaction)
 
-# load oh-my-zsh plugin
-source $ZSH/oh-my-zsh.sh
-
 # User configuration
 
 # source local environment variables
-# using .zshenv for this has problems with "eval $(jenv init -)": command not found
+[ -f ~/.zshenv ] && . ~/.zshenv
 [ -f ~/.bash_environment ] && . ~/.bash_environment
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -141,7 +120,17 @@ numcsvcols() { head -1 "$@" | tr ',' '\n' | nl; }
 # count and rank the unqiue lines in a file
 uniqcount() { sort "$@" | uniq -c | sort -rn | sed 's/^ *//' | sed 's/ /	/'; }
 
-# elasticsearch commands (with echo to ensure a newline is printed)
+# elasticsearch commands # Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# ES commands (with echo to ensure a newline is printed)
 esDELETE() { local url=$1; shift; curl -XDELETE "$ELASTICSEARCH/$url" "$@"; echo; }
 esDELETEh() { local url=$1; shift; curl -i -XDELETE "$ELASTICSEARCH/$url" "$@"; echo; }
 esGET() { local url=$1; shift; curl --silent "$ELASTICSEARCH/$url?pretty" -H 'Content-Type: application/json' "$@"; echo; }
@@ -236,4 +225,5 @@ export NVM_DIR="$HOME/.nvm"
 typeset -g POWERLEVEL9K_PYENV_FOREGROUND=220
 typeset -g POWERLEVEL9K_PYENV_BACKGROUND=025
 
+# broot
 source /home/fnl/.config/broot/launcher/bash/br
