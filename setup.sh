@@ -35,6 +35,7 @@ ln -s $dir/jshintrc ~/.jshintrc
 ln -s $dir/screenrc ~/.screenrc
 # ln -s $dir/tmux.conf ~/.tmux.conf
 ln -s $dir/vimrc ~/.vimrc
+ln -s $dir/ideavimrc ~/.ideavimrc
 cp $dir/signature ~/.plan
 
 # scripts and binaries
@@ -62,4 +63,16 @@ ln -s $dir/aria2/share/man/man1/aria2c.1 ~/$WORKSPACE/man/man1/
 # individual environment
 echo "touching local bash configuration files"
 touch ~/.bash_environment
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 touch ~/.bash_aliases

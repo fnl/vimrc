@@ -1,0 +1,26 @@
+"" IdaVim Suggestions
+
+" Don't use Ex mode, use Q for formatting.
+"map Q gq
+
+"" -- Map IDE actions to IdeaVim -- https://jb.gg/abva4t
+"" Map \r to the Reformat Code action
+"map \r <Action>(ReformatCode)
+
+"" Map <leader>d to start debug
+"map <leader>d <Action>(Debug)
+
+"" Map \b to toggle the breakpoint on the current line
+"map \b <Action>(ToggleLineBreakpoint)
+
+" Find more examples here: https://jb.gg/share-ideavimrc
+
+" == PLUGINS ==
+
+set multicursor " 
+set easymotion " default leader is \ (most commands use double leader)
+set quickscope 
+" quick-scope
+" let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
+
+source ~/.vim/vimrc
