@@ -1,26 +1,69 @@
 "" IdaVim Suggestions
 
+" use leader for the IdeaVim commands; set leader to space
+let mapleader=" "
+
+" use the system clipboard
+set clipboard+=unnamed
+set clipboard+=ideaput
+
 " Don't use Ex mode, use Q for formatting.
 "map Q gq
 
 "" -- Map IDE actions to IdeaVim -- https://jb.gg/abva4t
-"" Map \r to the Reformat Code action
-"map \r <Action>(ReformatCode)
+" Map <leader>d to start debug
+map <leader>x <Action>(Run)
 
-"" Map <leader>d to start debug
-"map <leader>d <Action>(Debug)
+" Map <leader>d to start debug
+map <leader>d <Action>(Debug)
 
-"" Map \b to toggle the breakpoint on the current line
-"map \b <Action>(ToggleLineBreakpoint)
+" Map <leader>b to toggle the breakpoint on the current line
+map <leader>b <Action>(ToggleLineBreakpoint)
+
+" Map <leader>r to the Reformat Code action
+nmap <leader>f <Action>(ReformatCode)
+
+" Toggle Zen mode
+map <leader>z <Action>(ToggleDistractionFreeMode)
+
+" Navigate methods with vim defaults
+nmap ]m <Action>(MethodDown)
+nmap [m <Action>(MethodUp)
+
+" Open the refactoring menu
+nmap <leader>r :action Refactorings.QuickListPopupAction<CR>
+
+" Open the extract/introduce menu
+nmap <leader>e <Action>(IntroduceActionsGroup)
+
+" Use Idea's find, not the vim kind
+map / <Action>(Find)
+
+" Find in files
+map <leader>/ <Action>(FindInPath)
+
+" Goto: Class, File, Symbol
+map <leader>gc <Action>(GotoClass)
+map <leader>gf <Action>(GotoFile)
+map <leader>gs <Action>(GotoSymbol)
+
+" Managing splits and tabs in them
+map <leader>s <Action>(MoveTabRight)
+map <leader>v <Action>(MoveTabDown)
+map <leader>m <Action>(MoveEditorToOppositeTabGroup)
 
 " Find more examples here: https://jb.gg/share-ideavimrc
 
 " == PLUGINS ==
 
-set multicursor " 
-set easymotion " default leader is \ (most commands use double leader)
-set quickscope 
+" multicursor
+set multicursor " ms/pattern to create cursors at all pattern matches
+
+" easymotion
+"set easymotion " default leader is \ (most commands use double leader)
+
 " quick-scope
-" let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
+"set quickscope 
+"let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 
 source ~/.vim/vimrc
