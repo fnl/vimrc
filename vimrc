@@ -7,6 +7,9 @@ set nofixendofline " Prevent vim from auto-adding newlines to files
 silent !mkdir -p ~/.vim/backup
 set backupdir=~/.vim/backup
 
+silent !mkdir -p ~/.vim/tmp
+set directory^=~/.vim/tmp/ " ^= prepends this directory
+
 set autowriteall " Save buffer on a plethora of commands, including qutting vim
 
 " == UX ==
