@@ -11,7 +11,7 @@ set autowriteall " Save buffer on a plethora of commands, including qutting vim
 
 " == UX ==
 
-set scrolloff=3 " Start vertical scrolling a bit earlier
+set scrolloff=1 " Start vertical scrolling a bit earlier
 set sidescrolloff=9 " Scroll at n colums before the side margin in nowrap mode
 set undolevels=1000 " Tons of undos
 set history=100 " A bit more history
@@ -38,6 +38,9 @@ au filetype help nnoremap <buffer> <C-[> <C-t>
 nnoremap <C-c> :bp\|bd #<CR>
 
 syntax enable
+
+" Fold based on syntax (e.g., JSON folding works out of the box)
+set foldmethod=syntax
 
 " == SEARCH ==
 
