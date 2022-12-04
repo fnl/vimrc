@@ -49,6 +49,9 @@ au filetype help nnoremap <buffer> <C-[> <C-t>
 " eliminating the split window - using C-c
 nnoremap <C-c> :bp\|bd #<CR>
 
+" Use the system clipboard
+set clipboard+=unnamedplus
+
 " == SEARCH ==
 
 set ignorecase " Ignore case when searching
