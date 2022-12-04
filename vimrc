@@ -1,7 +1,6 @@
 " == FILES & BUFFERS ==
 
 set hidden " Change buffers w/o saving - essential
-filetype on " Enable filetype detection
 set nofixendofline " Prevent vim from auto-adding newlines to files
 
 silent !mkdir -p ~/.vim/backup
@@ -10,10 +9,20 @@ set backupdir=~/.vim/backup
 silent !mkdir -p ~/.vim/tmp
 set directory^=~/.vim/tmp/ " ^= prepends this directory
 
-set autowriteall " Save buffer on a plethora of commands, including qutting vim
+set autowriteall " Save buffer on a plethora of commands, including quitting vim
 
 " == UX ==
 
+" Enable filetype detection
+filetype plugin indent on " Load indention rules for specific file type
+
+" Enable syntax-specific functionality
+syntax enable
+set autoindent " indent next line same way as current line
+set smartindent " expand autoindent functions to take syntax into account
+set foldmethod=syntax " based on syntax (e.g., JSON folding works out of the box)
+
+" Essentials
 set scrolloff=1 " Start vertical scrolling a bit earlier
 set sidescrolloff=9 " Scroll at n colums before the side margin in nowrap mode
 set undolevels=1000 " Tons of undos
@@ -39,11 +48,6 @@ au filetype help nnoremap <buffer> <C-[> <C-t>
 " and then deleting the "alternate file" (#), to close a buffer without
 " eliminating the split window - using C-c
 nnoremap <C-c> :bp\|bd #<CR>
-
-syntax enable
-
-" Fold based on syntax (e.g., JSON folding works out of the box)
-set foldmethod=syntax
 
 " == SEARCH ==
 
