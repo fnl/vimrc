@@ -7,40 +7,22 @@ let mapleader=" "
 set clipboard+=unnamed
 set clipboard+=ideaput
 
-" Don't use Ex mode, use Q for formatting.
-"map Q gq
-
 "" -- Map IDE actions to IdeaVim -- https://jb.gg/abva4t
-" Map <leader>d to start debug
 map <leader>x <Action>(Run)
-
-" Map <leader>d to start debug
 map <leader>d <Action>(Debug)
-
-" Map <leader>b to toggle the breakpoint on the current line
 map <leader>b <Action>(ToggleLineBreakpoint)
-
-" Map <leader>r to the Reformat Code action
 nmap <leader>f <Action>(ReformatCode)
-
-" Toggle Zen mode
 map <leader>z <Action>(ToggleDistractionFreeMode)
+" Actions with dots don't work with <Action>() syntax
+nmap <leader>r :action Refactorings.QuickListPopupAction<CR>
+" Open the extract/introduce menu
+nmap <leader>e <Action>(IntroduceActionsGroup)
+" Find in files
+map <leader>/ <Action>(FindInPath)
 
 " Navigate methods with vim defaults
 nmap ]m <Action>(MethodDown)
 nmap [m <Action>(MethodUp)
-
-" Open the refactoring menu
-nmap <leader>r :action Refactorings.QuickListPopupAction<CR>
-
-" Open the extract/introduce menu
-nmap <leader>e <Action>(IntroduceActionsGroup)
-
-" Use Idea's find, not the vim kind
-map / <Action>(Find)
-
-" Find in files
-map <leader>/ <Action>(FindInPath)
 
 " Goto: Class, File, Symbol
 map <leader>gc <Action>(GotoClass)
@@ -56,14 +38,8 @@ map <leader>m <Action>(MoveEditorToOppositeTabGroup)
 
 " == PLUGINS ==
 
-" multicursor
 set multicursor " ms/pattern to create cursors at all pattern matches
 
-" easymotion
-"set easymotion " default leader is \ (most commands use double leader)
-
-" quick-scope
-"set quickscope 
-"let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
+" == VIM ==
 
 source ~/.vim/vimrc
