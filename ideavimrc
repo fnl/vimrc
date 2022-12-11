@@ -11,7 +11,7 @@ set clipboard+=ideaput
 map <leader>x <Action>(Run)
 map <leader>d <Action>(Debug)
 map <leader>b <Action>(ToggleLineBreakpoint)
-nmap <leader>f <Action>(ReformatCode)
+nmap <leader>= <Action>(ReformatCode)
 map <leader>z <Action>(ToggleDistractionFreeMode)
 " Actions with dots don't work with <Action>() syntax
 nmap <leader>r :action Refactorings.QuickListPopupAction<CR>
