@@ -11,6 +11,8 @@ set directory^=~/.vim/tmp/ " ^= prepends this directory
 
 set autowriteall " Save buffer on a plethora of commands, including quitting vim
 
+autocmd FileType cpp setlocal tabstop=2 shiftwidth=2 cindent cinoptions=h1,l1,g1,t0,i4,+4,(0,w1,W4
+
 " == UX ==
 
 " Enable filetype detection
@@ -42,7 +44,7 @@ cmap w!! w !sudo tee % > /dev/null
 vnoremap <BS> :<BS><BS><BS><BS><BS>%s/\s\+$//ge<CR>
 
 " Remap C-t (back) in help navigation to something intuitive: C-[ matching C-]
-au filetype help nnoremap <buffer> <C-[> <C-t>
+autocmd FileType help nnoremap <buffer> <C-[> <C-t>
 
 " Delete the last buffer by moving to the previous one
 " and then deleting the "alternate file" (#), to close a buffer without
@@ -50,6 +52,7 @@ au filetype help nnoremap <buffer> <C-[> <C-t>
 nnoremap <C-c> :bp\|bd #<CR>
 
 " Use the system clipboard
+set clipboard=unnamed
 set clipboard+=unnamedplus
 
 " == SEARCH ==
