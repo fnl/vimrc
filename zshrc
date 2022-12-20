@@ -123,7 +123,8 @@ uniqcount() { sort "$@" | uniq -c | sort -rn | sed 's/^ *//' | sed 's/ /	/'; }
 # ES commands (with echo to ensure a newline is printed)
 esDELETE() { local url=$1; shift; curl -XDELETE "$ELASTICSEARCH/$url" "$@"; echo; }
 esDELETEh() { local url=$1; shift; curl -i -XDELETE "$ELASTICSEARCH/$url" "$@"; echo; }
-esGET() { local url=$1; shift; curl --silent "$ELASTICSEARCH/$url?pretty" -H 'Content-Type: application/json' "$@"; echo; }
+esGET() { local url=$1; shift; curl -XGET --silent "$ELASTICSEARCH/$url?pretty" -H 'Content-Type: application/json' "$@"; echo; }
+esGETurl() { local url=$1; shift; curl "$ELASTICSEARCH/$url"; echo; }
 esHEAD() { local url=$1; shift; curl -I "$ELASTICSEARCH/$url"; echo $@; }
 esPOST() { local url=$1; shift; curl -XPOST "$ELASTICSEARCH/$url" -H 'Content-Type: application/json' "$@"; echo; }
 esPOSTh() { local url=$1; shift; curl -i -XPOST "$ELASTICSEARCH/$url" "$@"; echo; }
