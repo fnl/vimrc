@@ -19,6 +19,8 @@ nmap <leader>r :action Refactorings.QuickListPopupAction<CR>
 nmap <leader>e <Action>(IntroduceActionsGroup)
 " Find in files
 map <leader>/ <Action>(FindInPath)
+" Show usages
+map <leader>u <Action>(FindUsages)
 
 " Navigate methods with vim defaults
 nmap ]m <Action>(MethodDown)
