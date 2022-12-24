@@ -9,7 +9,7 @@ fi
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/fnl/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -179,9 +179,6 @@ function ranger-cd {
 	rm -f -- "$tempfile"
 }
 alias rc="ranger-cd"
-
-# Use zoxide or show an error that it is missing
-eval "$(zoxide init zsh)"
 
 # Use fuzzy finder or show and error
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
