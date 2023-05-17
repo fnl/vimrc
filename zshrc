@@ -99,10 +99,10 @@ alias mvim="mvim --servername gvim" # vim-interaction support
 # fzf content in all files in CWD and beyond, and open selected file in vim
 alias fzv='vim $(rg . | fzf | cut -d ":" -f 1)'
 
-# curl with params
-alias curl-json='curl -H"Content-Type: application/json;charset=utf-8"'
+# curl with params (use -d "JSON" for the payload)
+alias curl-json='curl -H "Content-Type: application/json;charset=utf-8"'
 alias curl-post='curl -X POST'
-alias curl-post-json='curl -X POST -H"Content-Type: application/json;charset=utf-8"'
+alias curl-post-json='curl -X POST -H "Content-Type: application/json;charset=utf-8"'
 
 # a simple terminal calculator
 calc() { awk "BEGIN{ print $* }"; }
