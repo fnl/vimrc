@@ -23,6 +23,7 @@ syntax enable
 set autoindent " indent next line same way as current line
 set smartindent " expand autoindent functions to take syntax into account
 set foldmethod=syntax " based on syntax (e.g., JSON folding works out of the box)
+autocmd FileType python setlocal foldmethod=indent tabstop=4 softtabstop=4
 
 " Essentials
 set scrolloff=1 " Start vertical scrolling a bit earlier
