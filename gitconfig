@@ -17,4 +17,4 @@
 [pull]
 	rebase = true
 [credential "https://github.com"]
-	helper = !/usr/bin/gh auth git-credential
+	helper = !/usr/local/bin/gh auth git-credential
