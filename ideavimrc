@@ -24,6 +24,10 @@ map <leader>u <Action>(FindUsages)
 " Find in files
 map <leader>/ <Action>(FindInPath)
 
+" Recursive code folding fixes
+nnoremap zC :action CollapseRegionRecursively<CR>
+nnoremap zO :action ExpandRegionRecursively<CR>
+
 " Navigate methods with vim defaults
 nmap ]m <Action>(MethodDown)
 nmap [m <Action>(MethodUp)
