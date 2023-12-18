@@ -20,7 +20,7 @@ nmap <leader>e <Action>(IntroduceActionsGroup)
 " Open the SurroundWith menu
 nmap <leader>w <Action>(SurroundWith)
 " Show usages
-map <leader>u <Action>(FindUsages)
+map <leader>u <Action>(ShowUsages)
 " Find in files
 map <leader>/ <Action>(FindInPath)
 
