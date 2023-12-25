@@ -2,6 +2,7 @@
 	default = simple
 [user]
 	name = Florian Leitner
+	email = me@fnl.es
 [core]
 	autocrlf = input
         excludesfile = ~/.gitignore_global
@@ -15,6 +16,8 @@
 	remote = origin
 	username = Florian Leitner
 [pull]
-	rebase = true
+	rebase = interactive
 [credential "https://github.com"]
-	helper = !/usr/local/bin/gh auth git-credential
+	helper = !/usr/bin/gh auth git-credential
+[merge]
+	tool = vimdiff
