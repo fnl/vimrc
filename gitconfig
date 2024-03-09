@@ -30,6 +30,4 @@
 [difftool "difftastic"]
         cmd = difft "$LOCAL" "$REMOTE"
 [alias]
-	dft = difftool
-[alias]
-        dlog = "!f() { GIT_EXTERNAL_DIFF=difft git log -p --ext-diff $@; }; f"
+        difflog = "!f() { GIT_EXTERNAL_DIFF=difft git log -p --ext-diff $@; }; f"
