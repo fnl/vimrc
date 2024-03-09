@@ -18,6 +18,18 @@
 [pull]
 	rebase = interactive
 [credential "https://github.com"]
-	helper = !/usr/bin/gh auth git-credential
+	helper = !/usr/local/bin/gh auth git-credential
 [merge]
 	tool = vimdiff
+[diff]
+	tool = difftastic
+[pager]
+        difftool = true
+[difftool]
+        prompt = false
+[difftool "difftastic"]
+        cmd = difft "$LOCAL" "$REMOTE"
+[alias]
+	dft = difftool
+[alias]
+        dlog = "!f() { GIT_EXTERNAL_DIFF=difft git log -p --ext-diff $@; }; f"
