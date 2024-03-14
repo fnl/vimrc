@@ -2,7 +2,6 @@
 	default = simple
 [user]
 	name = Florian Leitner
-	email = me@fnl.es
 [core]
 	autocrlf = input
         excludesfile = ~/.gitignore_global
