@@ -170,6 +170,14 @@ lS() { ls -lSrha "$@" | tail; }
 # grep the ps shortcut
 psgrep() { ps aux | tee >(head -1>&2) | grep -v " grep $@" | grep "$@" -i --color=auto; }
 
+# strip outputs from Jupyter notebooks: nbstrip my_notebook.ipynb > cleaned.ipynb
+alias nbstrip="jq --indent 1 \
+    '(.cells[] | select(has(\"outputs\")) | .outputs) = []  \
+    | (.cells[] | select(has(\"execution_count\")) | .execution_count) = null  \
+    | .metadata = {\"language_info\": {\"name\": \"python\", \"pygments_lexer\": \"ipython3\"}} \
+    | .cells[].metadata = {} \
+    '"
+
 # cd to last path after exiting ranger
 function ranger-cd {
 	tempfile='/tmp/rangerdir'
