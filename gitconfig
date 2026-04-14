@@ -41,3 +41,5 @@
 		'"
 	smudge = cat
 	required = true
+[init]
+	defaultBranch = main
