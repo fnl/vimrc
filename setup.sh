@@ -33,6 +33,11 @@ ln -s $dir/vimrc ~/.vimrc
 ln -s $dir/ideavimrc ~/.ideavimrc
 cp $dir/signature ~/.plan
 
+# claude agent configuration
+echo "linking claude agent folders from $dir/agents/* to ~/.claude/\\1"
+ln -s $dir/agents/rules ~/.claude/rules
+ln -s $dir/agents/skills ~/.claude/skills
+
 # scripts and binaries
 echo "linking scripts and binaries from $dir to ~/$WORKSPACE/bin"
 mkdir -p ~/$WORKSPACE/bin
