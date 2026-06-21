@@ -44,7 +44,6 @@ mkdir -p ~/$WORKSPACE/bin
 ln -s $dir/bin/* ~/$WORKSPACE/bin/
 ln -s $dir/distribution/distribution ~/$WORKSPACE/bin/
 ln -s $dir/distribution/distribution ~/$WORKSPACE/bin/barchart
-ln -s $dir/aria2/bin/aria2c ~/$WORKSPACE/bin/aria2c
 
 # install powerline fonts
 git clone https://github.com/powerline/fonts.git --depth=1
