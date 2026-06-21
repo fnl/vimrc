@@ -203,9 +203,4 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# zsh-llm-suggestions setup
-source ~/.local/share/zsh-llm-suggestions/zsh-llm-suggestions.zsh
-bindkey '^g' zsh_llm_suggestions_github_copilot # ctrl-g
-bindkey '^[^g' zsh_llm_suggestions_github_copilot_explain # ctrl-alt-g
-
 [ -f ~/.bash_environment ] && . ~/.bash_environment
