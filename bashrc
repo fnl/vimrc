@@ -241,6 +241,10 @@ alias curl-json='curl -H"Content-Type: application/json;charset=utf-8"'
 alias curl-post='curl -X POST'
 alias curl-post-json='curl -X POST -H"Content-Type: application/json;charset=utf-8"'
 
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+
 # source local alias definitions
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
 
